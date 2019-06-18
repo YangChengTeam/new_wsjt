@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/setting_head_view"></include>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bg_color"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_send_info"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:text="发送人"
+                android:textColor="@color/black1"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_send_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:layout_toLeftOf="@+id/iv_send_user_head"
+                android:text="第一个用户"
+                android:textColor="@color/edit_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_send_user_head"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:layout_toLeftOf="@+id/iv_my_right_icon"
+                android:src="@mipmap/user_head_def" />
+
+            <ImageView
+                android:id="@+id/iv_my_right_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:src="@mipmap/iv_right_icon" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/et_chat_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:gravity="top|left"
+            android:hint="@string/must_input_txt"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            android:textColor="@color/black1"
+            android:textSize="16sp"></EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:gravity="left|center">
+
+            <Button
+                android:id="@+id/btn_def_face"
+                android:layout_width="90dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/choose_type_selected"
+                android:text="经典表情"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_emoji_face"
+                android:layout_width="90dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/choose_type_normal"
+                android:text="Emoji表情"
+                android:textColor="@color/color_blue" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_complate_emotion_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.yc.wsjt.ui.custom.EmojiIndicatorView
+                android:id="@+id/ll_point_group"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:orientation="horizontal" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

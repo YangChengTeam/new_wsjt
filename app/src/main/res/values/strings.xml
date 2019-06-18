@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">微商截图生成器</string>
+
+    <string name="tab_home_txt">首页</string>
+    <string name="tab_my_txt">我的</string>
+
+    <string name="tab_layout_weixin">微信</string>
+    <string name="tab_layout_alipay">支付宝</string>
+    <string name="tab_layout_qq">QQ</string>
+
+    <string name="weixin_danliao">微信单聊</string>
+    <string name="weixin_setting">设置</string>
+
+    <string name="setting_ziliao">设置资料</string>
+
+    <string name="type_time">时间</string>
+    <string name="type_text">文本</string>
+    <string name="type_image">图片</string>
+    <string name="type_voice">语音</string>
+    <string name="type_emoji">表情</string>
+    <string name="type_hongbao">红包</string>
+    <string name="type_zhuanzhang">转账</string>
+    <string name="type_video">视频</string>
+    <string name="type_image_for_video">视频聊天</string>
+    <string name="type_share">转发</string>
+    <string name="type_persion_card">个人名片</string>
+    <string name="type_join_group">邀请加群</string>
+    <string name="type_system_info">系统提醒</string>
+
+    <string name="config_txt">确定</string>
+    <string name="cancel_txt">取消</string>
+    <string name="role_list_txt">角色库</string>
+
+    <string name="must_input_txt">消息内容 (必填)</string>
+
+    <string name="permission_storage_never_ask_again">不再询问</string>
+    <string name="permission_storage_rationale">必须要开启权限，才能正常使用，请开启</string>
+    <string name="permission_storage_denied">禁止了权限，开启权限才能正常使用</string>
+
+    <string name="button_allow">开启</string>
+    <string name="button_deny">拒绝</string>
+
+    <string name="def_emoji_txt">默认表情</string>
+    <string name="my_emoji_txt">我的表情</string>
+
+    <string name="sys_recall">你撤回了一条消息 重新编辑</string>
+    <string name="sys_add_friend">你已经添加了xx，现在可以开始聊天了。</string>
+    <string name="sys_say_hello">以上是打招呼的内容</string>
+    <string name="sys_stranger">如果陌生人主动添加腻味朋友，请谨慎核实对方身份。</string>
+
+    <string name="vip_welfare_txt">1.超级权限，解锁所有VIP功能。\n2.超级权限，解锁所有VIP功能。\n3.超级权限，解锁所有VIP功能。</string>
+    <string name="vip_share_txt">到应用市场好评\n可以免费体验VIP功能</string>
+</resources>

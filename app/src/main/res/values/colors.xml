@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ededed</color>
+    <color name="colorPrimaryDark">#ededed</color>
+    <color name="colorAccent">#ededed</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="bg_color">#f2f2f2</color>
+    <color name="white">#ffffff</color>
+
+    <color name="tab_tv_normal">#999999</color>
+    <color name="tab_tv_selected">#333333</color>
+
+    <color name="black">#000000</color>
+    <color name="black1">#333333</color>
+    <color name="black2">#303030</color>
+    <color name="black3">#181818</color>
+    <color name="black4">#353535</color>
+    <color name="chat_text_color">#353535</color>
+
+    <color name="color_yellow">#f94758</color>
+    <color name="color_blue">#4aa5ff</color>
+    <color name="color_zi">#f94758</color>
+
+    <color name="color_gray">#aaaaaa</color>
+
+    <color name="input_bg">#f2f2f2</color>
+
+    <color name="color_diy">#f94758</color>
+    <color name="list_bg_color">#f1f2f4</color>
+    <color name="line_color">#f1f2f4</color>
+    <color name="edit_color">#666666</color>
+    <color name="day_color">#888888</color>
+
+    <color name="border_line_color">#d8dde0</color>
+    <color name="line_color1">#d3d3d3</color>
+    <color name="line_color2">#d6d6d6</color>
+    <color name="line_color3">#d8d8d8</color>
+    <color name="bar_line_color">#e6e9ec</color>
+
+    <color name="add_chat_color">#4aa5ff</color>
+    <color name="pre_chat_color">#1aad19</color>
+
+    <color name="config_btn_bg">#4aa5ff</color>
+
+    <color name="group_line_color">#ebebeb</color>
+
+    <color name="gray0">#464646</color>
+    <color name="gray1">#777777</color>
+    <color name="gray2">#939393</color>
+    <color name="gray3">#909090</color>
+    <color name="red_package_color">#b9b9b9</color>
+
+    <color name="chat_time_color">#a5a5a5</color>
+
+    <color name="chat_bg_color">#ededed</color>
+    <color name="chat_top_line_color">#e6e6e6</color>
+    <color name="share_content_color">#999999</color>
+
+    <color name="bg_indicator_point_normal">#D8D8D8</color>
+    <color name="bg_indicator_point_selected">#A6A6A6</color>
+
+    <color name="look_money_color">#5a6d97</color>
+    <color name="transfer_color">#838383</color>
+    <color name="profit_color">#fba64c</color>
+
+    <color name="into_money_color">#07c160</color>
+    <color name="get_money_color">#ededed</color>
+
+    <color name="my_wallet_bg_color">#3bac6a</color>
+    <color name="wallet_txt_color">#9dd6b5</color>
+    <color name="tencent_txt_color">#716f76</color>
+
+    <color name="search_txt_color">#d4d4d4</color>
+
+    <color name="chat_video_color">#80000000</color>
+
+    <color name="receive_side_color">#8d8d8d</color>
+
+    <color name="pay_bottom_color">#f7f7f7</color>
+    <color name="pay_line_color">#c6c6c6</color>
+    <color name="pay_pre_txt_color">#383838</color>
+
+    <color name="pay_date_color">#e6ffffff</color>
+    <color name="circle_title_color">#171717</color>
+    <color name="praise_color">#576b95</color>
+    <color name="reply_txt_color">#454545</color>
+    <color name="receive_money_color">#b2b2b2</color>
+    <color name="user_id_color">#c3d8ff</color>
+
+    <color name="feed_select_bg_color">#f2f9ff</color>
+    <color name="feed_line_select_color">#4aa5ff</color>
+    <color name="feed_normal_bg_color">#fafafa</color>
+    <color name="good_comment_color">#3d98ff</color>
+    <color name="open_vip_color">#fa5645</color>
+</resources>

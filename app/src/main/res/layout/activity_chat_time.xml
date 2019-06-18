@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/setting_head_view"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:gravity="top|center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_select_time"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
+            android:hint="当前时间"
+            android:textSize="14sp"
+            android:textColorHint="@color/color_gray"
+            android:textColor="@color/black"
+            android:paddingLeft="12dp" />
+
+        <Button
+            android:id="@+id/btn_twelve"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/config_btn_bg"
+            android:text="12小时制时间"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_twenty_four"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/config_btn_bg"
+            android:text="24小时制时间"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/tab_tv_normal"
+            android:textSize="14sp"
+            android:text="可在输入框内手动编辑时间" />
+    </LinearLayout>
+
+
+</LinearLayout>
