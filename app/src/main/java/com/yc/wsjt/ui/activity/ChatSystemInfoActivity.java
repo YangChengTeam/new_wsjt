@@ -87,19 +87,21 @@ public class ChatSystemInfoActivity extends BaseActivity {
 
         int type = MessageContent.SYSTEM_TIPS;
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_system_info);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         SystemTipsMessage systemTipsMessage = new SystemTipsMessage();
         systemTipsMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         systemTipsMessage.setMessageContent(mSystemInfoEt.getText().toString());
         systemTipsMessage.setMessageType(type);
-        mAppDatabase.systemTipsMessageDao().insert(systemTipsMessage);
+        Long sysId = mAppDatabase.systemTipsMessageDao().insert(systemTipsMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_system_info);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(sysId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

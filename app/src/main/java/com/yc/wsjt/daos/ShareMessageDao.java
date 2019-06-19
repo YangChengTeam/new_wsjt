@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface ShareMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(ShareMessage... shareMessages);
+    Long insert(ShareMessage shareMessages);
 
     @Query("select * from wx_share_info")
     Flowable<List<ShareMessage>> loadShareMessage();
 
     @Query("SELECT * from wx_share_info WHERE wxMainId= :wxMainId")
     List<ShareMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_share_info WHERE id= :id")
+    ShareMessage getItemById(Long id);
 }

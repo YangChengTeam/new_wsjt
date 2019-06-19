@@ -11,11 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
@@ -31,8 +29,6 @@ import com.yc.wsjt.ui.custom.EmojiModeDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,7 +61,7 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
     @BindView(R.id.et_share_content)
     EditText mShareContentEt;
 
-    private File outputImage;
+    private String thumbPath;
 
     private int chooseType = 1;
 
@@ -135,10 +131,9 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE:
                     Logger.i(JSONObject.toJSONString(Matisse.obtainPathResult(data)));
-                    if (Matisse.obtainResult(data) != null && Matisse.obtainResult(data).size() > 0) {
-                        outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
-                        Logger.i("out path--->" + outputImage.getAbsolutePath());
-                        Glide.with(ChatShareActivity.this).load(Matisse.obtainResult(data).get(0)).into(mShareIv);
+                    if (Matisse.obtainPathResult(data) != null && Matisse.obtainPathResult(data).size() > 0) {
+                        thumbPath = Matisse.obtainPathResult(data).get(0);
+                        Glide.with(ChatShareActivity.this).load(thumbPath).into(mShareIv);
                     }
                     break;
             }
@@ -188,12 +183,17 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
     @OnClick(R.id.btn_config)
     void config() {
-        if(StringUtils.isEmpty(mShareTitleEt.getText())){
+        if (StringUtils.isEmpty(thumbPath)) {
+            ToastUtils.showLong("请选择封面图片");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mShareTitleEt.getText())) {
             ToastUtils.showLong("请输入标题");
             return;
         }
 
-        if(StringUtils.isEmpty(mShareContentEt.getText())){
+        if (StringUtils.isEmpty(mShareContentEt.getText())) {
             ToastUtils.showLong("请输入内容");
             return;
         }
@@ -203,24 +203,26 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
             type = MessageContent.RECEIVE_SHARE;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_share);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         ShareMessage shareMessage = new ShareMessage();
         shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         shareMessage.setMessageType(type);
-        shareMessage.setShareThumb(outputImage != null && outputImage.exists() ? outputImage.getAbsolutePath() : "");
+        shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
         shareMessage.setShareTitle(mShareTitleEt.getText().toString());
         shareMessage.setShareContent(mShareContentEt.getText().toString());
         shareMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
         shareMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
 
-        mAppDatabase.shareMessageDao().insert(shareMessage);
+        Long shareId = mAppDatabase.shareMessageDao().insert(shareMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_share);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(shareId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

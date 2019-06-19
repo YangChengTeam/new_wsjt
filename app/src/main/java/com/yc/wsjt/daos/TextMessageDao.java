@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface TextMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(TextMessage... timeMessages);
+    Long insert(TextMessage timeMessages);
 
     @Query("select * from wx_text_info")
     Flowable<List<TextMessage>> loadTextMessage();
 
     @Query("SELECT * from wx_text_info WHERE wxMainId= :wxMainId")
     List<TextMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_text_info WHERE id= :id")
+    TextMessage getItemById(Long id);
 }

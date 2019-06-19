@@ -93,4 +93,8 @@
     <color name="feed_normal_bg_color">#fafafa</color>
     <color name="good_comment_color">#3d98ff</color>
     <color name="open_vip_color">#fa5645</color>
+
+    <color name="red_txt_color">#ffe2b1</color>
+    <color name="red_remark_color">#fdc590</color>
+    <color name="red_face_color">#d9af68</color>
 </resources>

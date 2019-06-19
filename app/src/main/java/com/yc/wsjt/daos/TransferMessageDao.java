@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface TransferMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(TransferMessage... transferMessages);
+    Long insert(TransferMessage transferMessages);
 
     @Query("select * from wx_transfer_info")
     Flowable<List<TransferMessage>> loadTransMessage();
 
     @Query("SELECT * from wx_transfer_info WHERE wxMainId= :wxMainId")
     List<TransferMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_transfer_info WHERE id= :id")
+    TransferMessage getItemById(Long id);
 }

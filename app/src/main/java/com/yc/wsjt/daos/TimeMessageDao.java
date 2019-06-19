@@ -27,4 +27,7 @@ public interface TimeMessageDao {
 
     @Query("SELECT * from wx_time_info WHERE wxMainId= :wxMainId")
     List<TimeMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_time_info WHERE id= :id")
+    TimeMessage getItemById(Long id);
 }

@@ -15,11 +15,9 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
@@ -80,9 +78,9 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
     VideoTimeDialog videoTimeDialog;
 
-    private File outputImage;
-
     private int chooseType = 1;//图片(1)，视频
+
+    private String imagePath;
 
     private String videoPath;
 
@@ -152,11 +150,10 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE:
                     Logger.i(JSONObject.toJSONString(Matisse.obtainPathResult(data)));
-                    if (Matisse.obtainResult(data) != null && Matisse.obtainResult(data).size() > 0) {
+                    if (Matisse.obtainPathResult(data) != null && Matisse.obtainPathResult(data).size() > 0) {
                         if (chooseType == 1) {
-                            outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
-                            Logger.i("out path--->" + outputImage.getAbsolutePath());
-                            Glide.with(ChatImageActivity.this).load(Matisse.obtainResult(data).get(0)).into(mChooseIv);
+                            imagePath = Matisse.obtainPathResult(data).get(0);
+                            Glide.with(ChatImageActivity.this).load(Matisse.obtainPathResult(data).get(0)).into(mChooseIv);
                         } else {
                             videoPath = Matisse.obtainPathResult(data).get(0);
                             Logger.i("out path--->" + videoPath);
@@ -213,7 +210,7 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
     @OnClick(R.id.btn_config)
     void config() {
-        if (outputImage == null && StringUtils.isEmpty(videoPath)) {
+        if (StringUtils.isEmpty(imagePath) && StringUtils.isEmpty(videoPath)) {
             ToastUtils.showLong("请选择图片或者视频");
             return;
         }
@@ -231,12 +228,6 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
             }
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         //插入一条时间设置记录
         ImageMessage imageMessage = new ImageMessage();
@@ -245,10 +236,19 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
         imageMessage.setMediaType(chooseType);
         imageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
         imageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        imageMessage.setImageUrl(chooseType == 1 ? outputImage.getAbsolutePath() : videoPath);
+        imageMessage.setImageUrl(chooseType == 1 ? imagePath : videoPath);
         imageMessage.setVideoTime(chooseType == 2 ? mVideoTimeTv.getText().toString() : "0:0");
         imageMessage.setLocalMessageImg(R.mipmap.type_image);
-        mAppDatabase.imageMessageDao().insert(imageMessage);
+        Long imageId = mAppDatabase.imageMessageDao().insert(imageMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(imageId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
         finish();
     }
 

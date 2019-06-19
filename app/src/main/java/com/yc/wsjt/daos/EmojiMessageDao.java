@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface EmojiMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(EmojiMessage... emojiMessages);
+    Long insert(EmojiMessage emojiMessages);
 
     @Query("select * from wx_emoji_info")
     Flowable<List<EmojiMessage>> loadEmojiMessage();
 
     @Query("SELECT * from wx_emoji_info WHERE wxMainId= :wxMainId")
     List<EmojiMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_emoji_info WHERE id= :id")
+    EmojiMessage getItemById(Long id);
 }

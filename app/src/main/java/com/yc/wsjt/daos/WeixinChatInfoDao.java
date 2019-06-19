@@ -21,11 +21,14 @@ import io.reactivex.Flowable;
 public interface WeixinChatInfoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(WeixinChatInfo... users);
+    Long insert(WeixinChatInfo users);
 
     @Delete
     void deleteWeChatInfo(WeixinChatInfo... weixinChatInfos);
 
-    @Query("select * from weixin_chat_info")
-    Flowable<List<WeixinChatInfo>> loadWeChatInfo();
+    @Query("select * from weixin_chat_info where wxMainId = :wxMainId")
+    Flowable<List<WeixinChatInfo>> loadWeChatInfo(int wxMainId);
+
+    @Query("SELECT * from weixin_chat_info WHERE id= :id")
+    WeixinChatInfo getItemById(Long id);
 }

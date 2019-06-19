@@ -204,7 +204,7 @@
                     android:layout_marginRight="12dp"
                     android:layout_toLeftOf="@+id/iv_img_right_icon"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/user_head_def" />
+                    android:src="@mipmap/image_def" />
 
                 <ImageView
                     android:id="@+id/iv_img_right_icon"
@@ -247,7 +247,7 @@
                     android:layout_marginRight="12dp"
                     android:layout_toLeftOf="@+id/iv_reply_right_icon"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/user_head_def" />
+                    android:src="@mipmap/image_def" />
 
                 <ImageView
                     android:id="@+id/iv_reply_right_icon"
@@ -266,8 +266,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -336,7 +336,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_video_time"
+                    android:id="@+id/tv_red_receive_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

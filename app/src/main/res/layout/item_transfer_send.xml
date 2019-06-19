@@ -21,24 +21,22 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="52dp"
             android:layout_marginTop="12dp"
-            android:gravity="center"
+            android:gravity="left|center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_trans_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="¥199.0"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_trans_remark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="转账备注"
                 android:textColor="@color/white"
                 android:textSize="11sp" />
@@ -62,6 +60,6 @@
         android:layout_margin="6dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="@mipmap/default_header" />
+        android:src="@mipmap/user_head_def" />
 
 </LinearLayout>

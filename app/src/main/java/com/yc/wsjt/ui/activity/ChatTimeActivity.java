@@ -127,13 +127,6 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
             ToastUtils.showLong("请填写时间");
             return;
         }
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_time);
-        weixinChatInfo.setChatText(mSelectTimeEt.getText().toString());
-        weixinChatInfo.setType(MessageContent.CHAT_DATE);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         //插入一条时间设置记录
         TimeMessage timeMessage = new TimeMessage();
@@ -143,6 +136,16 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
         timeMessage.setMessageContent(mSelectTimeEt.getText().toString());
         Long timeId = mAppDatabase.timeMessageDao().insert(timeMessage);
         Logger.i("timeId--->" + timeId);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_time);
+        weixinChatInfo.setChatText(mSelectTimeEt.getText().toString());
+        weixinChatInfo.setType(MessageContent.CHAT_DATE);
+        weixinChatInfo.setChildTabId(timeId);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+
         finish();
     }
 

@@ -97,17 +97,19 @@ public class TwelveDialog extends Dialog {
 
         //时段
         List<String> slotList = new ArrayList<>();
+        slotList.add("凌晨");
         slotList.add("早上");
         slotList.add("上午");
         slotList.add("中午");
         slotList.add("下午");
         slotList.add("傍晚");
         slotList.add("晚上");
-        slotList.add("凌晨");
+
 
         mTimeSlotWheelView = findViewById(R.id.wheel_view_time_slot);
         mTimeSlotWheelView.setLoop(true);
         mTimeSlotWheelView.setStyle(wheelViewStyle);
+        mTimeSlotWheelView.setSelection(MyDateUtils.getCurrentSolt());
         mTimeSlotWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mTimeSlotWheelView.setSkin(WheelView.Skin.Holo);
         mTimeSlotWheelView.setWheelData(slotList);
@@ -137,7 +139,7 @@ public class TwelveDialog extends Dialog {
         mMinuteWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMinuteWheelView.setSkin(WheelView.Skin.Holo);
         mMinuteWheelView.setWheelData(minuteList);
-        
+
         mConfigLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

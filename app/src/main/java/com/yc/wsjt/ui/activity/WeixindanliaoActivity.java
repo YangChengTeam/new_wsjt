@@ -32,7 +32,6 @@ import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.WeixindanliaoChatAdapter;
 import com.yc.wsjt.ui.custom.ChatTypeDialog;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,8 +77,6 @@ public class WeixindanliaoActivity extends BaseActivity {
 
     WeixindanliaoChatAdapter weixindanliaoChatAdapter;
 
-    List<WeixinChatInfo> chatInfoList;
-
     ChatTypeDialog chatTypeDialog;
 
     WindowManager.LayoutParams windowParams;
@@ -115,14 +112,6 @@ public class WeixindanliaoActivity extends BaseActivity {
 
         chatTypeDialog = new ChatTypeDialog(this, R.style.custom_dialog);
 
-        //聊天内容,模拟数据
-        chatInfoList = new ArrayList<>();
-        for (int i = 0; i < 26; i++) {
-            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setChatText("聊天内容" + (i + 1));
-            chatInfoList.add(weixinChatInfo);
-        }
-
         weixindanliaoChatAdapter = new WeixindanliaoChatAdapter(this, null, 0);
         mChatListView.setLayoutManager(new LinearLayoutManager(this));
         mChatListView.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.line_color), 1, 1));
@@ -151,9 +140,9 @@ public class WeixindanliaoActivity extends BaseActivity {
             // 交换数据，并更新adapter。
             int fromPosition = srcHolder.getAdapterPosition();
             int toPosition = targetHolder.getAdapterPosition();
-            Collections.swap(chatInfoList, fromPosition, toPosition);
+            Collections.swap(weixindanliaoChatAdapter.getData(), fromPosition, toPosition);
             weixindanliaoChatAdapter.notifyItemMoved(fromPosition, toPosition);
-
+            Logger.i("move--->" + fromPosition + "---" + toPosition);
             // 返回true，表示数据交换成功，ItemView可以交换位置。
             return true;
         }
@@ -164,7 +153,7 @@ public class WeixindanliaoActivity extends BaseActivity {
 
             // 从数据源移除该Item对应的数据，并刷新Adapter。
             int position = srcHolder.getAdapterPosition();
-            chatInfoList.remove(position);
+            weixindanliaoChatAdapter.getData().remove(position);
             weixindanliaoChatAdapter.notifyItemRemoved(position);
         }
     };
@@ -228,7 +217,7 @@ public class WeixindanliaoActivity extends BaseActivity {
 
             //初始化聊天记录
             disposable = mAppDatabase.weixinChatInfoDao()
-                    .loadWeChatInfo()
+                    .loadWeChatInfo(messageContent.getWxMainId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<List<WeixinChatInfo>>() {
@@ -263,6 +252,7 @@ public class WeixindanliaoActivity extends BaseActivity {
 
     @OnClick(R.id.btn_pre_show)
     public void queryData() {
+        App.getApp().setChatList(weixindanliaoChatAdapter.getData());
         Intent intent = new Intent(this, ChatSessionActivity.class);
         startActivity(intent);
     }

@@ -20,7 +20,7 @@ import io.reactivex.Flowable;
 public interface GroupMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(GroupMessage... groupMessages);
+    Long insert(GroupMessage groupMessages);
 
     @Query("select * from wx_group_info")
     Flowable<List<GroupMessage>> loadGroupMessage();
@@ -28,4 +28,6 @@ public interface GroupMessageDao {
     @Query("SELECT * from wx_group_info WHERE wxMainId= :wxMainId")
     List<GroupMessage> getItemById(int wxMainId);
 
+    @Query("SELECT * from wx_group_info WHERE id= :id")
+    GroupMessage getItemById(Long id);
 }

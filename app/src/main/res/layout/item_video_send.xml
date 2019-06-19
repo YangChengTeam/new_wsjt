@@ -36,6 +36,6 @@
         android:layout_margin="6dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="@mipmap/default_header" />
+        android:src="@mipmap/user_head_def" />
 
 </LinearLayout>

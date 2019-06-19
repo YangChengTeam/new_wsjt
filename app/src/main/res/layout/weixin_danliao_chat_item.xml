@@ -3,6 +3,7 @@
     android:id="@+id/layout_item_model"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:background="@color/white"
     android:gravity="left|center"
     android:orientation="horizontal">
 

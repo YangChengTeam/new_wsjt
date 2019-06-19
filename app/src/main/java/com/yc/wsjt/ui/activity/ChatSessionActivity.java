@@ -8,7 +8,20 @@ import com.jaeger.library.StatusBarUtil;
 import com.lqr.recyclerview.LQRRecyclerView;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.AudioMessage;
+import com.yc.wsjt.bean.EmojiMessage;
+import com.yc.wsjt.bean.GroupMessage;
+import com.yc.wsjt.bean.ImageMessage;
 import com.yc.wsjt.bean.MessageContent;
+import com.yc.wsjt.bean.PersonMessage;
+import com.yc.wsjt.bean.RedPackageMessage;
+import com.yc.wsjt.bean.ShareMessage;
+import com.yc.wsjt.bean.SystemTipsMessage;
+import com.yc.wsjt.bean.TextMessage;
+import com.yc.wsjt.bean.TimeMessage;
+import com.yc.wsjt.bean.TransferMessage;
+import com.yc.wsjt.bean.VideoMessage;
+import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.SessionAdapter;
 
@@ -17,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -30,6 +44,8 @@ public class ChatSessionActivity extends BaseActivity {
     SessionAdapter sessionAdapter;
 
     List<MessageContent> list = new ArrayList<>();
+
+    Disposable disposable = null;
 
     @Override
     protected int getLayoutId() {
@@ -60,20 +76,74 @@ public class ChatSessionActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        if(App.getApp().getMessageContent() != null){
-            int wxMainId = App.getApp().getMessageContent().getWxMainId();
-            list.addAll(mAppDatabase.timeMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.textMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.imageMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.audioMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.emojiMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.redMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.transferMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.videoMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.shareMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.personMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.groupMessageDao().getItemById(wxMainId));
-            list.addAll(mAppDatabase.systemTipsMessageDao().getItemById(wxMainId));
+        try {
+
+            if (App.getApp().getChatList() != null && App.getApp().getChatList().size() > 0) {
+                for (WeixinChatInfo weixinChatInfo : App.getApp().getChatList()) {
+                    switch (weixinChatInfo.getType()) {
+                        case MessageContent.CHAT_DATE:
+                            TimeMessage timeMessage = mAppDatabase.timeMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(timeMessage);
+                            break;
+                        case MessageContent.SEND_TEXT:
+                        case MessageContent.RECEIVE_TEXT:
+                            TextMessage textMessage = mAppDatabase.textMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(textMessage);
+                            break;
+                        case MessageContent.SEND_IMAGE:
+                        case MessageContent.RECEIVE_IMAGE:
+                            ImageMessage imageMessage = mAppDatabase.imageMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(imageMessage);
+                            break;
+                        case MessageContent.SEND_VOICE:
+                        case MessageContent.RECEIVE_VOICE:
+                            AudioMessage audioMessage = mAppDatabase.audioMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(audioMessage);
+                            break;
+                        case MessageContent.SEND_EMOJI:
+                        case MessageContent.RECEIVE_EMOJI:
+                            EmojiMessage emojiMessage = mAppDatabase.emojiMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(emojiMessage);
+                            break;
+                        case MessageContent.SEND_RED_PACKET:
+                        case MessageContent.RECEIVE_RED_PACKET:
+                            RedPackageMessage redPackageMessage = mAppDatabase.redMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(redPackageMessage);
+                            break;
+                        case MessageContent.SEND_TRANSFER:
+                        case MessageContent.RECEIVE_TRANSFER:
+                            TransferMessage transferMessage = mAppDatabase.transferMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(transferMessage);
+                            break;
+                        case MessageContent.SEND_VIDEO:
+                        case MessageContent.RECEIVE_VIDEO:
+                            VideoMessage videoMessage = mAppDatabase.videoMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(videoMessage);
+                            break;
+                        case MessageContent.SEND_SHARE:
+                        case MessageContent.RECEIVE_SHARE:
+                            ShareMessage shareMessage = mAppDatabase.shareMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(shareMessage);
+                            break;
+                        case MessageContent.SEND_PERSON_CARD:
+                        case MessageContent.RECEIVE_PERSON_CARD:
+                            PersonMessage personMessage = mAppDatabase.personMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(personMessage);
+                            break;
+                        case MessageContent.SEND_JOIN_GROUP:
+                        case MessageContent.RECEIVE_JOIN_GROUP:
+                            GroupMessage groupMessage = mAppDatabase.groupMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(groupMessage);
+                            break;
+                        case MessageContent.SYSTEM_TIPS:
+                            SystemTipsMessage systemTipsMessage = mAppDatabase.systemTipsMessageDao().getItemById(weixinChatInfo.getChildTabId());
+                            list.add(systemTipsMessage);
+                            break;
+                    }
+                }
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
 
         sessionAdapter = new SessionAdapter(this, list);

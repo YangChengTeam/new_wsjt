@@ -145,12 +145,7 @@ public class ChatAudioActivity extends BaseActivity {
             type = MessageContent.RECEIVE_VOICE;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_voice);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+
 
         //插入一条时间设置记录
         AudioMessage audioMessage = new AudioMessage();
@@ -161,7 +156,16 @@ public class ChatAudioActivity extends BaseActivity {
         audioMessage.setAudioTime(audioTime);
         audioMessage.setRead(mIsReadSButton.isChecked());
         audioMessage.setOpenAudioTurn(mTurnSButton.isChecked());
-        mAppDatabase.audioMessageDao().insert(audioMessage);
+        Long audioId = mAppDatabase.audioMessageDao().insert(audioMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_voice);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(audioId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

@@ -247,14 +247,6 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
             type = MessageContent.RECEIVE_VIDEO;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_video : R.mipmap.type_voice);
-        weixinChatInfo.setChatText(mConnectionStateTv.getText() + " " + mVideoTimeTv.getText());
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         VideoMessage videoMessage = new VideoMessage();
         videoMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
@@ -265,9 +257,18 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
         videoMessage.setChatState(chatState);
         videoMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
         videoMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        videoMessage.setChatImageUrl(chatState == 1 ? R.mipmap.chat_item_video : R.mipmap.chat_item_voice);
-        //videoMessage.setLocalMessageImg(chooseType == 1 ? R.mipmap.type_video : R.mipmap.type_voice);
-        mAppDatabase.videoMessageDao().insert(videoMessage);
+        videoMessage.setChatImageUrl(chooseType == 1 ? R.mipmap.chat_item_video : R.mipmap.chat_item_voice);
+        Long videoId = mAppDatabase.videoMessageDao().insert(videoMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_video : R.mipmap.type_voice);
+        weixinChatInfo.setChatText(mConnectionStateTv.getText() + " " + mVideoTimeTv.getText());
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(videoId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

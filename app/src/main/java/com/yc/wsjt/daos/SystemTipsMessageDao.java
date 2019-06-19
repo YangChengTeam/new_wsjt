@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface SystemTipsMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(SystemTipsMessage... systemTipsMessages);
+    Long insert(SystemTipsMessage systemTipsMessages);
 
     @Query("select * from wx_system_tips_info")
     Flowable<List<SystemTipsMessage>> loadSystemInfoMessage();
 
     @Query("SELECT * from wx_system_tips_info WHERE wxMainId= :wxMainId")
     List<SystemTipsMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_system_tips_info WHERE id= :id")
+    SystemTipsMessage getItemById(Long id);
 }

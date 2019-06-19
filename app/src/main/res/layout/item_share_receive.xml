@@ -16,8 +16,7 @@
         android:layout_margin="6dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="@mipmap/default_header" />
-
+        android:src="@mipmap/user_head_def" />
 
     <RelativeLayout
         android:layout_width="252dp"
@@ -32,6 +31,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="4dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:lineSpacingMultiplier="1.2"
             android:lines="2"
             android:paddingLeft="14dp"
@@ -68,6 +68,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="12dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/share_pre" />
         </LinearLayout>
     </RelativeLayout>

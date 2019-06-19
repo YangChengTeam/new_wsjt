@@ -145,13 +145,6 @@ public class ChatEmojiActivity extends BaseActivity {
             type = MessageContent.RECEIVE_EMOJI;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_emoji);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         EmojiMessage emojiMessage = new EmojiMessage();
         emojiMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
@@ -159,7 +152,15 @@ public class ChatEmojiActivity extends BaseActivity {
         emojiMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
         emojiMessage.setMessageType(type);
         emojiMessage.setEmojiUrl(emojiUrl);
-        mAppDatabase.emojiMessageDao().insert(emojiMessage);
+        Long emojiId = mAppDatabase.emojiMessageDao().insert(emojiMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_emoji);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(emojiId);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

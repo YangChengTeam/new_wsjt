@@ -1,6 +1,7 @@
 package com.yc.wsjt.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,14 +11,18 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.othershe.combinebitmap.CombineBitmap;
 import com.othershe.combinebitmap.layout.WechatLayoutManager;
+import com.othershe.combinebitmap.listener.OnProgressListener;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.GroupMessage;
@@ -57,6 +62,8 @@ public class ChatGroupActivity extends BaseActivity {
 
     public int[] images = null;
 
+    boolean isMySelf = true;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_group;
@@ -82,16 +89,44 @@ public class ChatGroupActivity extends BaseActivity {
         if (App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-            Glide.with(this).load(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+
+            if (isMySelf) {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                }
+            } else {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                }
+            }
         }
     }
 
     @OnClick(R.id.layout_send_info)
     void changeSendRole() {
-        boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-        SPUtils.getInstance().put(Constants.IS_SELF, !isMySelf);
-        mSendUserNameTv.setText(!isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        Glide.with(this).load(!isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+        if (App.getApp().chatDataInfo != null) {
+            isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+            isMySelf = !isMySelf;
+            SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
+            mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            if (isMySelf) {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                }
+            } else {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                }
+            }
+        }
     }
 
     @OnClick(R.id.layout_group_head)
@@ -114,6 +149,19 @@ public class ChatGroupActivity extends BaseActivity {
                         .setGap(1) // 单个图片之间的距离，单位dp，默认0dp
                         .setResourceIds(images)
                         .setImageView(mGroupHeadIv)//直接设置要显示图片的ImageView
+                        .setOnProgressListener(new OnProgressListener() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onComplete(Bitmap bitmap) {
+                                outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
+                                Logger.i("out path--->" + outputImage.getAbsolutePath());
+                                ImageUtils.save(bitmap, outputImage, Bitmap.CompressFormat.PNG);
+                            }
+                        })
                         .build();
             }
         }
@@ -136,21 +184,24 @@ public class ChatGroupActivity extends BaseActivity {
             type = MessageContent.RECEIVE_JOIN_GROUP;
         }
 
+        //插入一条时间设置记录
+        GroupMessage groupMessage = new GroupMessage();
+        groupMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        groupMessage.setGroupHead(!StringUtils.isEmpty(outputImage.getAbsolutePath()) && outputImage.exists() ? outputImage.getAbsolutePath() : "");
+        String tempUserName = App.getApp().mUserInfo != null ? App.getApp().mUserInfo.getNickName() : "未知用户";
+        groupMessage.setMessageContent("\"" +tempUserName + "\"邀请你加入群聊" + mGroupNameEt.getText().toString() + ",进入可查看详情。");
+        groupMessage.setMessageType(type);
+        groupMessage.setGroupName(mGroupNameEt.getText().toString());
+        Long groupId = mAppDatabase.groupMessageDao().insert(groupMessage);
+
         //插入到外层的列表中
         WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
         weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         weixinChatInfo.setTypeIcon(R.mipmap.type_join_group);
         weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        weixinChatInfo.setChildTabId(groupId);
 
-        //插入一条时间设置记录
-        GroupMessage groupMessage = new GroupMessage();
-        groupMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        //TODO,此处的头像待获取
-        groupMessage.setGroupHead("");
-        groupMessage.setMessageType(type);
-        groupMessage.setGroupName(mGroupNameEt.getText().toString());
-        mAppDatabase.groupMessageDao().insert(groupMessage);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

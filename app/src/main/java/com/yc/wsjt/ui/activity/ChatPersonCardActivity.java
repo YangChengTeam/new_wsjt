@@ -167,13 +167,6 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
             type = MessageContent.RECEIVE_PERSON_CARD;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_persion_card);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         PersonMessage personMessage = new PersonMessage();
         personMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
@@ -183,7 +176,15 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
         personMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
         personMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
         personMessage.setWeixinNumber(mWeixinNumberTv.getText().toString());
-        mAppDatabase.personMessageDao().insert(personMessage);
+        Long personId = mAppDatabase.personMessageDao().insert(personMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_persion_card);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(personId);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

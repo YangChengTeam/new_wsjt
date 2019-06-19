@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface RedMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(RedPackageMessage... redPackageMessages);
+    Long insert(RedPackageMessage redPackageMessages);
 
     @Query("select * from wx_red_package_info")
     Flowable<List<RedPackageMessage>> loadRedMessage();
 
     @Query("SELECT * from wx_red_package_info WHERE wxMainId= :wxMainId")
     List<RedPackageMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_red_package_info WHERE id= :id")
+    RedPackageMessage getItemById(Long id);
 }

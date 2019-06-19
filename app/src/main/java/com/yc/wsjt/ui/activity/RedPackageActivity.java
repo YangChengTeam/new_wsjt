@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
@@ -107,7 +108,20 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
         if (App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-            Glide.with(this).load(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+
+            if (isMySelf) {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                }
+            } else {
+                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                } else {
+                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                }
+            }
         }
     }
 
@@ -198,8 +212,9 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
         Glide.with(this).load(R.mipmap.user_head_def).into(chooseType == 1 ? mOtherSideIv : mReplyEmojiIv);
     }
 
-    @OnClick(R.id.btn_config)
-    void config() {
-        finish();
+    @OnClick(R.id.btn_show_pre)
+    void redPreShow() {
+        Intent intent = new Intent(this, RedReceivePreActivity.class);
+        startActivity(intent);
     }
 }

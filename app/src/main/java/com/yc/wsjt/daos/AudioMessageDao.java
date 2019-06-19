@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface AudioMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(AudioMessage... audioMessage);
+    Long insert(AudioMessage audioMessage);
 
     @Query("select * from wx_audio_info")
     Flowable<List<AudioMessage>> loadAudioMessage();
 
     @Query("SELECT * from wx_audio_info WHERE wxMainId= :wxMainId")
     List<AudioMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_audio_info WHERE id= :id")
+    AudioMessage getItemById(Long id);
 }

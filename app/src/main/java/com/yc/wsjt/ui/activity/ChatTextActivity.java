@@ -250,13 +250,6 @@ public class ChatTextActivity extends BaseActivity {
             type = MessageContent.RECEIVE_TEXT;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_text);
-        //weixinChatInfo.setChatText(mChatEditText.getText().toString());
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         //插入一条时间设置记录
         TextMessage textMessage = new TextMessage();
@@ -266,7 +259,15 @@ public class ChatTextActivity extends BaseActivity {
         textMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
         textMessage.setLocalMessageImg(R.mipmap.type_text);
         textMessage.setMessageContent(mChatEditText.getText().toString());
-        mAppDatabase.textMessageDao().insert(textMessage);
+        Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_text);
+        weixinChatInfo.setChildTabId(txtId);
+        weixinChatInfo.setType(type);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

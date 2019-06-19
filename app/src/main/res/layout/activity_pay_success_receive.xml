@@ -87,7 +87,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:src="@mipmap/default_header" />
+            android:src="@mipmap/user_head_def" />
 
         <TextView
             android:layout_width="wrap_content"

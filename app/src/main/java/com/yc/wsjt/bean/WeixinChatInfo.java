@@ -21,7 +21,7 @@ public class WeixinChatInfo {
 
     public String chatText;
 
-    public int childTabId;
+    public Long childTabId;
 
     public int getId() {
         return id;
@@ -63,11 +63,11 @@ public class WeixinChatInfo {
         this.wxMainId = wxMainId;
     }
 
-    public int getChildTabId() {
+    public Long getChildTabId() {
         return childTabId;
     }
 
-    public void setChildTabId(int childTabId) {
+    public void setChildTabId(Long childTabId) {
         this.childTabId = childTabId;
     }
 }

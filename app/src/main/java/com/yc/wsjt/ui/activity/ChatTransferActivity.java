@@ -234,25 +234,29 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
             type = MessageContent.RECEIVE_TRANSFER;
         }
 
+        //插入一条时间设置记录
+        TransferMessage transferMessage = new TransferMessage();
+        transferMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        transferMessage.setMessageType(type);
+        transferMessage.setTransferType(chooseType);
+        transferMessage.setTransferNum(mTransferNumberEt.getText().toString());
+        transferMessage.setTransferDesc(mTransferRemarkEt.getText().toString());
+        transferMessage.setSendTime(mSendTransferTimeTv.getText().toString());
+        transferMessage.setReceiveTime(mReceiveTransferTimeTv.getText().toString());
+        transferMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+        transferMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
+        transferMessage.setLocalMessageImg(R.mipmap.type_zhuanzhang);
+        Long transId = mAppDatabase.transferMessageDao().insert(transferMessage);
+
         //插入到外层的列表中
         WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
         weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         weixinChatInfo.setTypeIcon(R.mipmap.type_zhuanzhang);
         weixinChatInfo.setChatText(mTransferNumberEt.getText() + "元");
         weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        weixinChatInfo.setChildTabId(transId);
 
-        //插入一条时间设置记录
-        TransferMessage transferMessage = new TransferMessage();
-        transferMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        transferMessage.setMessageType(type);
-        transferMessage.setTransferType(chooseType);
-        transferMessage.setSendTime(mSendTransferTimeTv.getText().toString());
-        transferMessage.setReceiveTime(mReceiveTransferTimeTv.getText().toString());
-        transferMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        transferMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        transferMessage.setLocalMessageImg(R.mipmap.type_zhuanzhang);
-        mAppDatabase.transferMessageDao().insert(transferMessage);
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

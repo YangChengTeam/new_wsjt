@@ -16,21 +16,21 @@
         android:layout_margin="6dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="@mipmap/default_header" />
+        android:src="@mipmap/user_head_def" />
 
     <RelativeLayout
         android:layout_width="212dp"
         android:layout_height="75dp"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="6dp"
-        android:background="@mipmap/trans_receive_config">
+        android:background="@mipmap/transfer_receive">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="52dp"
             android:layout_marginTop="12dp"
-            android:gravity="center"
+            android:gravity="left|center"
             android:orientation="vertical">
 
             <TextView
@@ -40,14 +40,13 @@
                 android:layout_gravity="center"
                 android:text="¥199.0"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_trans_remark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="已收钱"
                 android:textColor="@color/white"
                 android:textSize="11sp" />

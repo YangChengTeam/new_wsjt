@@ -1,7 +1,6 @@
 package com.yc.wsjt.bean;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 /**
  * Created by zhangdinghui on 2019/5/16.
@@ -12,6 +11,8 @@ public class RedPackageMessage extends MessageContent {
     private String messageTime;
 
     private int redType;//发红包,收红包
+
+    private boolean isReceive;
 
     private String redNumber;
 
@@ -43,6 +44,14 @@ public class RedPackageMessage extends MessageContent {
 
     public void setOtherSideEmojiUrl(String otherSideEmojiUrl) {
         this.otherSideEmojiUrl = otherSideEmojiUrl;
+    }
+
+    public boolean isReceive() {
+        return isReceive;
+    }
+
+    public void setReceive(boolean receive) {
+        isReceive = receive;
     }
 
     public String getReplyEmojiUrl() {

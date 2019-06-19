@@ -160,7 +160,7 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="收款成功，已存入零钱。点击可查看详情"
+                    android:text="收款成功，已@mipmap/user_head_def零钱。点击可查看详情"
                     android:textColor="@color/black1"
                     android:textSize="13sp" />
             </LinearLayout>

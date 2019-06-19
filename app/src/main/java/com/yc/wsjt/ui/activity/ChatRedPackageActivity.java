@@ -262,13 +262,6 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
             type = MessageContent.RECEIVE_RED_PACKET;
         }
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_hongbao);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
         //插入一条时间设置记录
         RedPackageMessage redPackageMessage = new RedPackageMessage();
         redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
@@ -281,7 +274,16 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
         redPackageMessage.setOtherSideEmojiUrl(otherSideImgUrl);
         redPackageMessage.setReplyEmojiUrl(replyImgUrl);
         redPackageMessage.setLocalMessageImg(R.mipmap.type_hongbao);
-        mAppDatabase.redMessageDao().insert(redPackageMessage);
+        Long redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
+
+        //插入到外层的列表中
+        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setTypeIcon(R.mipmap.type_hongbao);
+        weixinChatInfo.setType(type);
+        weixinChatInfo.setChildTabId(redId);
+
+        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
 
         finish();
     }

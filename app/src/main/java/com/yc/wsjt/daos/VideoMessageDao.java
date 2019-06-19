@@ -20,11 +20,14 @@ import io.reactivex.Flowable;
 public interface VideoMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(VideoMessage... videoMessages);
+    Long insert(VideoMessage videoMessages);
 
     @Query("select * from wx_video_info")
     Flowable<List<VideoMessage>> loadVideoMessage();
 
     @Query("SELECT * from wx_video_info WHERE wxMainId= :wxMainId")
     List<VideoMessage> getItemById(int wxMainId);
+
+    @Query("SELECT * from wx_video_info WHERE id= :id")
+    VideoMessage getItemById(Long id);
 }
