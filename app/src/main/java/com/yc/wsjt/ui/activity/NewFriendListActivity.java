@@ -1,6 +1,7 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -8,9 +9,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jaeger.library.StatusBarUtil;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.NewFriendInfo;
+import com.yc.wsjt.bean.FriendInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.NewFriendListAdapter;
 
@@ -39,6 +41,10 @@ public class NewFriendListActivity extends BaseActivity {
 
     NewFriendListAdapter newFriendListAdapter;
 
+    public String[] userNames = {"周小姐", "王小明", "张大大", "徐晓清"};
+
+    public int[] heads = {R.mipmap.c1, R.mipmap.c2, R.mipmap.c3, R.mipmap.c4};
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_new_friend_list;
@@ -60,17 +66,29 @@ public class NewFriendListActivity extends BaseActivity {
         mAddFriendTv.setText("添加朋友");
         mAddFriendTv.setTextColor(ContextCompat.getColor(this, R.color.black1));
 
-        List<NewFriendInfo> list = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            NewFriendInfo newFriendInfo = new NewFriendInfo();
-            newFriendInfo.setUserName("测试用户" + i);
-            newFriendInfo.setUserDesc("测试描述信息" + i);
-            list.add(newFriendInfo);
+        List<FriendInfo> list = new ArrayList<>();
+        for (int i = 0; i < userNames.length; i++) {
+            FriendInfo friendInfo = new FriendInfo();
+            friendInfo.setNickName(userNames[i]);
+            friendInfo.setRemark("我是" + userNames[i]);
+            friendInfo.setLocalHead(heads[i]);
+            list.add(friendInfo);
         }
 
         newFriendListAdapter = new NewFriendListAdapter(this, list);
         mNewFriendListView.setLayoutManager(new LinearLayoutManager(this));
         mNewFriendListView.setAdapter(newFriendListAdapter);
+
+        newFriendListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId() == R.id.layout_accept) {
+                    boolean isReceive = !newFriendListAdapter.getData().get(position).isReceive();
+                    newFriendListAdapter.getData().get(position).setReceive(isReceive);
+                    newFriendListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override

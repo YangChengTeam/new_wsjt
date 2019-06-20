@@ -17,7 +17,7 @@
         android:background="@color/bg_color"></View>
 
     <RelativeLayout
-        android:id="@+id/layout_circle_user"
+        android:id="@+id/layout_chat_setting"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/white">

@@ -92,7 +92,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
                     android:layout_toLeftOf="@+id/iv_target_user_head"
-                    android:text="范冰冰"
                     android:textColor="@color/gray1"
                     android:textSize="14sp" />
 

@@ -60,7 +60,7 @@ public class WeiXinCircleSetActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.layout_circle_user)
+    @OnClick(R.id.layout_chat_setting)
     void circleUserInfo() {
 
     }

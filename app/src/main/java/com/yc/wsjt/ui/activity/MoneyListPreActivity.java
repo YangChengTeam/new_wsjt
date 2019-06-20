@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by zhangdinghui on 2019/5/27.
@@ -47,19 +50,7 @@ public class MoneyListPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        List<MoneyDetail> list = new ArrayList<>();
-        MoneyDetail moneyDetailInfo = new MoneyDetail();
-        moneyDetailInfo.setMoneyTitle("微信面对面转账");
-        moneyDetailInfo.setAddTime("2019-05-12 12:23:21");
-        moneyDetailInfo.setMoney("-123");
-
-        list.add(moneyDetailInfo);
-        list.add(moneyDetailInfo);
-        list.add(moneyDetailInfo);
-        list.add(moneyDetailInfo);
-        list.add(moneyDetailInfo);
-
-        moneyDetailListPreAdapter = new MoneyDetailListPreAdapter(this, list, 0);
+        moneyDetailListPreAdapter = new MoneyDetailListPreAdapter(this, null, 0);
         mDetailListView.setLayoutManager(new LinearLayoutManager(this));
         mDetailListView.addItemDecoration(new NormalDecoration(ContextCompat.getColor(this, R.color.border_line_color), SizeUtils.dp2px(0.5f)));
         mDetailListView.setAdapter(moneyDetailListPreAdapter);
@@ -67,6 +58,17 @@ public class MoneyListPreActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mAppDatabase.moneyDetailDao()
+                .loadMoneyMessage()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MoneyDetail>>() {
+                    @Override
+                    public void accept(List<MoneyDetail> moneyDetails) {
+                        if (moneyDetails != null) {
+                            moneyDetailListPreAdapter.setNewData(moneyDetails);
+                        }
+                    }
+                });
     }
 }

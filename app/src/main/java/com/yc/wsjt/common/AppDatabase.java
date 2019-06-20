@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 import com.yc.wsjt.bean.AudioMessage;
 import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.EmojiMessage;
+import com.yc.wsjt.bean.FriendInfo;
 import com.yc.wsjt.bean.GroupMessage;
 import com.yc.wsjt.bean.ImageMessage;
 import com.yc.wsjt.bean.MessageContent;
@@ -24,6 +25,7 @@ import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.daos.AudioMessageDao;
 import com.yc.wsjt.daos.ChatDataInfoDao;
 import com.yc.wsjt.daos.EmojiMessageDao;
+import com.yc.wsjt.daos.FriendInfoDao;
 import com.yc.wsjt.daos.GroupMessageDao;
 import com.yc.wsjt.daos.ImageMessageDao;
 import com.yc.wsjt.daos.MessageContentDao;
@@ -56,7 +58,8 @@ import com.yc.wsjt.daos.WeixinChatInfoDao;
         PersonMessage.class,
         GroupMessage.class,
         SystemTipsMessage.class,
-        MoneyDetail.class}, version = 1, exportSchema = false)
+        MoneyDetail.class,
+        FriendInfo.class}, version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -93,4 +96,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SystemTipsMessageDao systemTipsMessageDao();
 
     public abstract MoneyDetailDao moneyDetailDao();
+
+    public abstract FriendInfoDao friendInfoDao();
 }

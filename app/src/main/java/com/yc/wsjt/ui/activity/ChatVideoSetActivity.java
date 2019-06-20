@@ -75,6 +75,12 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
 
     private int chooseType = 1;
 
+    private String waitMyVideoPath;
+
+    private String videoIngOtherPath;
+
+    private String videoIngMyPath;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_video_setting;
@@ -87,7 +93,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
 
     @Override
     protected void initVars() {
-        mTitleTv.setText("微信视频聊天");
+        mTitleTv.setText("微信视频设置");
         mConfigBtn.setVisibility(View.GONE);
 
         videoTimeDialog = new VideoTimeDialog(this, R.style.video_time_dialog, 60);
@@ -105,7 +111,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     }
 
     @OnClick(R.id.tv_wait_video)
-    void imageType() {
+    void waitVideo() {
         mWaitVideoTv.setBackgroundResource(R.drawable.choose_type_selected);
         mWaitVideoTv.setTextColor(ContextCompat.getColor(this, R.color.white));
 
@@ -116,7 +122,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     }
 
     @OnClick(R.id.tv_video_ing)
-    void videoType() {
+    void videoing() {
         mWaitVideoTv.setBackgroundResource(R.drawable.choose_type_normal);
         mWaitVideoTv.setTextColor(ContextCompat.getColor(this, R.color.black));
 
@@ -134,6 +140,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
         }
     }
 
+    //待接听-视频画面
     @OnClick(R.id.layout_video_bg)
     void waitVideoBg() {
         chooseType = 1;
@@ -148,6 +155,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
                 .forResult(REQUEST_CODE_CHOOSE);
     }
 
+    //通话中-对方视频画面
     @OnClick(R.id.layout_other_side_video)
     void otherSideVideoBg() {
         chooseType = 2;
@@ -162,6 +170,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
                 .forResult(REQUEST_CODE_CHOOSE);
     }
 
+    //通话中-我的视频画面
     @OnClick(R.id.layout_my_video)
     void myVideoBg() {
         chooseType = 3;
@@ -184,15 +193,18 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE:
                     Logger.i(JSONObject.toJSONString(Matisse.obtainPathResult(data)));
-                    if (Matisse.obtainResult(data) != null && Matisse.obtainResult(data).size() > 0) {
+                    if (Matisse.obtainPathResult(data) != null && Matisse.obtainPathResult(data).size() > 0) {
                         if (chooseType == 1) {
-                            Glide.with(ChatVideoSetActivity.this).load(Matisse.obtainResult(data).get(0)).into(mVideoBgIv);
+                            waitMyVideoPath = Matisse.obtainPathResult(data).get(0);
+                            Glide.with(ChatVideoSetActivity.this).load(waitMyVideoPath).into(mVideoBgIv);
                         }
                         if (chooseType == 2) {
-                            Glide.with(ChatVideoSetActivity.this).load(Matisse.obtainResult(data).get(0)).into(mOtherSideVideoBgIv);
+                            videoIngOtherPath = Matisse.obtainPathResult(data).get(0);
+                            Glide.with(ChatVideoSetActivity.this).load(videoIngOtherPath).into(mOtherSideVideoBgIv);
                         }
                         if (chooseType == 3) {
-                            Glide.with(ChatVideoSetActivity.this).load(Matisse.obtainResult(data).get(0)).into(mMyVideoBgIv);
+                            videoIngMyPath = Matisse.obtainPathResult(data).get(0);
+                            Glide.with(ChatVideoSetActivity.this).load(videoIngMyPath).into(mMyVideoBgIv);
                         }
                     }
                     break;
