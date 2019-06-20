@@ -6,13 +6,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="329dp"
-        android:background="@mipmap/red_receive_top_bg"></LinearLayout>
+        android:layout_height="217dp"
+        android:background="@mipmap/red_send_top_bg"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
-        android:layout_height="329dp"
+        android:layout_height="217dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -88,51 +88,94 @@
                 android:textColor="@color/red_txt_color"
                 android:textSize="14sp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_red_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="¥342.00"
-                android:textColor="@color/red_txt_color"
-                android:textSize="36sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="已存入零钱可用于发红包 >"
-                android:textColor="@color/red_remark_color"
-                android:textSize="14sp" />
-        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_title"
+        android:layout_marginTop="33dp"
+        android:gravity="left|center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:text="1个红包共66.00元"
+            android:textColor="@color/red_total_color"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/layout_total"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray4"></View>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_title"
-        android:layout_marginTop="48dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_below="@+id/line_view">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/reply_face_icon" />
+            android:id="@+id/iv_receive_user_head"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_margin="12dp"
+            android:src="@mipmap/default_header" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="回复一个表情到聊天"
-            android:textColor="@color/red_face_color"
-            android:textSize="16sp" />
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_receive_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="周杰伦"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_receive_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    android:text="66.00元"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_receive_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="12:23"
+                android:textColor="@color/red_total_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/gray4"></View>
+        </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

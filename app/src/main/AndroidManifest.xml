@@ -136,8 +136,9 @@
         <activity android:name=".ui.activity.FeedBackActivity"></activity>
         <activity android:name=".ui.activity.AboutActivity"></activity>
         <activity android:name=".ui.activity.VipInfoActivity"></activity>
-        <activity
-            android:name=".ui.activity.RedReceivePreActivity"></activity>
+        <activity android:name=".ui.activity.RedReceivePreActivity"></activity>
+        <activity android:name=".ui.activity.RedSendPreActivity"></activity>
+        <activity android:name=".ui.activity.TurnMoneyActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

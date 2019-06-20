@@ -119,11 +119,12 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/layout_wallet_info"
                         android:layout_centerHorizontal="true"
-                        android:text="¥566.25"
+                        android:text="¥0.00"
                         android:textColor="@color/wallet_txt_color"
                         android:textSize="12sp"
                         android:textStyle="bold" />

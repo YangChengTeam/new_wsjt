@@ -1,7 +1,9 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.yc.wsjt.R;
@@ -14,6 +16,12 @@ public class MoneyPreActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
+
+    @BindView(R.id.tv_money)
+    TextView mMoneyTv;
+
+    @BindView(R.id.tv_profit_remark)
+    TextView mProfitRemarkTv;
 
     @Override
     protected int getLayoutId() {
@@ -32,7 +40,14 @@ public class MoneyPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mMoneyTv.setText(bundle.getString("money"));
+            if (bundle.getBoolean("show_profit", false)) {
+                mProfitRemarkTv.setText(bundle.getString("profit_remark"));
+                mProfitRemarkTv.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

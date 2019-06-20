@@ -24,9 +24,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="微信红包"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/gray0"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tv_transaction_time"
@@ -35,7 +34,7 @@
                 android:layout_marginTop="4dp"
                 android:text="2019-05-27 16:27:35"
                 android:textColor="@color/red_package_color"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <TextView
@@ -46,7 +45,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:text="+128.00"
-            android:textColor="@color/pre_chat_color"
-            android:textSize="14sp" />
+            android:textColor="@color/profit_color"
+            android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

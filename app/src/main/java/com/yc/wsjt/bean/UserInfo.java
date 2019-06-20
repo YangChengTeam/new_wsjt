@@ -29,6 +29,8 @@ public class UserInfo {
     @SerializedName("device")
     private String deviceId;
 
+    private String avatar;
+
     public String getId() {
         return id;
     }
@@ -99,5 +101,13 @@ public class UserInfo {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

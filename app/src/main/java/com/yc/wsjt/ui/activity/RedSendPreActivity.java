@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 
 /**
  * Created by zhangdinghui on 2019/5/29.
- * 收红包预览界面
+ * 发红包预览界面
  */
-public class RedReceivePreActivity extends Activity {
+public class RedSendPreActivity extends Activity {
 
     @BindView(R.id.layout_title)
     LinearLayout mTitleLayout;
@@ -34,13 +34,25 @@ public class RedReceivePreActivity extends Activity {
     @BindView(R.id.tv_red_remark)
     TextView mRedRemarkTv;
 
-    @BindView(R.id.tv_red_money)
-    TextView mRedMoneyTv;
+    @BindView(R.id.tv_total_money)
+    TextView mTotalMoneyTv;
+
+    @BindView(R.id.iv_receive_user_head)
+    ImageView mReceiveUserHeadIv;
+
+    @BindView(R.id.tv_receive_user_name)
+    TextView mReceiveUserNameTv;
+
+    @BindView(R.id.tv_receive_date)
+    TextView mReceiveDateTv;
+
+    @BindView(R.id.tv_receive_money)
+    TextView mReceiveMoneyTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_red_receive_pre);
+        setContentView(R.layout.activity_red_send_pre);
         ButterKnife.bind(this);
         StatusBarUtil.setTranslucentForImageView(this, 0, mTitleLayout);
 
@@ -48,11 +60,17 @@ public class RedReceivePreActivity extends Activity {
         if (bundle != null) {
             mSendUserNameTv.setText(bundle.getString("send_user_name", ""));
             mRedRemarkTv.setText(bundle.getString("red_remark", "恭喜发财，大吉大利"));
-            mRedMoneyTv.setText("¥" + bundle.getString("red_money"));
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.error(R.mipmap.user_head_def);
             Glide.with(this).load(bundle.getString("send_user_head")).apply(requestOptions).into(mSendUserHeadIv);
+
+            mTotalMoneyTv.setText("1个红包共" + bundle.getString("red_money") + "元");
+            //receive
+            mReceiveUserNameTv.setText(bundle.getString("receive_user_name"));
+            mReceiveMoneyTv.setText(bundle.getString("red_money", "0.00") + "元");
+            mReceiveDateTv.setText(bundle.getString("red_receive_date"));
+            Glide.with(this).load(bundle.getString("receive_user_head")).apply(requestOptions).into(mReceiveUserHeadIv);
         }
     }
 }

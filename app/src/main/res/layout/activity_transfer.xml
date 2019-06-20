@@ -112,7 +112,7 @@
                         android:background="@color/bg_color"></View>
 
                     <EditText
-                        android:id="@+id/et_transfer_remark"
+                        android:id="@+id/et_other_nick_name"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@color/white"
@@ -285,7 +285,7 @@
                         android:textSize="16sp" />
 
                     <com.kyleduo.switchbutton.SwitchButton
-                        android:id="@+id/sb_message"
+                        android:id="@+id/sb_money_show"
                         android:layout_width="46dp"
                         android:layout_height="34dp"
                         android:layout_alignParentRight="true"
@@ -307,6 +307,7 @@
                     android:background="@color/white">
 
                     <EditText
+                        android:id="@+id/et_profit_remark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"

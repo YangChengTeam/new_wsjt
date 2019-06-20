@@ -30,6 +30,7 @@ public class TencentServerAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHo
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, tempWidth);
         LinearLayout itemLayout = holder.getView(R.id.layout_item_model);
         itemLayout.setLayoutParams(params);
-        Glide.with(mContext).load(quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_server));
+        Glide.with(mContext).load(quickInfo.getLocalImg()).into((ImageView) holder.getView(R.id.iv_server));
+        holder.setText(R.id.tv_weixin_info_name, quickInfo.getName());
     }
 }

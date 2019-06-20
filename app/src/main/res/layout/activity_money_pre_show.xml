@@ -58,13 +58,14 @@
             android:textStyle="bold"></TextView>
 
         <TextView
-            android:id="@+id/tv_look_money"
+            android:id="@+id/tv_profit_remark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="转入零钱通赚收益 七日年化2.55% >"
             android:textColor="@color/profit_color"
-            android:textSize="12sp"></TextView>
+            android:textSize="12sp"
+            android:visibility="gone"></TextView>
     </LinearLayout>
 
     <LinearLayout
@@ -130,7 +131,7 @@
             android:layout_marginTop="10dp"
             android:text="本服务由财付通提供"
             android:textColor="@color/transfer_color"
-            android:textSize="14sp"></TextView>
+            android:textSize="12sp"></TextView>
     </LinearLayout>
 
 </RelativeLayout>

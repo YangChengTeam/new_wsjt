@@ -11,11 +11,17 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.MoneyDetail;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.CustomDateDialog;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,6 +30,12 @@ import butterknife.OnClick;
  * Created by zhangdinghui on 2019/5/27.
  */
 public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDialog.DateSelectListener {
+
+    @BindView(R.id.iv_back)
+    ImageView mBackIv;
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.tv_receive_money)
     TextView mReceiveMoneyTv;
@@ -40,6 +52,9 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
     @BindView(R.id.et_transaction_type)
     EditText mTransactionTypeTv;
 
+    @BindView(R.id.et_money)
+    EditText mMoneyEt;
+
     @BindView(R.id.iv_refresh)
     ImageView mRefreshIv;
 
@@ -48,6 +63,8 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
     private String[] types = {"微信面对面收钱", "退款", "微信转账", "微信红包", "群收款", "充值"};
 
     private int typeIndex;
+
+    private int moneyType = 1;
 
     @Override
     protected int getLayoutId() {
@@ -61,6 +78,8 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
 
     @Override
     protected void initVars() {
+        mTitleTv.setText("添加记录");
+        mTransactionTimeTv.setText(TimeUtils.getNowString());
         customDateDialog = new CustomDateDialog(this, R.style.date_dialog);
         customDateDialog.setDateSelectListener(this);
     }
@@ -77,6 +96,7 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
 
     @OnClick(R.id.tv_receive_money)
     void sendTransfer() {
+        moneyType = 1;
         mReceiveMoneyTv.setBackgroundResource(R.drawable.choose_type_selected);
         mReceiveMoneyTv.setTextColor(ContextCompat.getColor(this, R.color.white));
 
@@ -86,6 +106,7 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
 
     @OnClick(R.id.tv_send_money)
     void receiveTransfer() {
+        moneyType = 2;
         mReceiveMoneyTv.setBackgroundResource(R.drawable.choose_type_normal);
         mReceiveMoneyTv.setTextColor(ContextCompat.getColor(this, R.color.black));
 
@@ -122,6 +143,28 @@ public class AddMoneyDetailActivity extends BaseActivity implements CustomDateDi
 
     @OnClick(R.id.btn_config)
     void configInfo() {
+
+        if (StringUtils.isEmpty(mTransactionTypeTv.getText())) {
+            ToastUtils.showLong("请输入零钱明细说明");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mMoneyEt.getText())) {
+            ToastUtils.showLong("请输入金额");
+            return;
+        }
+
+        MoneyDetail moneyDetail = new MoneyDetail();
+        moneyDetail.setAddTime(mTransactionTimeTv.getText().toString());
+        moneyDetail.setMoneyTitle(mTransactionTypeTv.getText().toString());
+
+        DecimalFormat df = new DecimalFormat(".00");
+        String temp = df.format(Double.parseDouble(mMoneyEt.getText().toString()));
+        moneyDetail.setMoney(temp);
+        moneyDetail.setMoneyType(moneyType);
+
+        mAppDatabase.moneyDetailDao().insert(moneyDetail);
+
         finish();
     }
 

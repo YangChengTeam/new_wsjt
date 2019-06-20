@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -17,14 +18,15 @@ import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
-import com.yc.wsjt.base.IBaseView;
 import com.yc.wsjt.bean.ResultInfo;
 import com.yc.wsjt.bean.UserInfo;
+import com.yc.wsjt.bean.UserInfoRet;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.presenter.UpdateInfoPresenterImp;
 import com.yc.wsjt.ui.custom.Glide4Engine;
 import com.yc.wsjt.ui.custom.GlideCircleTransformWithBorder;
+import com.yc.wsjt.view.UserInfoView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
@@ -36,7 +38,7 @@ import butterknife.OnClick;
 /**
  * Created by zhangdinghui on 2019/6/5.
  */
-public class UpdateUserInfoActivity extends BaseActivity implements IBaseView {
+public class UpdateUserInfoActivity extends BaseActivity implements UserInfoView {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -158,12 +160,13 @@ public class UpdateUserInfoActivity extends BaseActivity implements IBaseView {
     }
 
     @Override
-    public void loadDataSuccess(Object tData) {
+    public void loadDataSuccess(UserInfoRet tData) {
+        Logger.i(JSON.toJSONString(tData));
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         if (tData != null && tData instanceof ResultInfo) {
-            if (((ResultInfo) tData).getCode() == Constants.SUCCESS) {
+            if (tData.getCode() == Constants.SUCCESS) {
                 ToastUtils.showLong("修改成功");
             }
         }

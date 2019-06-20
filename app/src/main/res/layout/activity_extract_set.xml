@@ -120,7 +120,8 @@
                 android:layout_height="40dp"
                 android:background="@color/white"
                 android:hint="银行卡尾号(后4位数)"
-                android:inputType="numberDecimal"
+                android:inputType="number"
+                android:maxLength="4"
                 android:paddingLeft="12dp"
                 android:textColor="@color/black1"
                 android:textSize="14sp"></EditText>

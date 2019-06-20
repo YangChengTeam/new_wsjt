@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,23 +16,24 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.PathUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
-import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.EmojiModeDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
+import com.yc.wsjt.ui.custom.SettingRoleDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,6 +41,9 @@ import butterknife.OnClick;
 public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
@@ -76,11 +81,37 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
     @BindView(R.id.layout_get_user_info)
     LinearLayout mGetUserInfoLayout;
 
+    @BindView(R.id.et_red_number)
+    EditText mRedNumberEt;
+
+    @BindView(R.id.et_red_remark)
+    EditText mRedRemarkEt;
+
+    @BindView(R.id.tv_get_user_name)
+    TextView mGetUserNameTv;
+
+    @BindView(R.id.iv_get_user_head)
+    ImageView mGetUserHeadIv;
+
     private File outputImage;
 
-    private int chooseType = 1;//发(1)，收
+    private int chooseType = 1;
 
     EmojiModeDialog emojiModeDialog;
+
+    private boolean isSend;//是否是发红包,默认是收红包
+
+    SettingRoleDialog settingRoleDialog;
+
+    private String sendUserName;
+
+    private String sendUserHead;
+
+    private String receiveUserName;
+
+    private String receiveUserHead;
+
+    private int chooseRole = 1;//发送人,领红包人
 
     @Override
     protected int getLayoutId() {
@@ -99,28 +130,54 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
     @Override
     protected void initViews() {
+        mTitleTv.setText("微信红包");
         emojiModeDialog = new EmojiModeDialog(this, R.style.scale_dialog, "对方表情");
         emojiModeDialog.setModeClickListener(this);
+
+        settingRoleDialog = new SettingRoleDialog(this, R.style.custom_dialog);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         if (App.getApp().chatDataInfo != null) {
-            boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-            mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            //boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+            sendUserName = App.getApp().chatDataInfo.getPersonName() != null ? App.getApp().chatDataInfo.getPersonName() : "";
+            receiveUserName = App.getApp().chatDataInfo.getOtherPersonName() != null ? App.getApp().chatDataInfo.getOtherPersonName() : "";
+            mSendUserNameTv.setText(sendUserName);
+            mGetUserNameTv.setText(receiveUserName);
 
-            if (isMySelf) {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
-                } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
-                }
+            //发送人
+            if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
             } else {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
-                } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
-                }
+                Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+            }
+            sendUserHead = App.getApp().chatDataInfo.getPersonHead();
+
+            //领红包人
+            if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                Glide.with(this).load(R.mipmap.user_head_def).into(mGetUserHeadIv);
+            } else {
+                Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mGetUserHeadIv);
+            }
+            receiveUserHead = App.getApp().chatDataInfo.getOtherPersonHead();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (App.getApp().getTempPerson() != null) {
+            if (chooseRole == 1) {
+                mSendUserNameTv.setText(App.getApp().getTempPerson().mName);
+                Glide.with(this).load(App.getApp().getTempPerson().mHead).into(mSendUserHeadIv);
+                sendUserName = App.getApp().getTempPerson().mName;
+                sendUserHead = App.getApp().getTempPerson().mHead;
+            } else {
+                mGetUserNameTv.setText(App.getApp().getTempPerson().mName);
+                Glide.with(this).load(App.getApp().getTempPerson().mHead).into(mGetUserHeadIv);
+                receiveUserName = App.getApp().getTempPerson().mName;
+                receiveUserHead = App.getApp().getTempPerson().mHead;
             }
         }
     }
@@ -166,30 +223,42 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
     @OnClick(R.id.layout_send_info)
     void changeSendRole() {
-        boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-        SPUtils.getInstance().put(Constants.IS_SELF, !isMySelf);
-        mSendUserNameTv.setText(!isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        Glide.with(this).load(!isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+        chooseRole = 1;
+        if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
+            settingRoleDialog.setType(2);
+            settingRoleDialog.show();
+        }
     }
 
-    @OnClick(R.id.tv_send_red)
-    void sendRed() {
-        mSendTypeTv.setBackgroundResource(R.drawable.choose_type_selected);
-        mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.white));
-
-        mReceiveTypeTv.setBackgroundResource(R.drawable.choose_type_normal);
-        mReceiveTypeTv.setTextColor(ContextCompat.getColor(this, R.color.black));
-        mGetUserInfoLayout.setVisibility(View.GONE);
-        mOtherSideIv.setImageResource(0);
+    @OnClick(R.id.layout_receive_user)
+    void chooseReceiveUser() {
+        chooseRole = 2;
+        if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
+            settingRoleDialog.setType(2);
+            settingRoleDialog.show();
+        }
     }
 
     @OnClick(R.id.tv_receive_red)
     void receiveRed() {
+        isSend = false;
         mSendTypeTv.setBackgroundResource(R.drawable.choose_type_normal);
-        mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.black));
+        mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.add_chat_color));
 
         mReceiveTypeTv.setBackgroundResource(R.drawable.choose_type_selected);
         mReceiveTypeTv.setTextColor(ContextCompat.getColor(this, R.color.white));
+        mGetUserInfoLayout.setVisibility(View.GONE);
+        mOtherSideIv.setImageResource(0);
+    }
+
+    @OnClick(R.id.tv_send_red)
+    void sendRed() {
+        isSend = true;
+        mSendTypeTv.setBackgroundResource(R.drawable.choose_type_selected);
+        mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        mReceiveTypeTv.setBackgroundResource(R.drawable.choose_type_normal);
+        mReceiveTypeTv.setTextColor(ContextCompat.getColor(this, R.color.add_chat_color));
         mGetUserInfoLayout.setVisibility(View.VISIBLE);
         mOtherSideIv.setImageResource(0);
     }
@@ -214,7 +283,49 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
     @OnClick(R.id.btn_show_pre)
     void redPreShow() {
-        Intent intent = new Intent(this, RedReceivePreActivity.class);
-        startActivity(intent);
+        if (isSend) {
+            if (StringUtils.isEmpty(sendUserName)) {
+                ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            if (StringUtils.isEmpty(mRedNumberEt.getText())) {
+                ToastUtils.showLong("请输入金额");
+                return;
+            }
+
+            Intent intent = new Intent(this, RedSendPreActivity.class);
+
+            intent.putExtra("send_user_name", sendUserName);
+            intent.putExtra("send_user_head", sendUserHead);
+            DecimalFormat df = new DecimalFormat(".00");
+            String temp = df.format(Double.parseDouble(mRedNumberEt.getText().toString()));
+            intent.putExtra("red_money", temp);
+            intent.putExtra("red_remark", StringUtils.isEmpty(mRedRemarkEt.getText()) ? "恭喜发财，大吉大利" : mRedRemarkEt.getText().toString());
+            intent.putExtra("red_receive_date", "12:33");
+            intent.putExtra("receive_user_name", StringUtils.isEmpty(receiveUserName) ? "未知用户" : receiveUserName);
+            intent.putExtra("receive_user_head", receiveUserHead);
+            startActivity(intent);
+        } else {
+            if (StringUtils.isEmpty(sendUserName)) {
+                ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            if (StringUtils.isEmpty(mRedNumberEt.getText())) {
+                ToastUtils.showLong("请输入金额");
+                return;
+            }
+
+            Intent intent = new Intent(this, RedReceivePreActivity.class);
+            intent.putExtra("send_user_name", sendUserName);
+            intent.putExtra("send_user_head", sendUserHead);
+            DecimalFormat df = new DecimalFormat(".00");
+            String temp = df.format(Double.parseDouble(mRedNumberEt.getText().toString()));
+            intent.putExtra("red_money", temp);
+            intent.putExtra("red_remark", StringUtils.isEmpty(mRedRemarkEt.getText()) ? "恭喜发财，大吉大利" : mRedRemarkEt.getText().toString());
+
+            startActivity(intent);
+        }
     }
 }

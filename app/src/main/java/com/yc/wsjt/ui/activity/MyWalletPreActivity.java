@@ -2,6 +2,7 @@ package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +32,9 @@ public class MyWalletPreActivity extends BaseActivity {
 
     @BindView(R.id.third_list)
     RecyclerView mThirdListView;
+
+    @BindView(R.id.tv_money)
+    TextView mMoneyTv;
 
     private String[] quickNames = {"信用卡还款", "手机充值", "理财通", "生活缴费", "Q币充值", "城市服务", "腾讯公益"};
 
@@ -82,6 +86,12 @@ public class MyWalletPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mMoneyTv.setText("¥" + bundle.getString("money"));
+        }
+
         List<QuickInfo> list = new ArrayList<>();
         for (int i = 0; i < quickImages.length; i++) {
             QuickInfo quickInfo = new QuickInfo();
@@ -101,7 +111,7 @@ public class MyWalletPreActivity extends BaseActivity {
         DividerGridItemDecoration.Builder builder = new DividerGridItemDecoration.Builder(getContext(), LinearLayoutManager.VERTICAL, 3);
         builder.setShowOtherStyle(true).setDivider(R.drawable.bg_divider_list);
         itemDecoration = builder.build();
-        //mTencentListView.addItemDecoration(itemDecoration);
+        mTencentListView.addItemDecoration(itemDecoration);
         mTencentListView.setLayoutManager(new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false));
 
         tencentServerAdapter = new TencentServerAdapter(this, list, ScreenUtils.getScreenWidth() / 3);
@@ -110,7 +120,7 @@ public class MyWalletPreActivity extends BaseActivity {
         thirdServerAdapter = new TencentServerAdapter(this, list1, ScreenUtils.getScreenWidth() / 3);
         mThirdListView.setAdapter(thirdServerAdapter);
 
-        //mThirdListView.addItemDecoration(itemDecoration);
+        mThirdListView.addItemDecoration(itemDecoration);
         mThirdListView.setLayoutManager(new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false));
 
     }

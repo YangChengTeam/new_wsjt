@@ -109,6 +109,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/tv_receive_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -153,6 +154,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_extract_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -164,6 +166,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_server_charge"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginLeft="20dp"
@@ -179,11 +182,12 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_extract_charge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="1.00"
+            android:text="¥0.10"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </RelativeLayout>
@@ -204,6 +208,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_bank_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -216,8 +221,8 @@
     <LinearLayout
         android:layout_width="146dp"
         android:layout_height="29dp"
-        android:layout_marginTop="232dp"
         android:layout_gravity="center"
+        android:layout_marginTop="232dp"
         android:background="@drawable/pay_done_bg"
         android:gravity="center">
 

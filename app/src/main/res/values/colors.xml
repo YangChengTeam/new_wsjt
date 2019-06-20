@@ -49,6 +49,7 @@
     <color name="gray1">#777777</color>
     <color name="gray2">#939393</color>
     <color name="gray3">#909090</color>
+    <color name="gray4">#d9d9d9</color>
     <color name="red_package_color">#b9b9b9</color>
 
     <color name="chat_time_color">#a5a5a5</color>
@@ -97,4 +98,6 @@
     <color name="red_txt_color">#ffe2b1</color>
     <color name="red_remark_color">#fdc590</color>
     <color name="red_face_color">#d9af68</color>
+
+    <color name="red_total_color">#808080</color>
 </resources>

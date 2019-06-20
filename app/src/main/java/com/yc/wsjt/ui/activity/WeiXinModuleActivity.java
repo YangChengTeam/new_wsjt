@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ckr.decoration.DividerGridItemDecoration;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
@@ -47,86 +48,95 @@ public class WeiXinModuleActivity extends BaseActivity {
     @Override
     protected void initViews() {
 
-
         DividerGridItemDecoration.Builder builder = new DividerGridItemDecoration.Builder(getContext(), LinearLayoutManager.VERTICAL, 3);
         builder.setShowOtherStyle(true).setDivider(R.drawable.bg_divider_list);
         itemDecoration = builder.build();
-        //weixinListView.addItemDecoration(itemDecoration);
+        weixinListView.addItemDecoration(itemDecoration);
         weixinListView.setLayoutManager(new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false));
 
-        weiXinInfoAdapter = new WeiXinInfoAdapter(this, App.getApp().getModuleInfoWrapper().getWx(), ScreenUtils.getScreenWidth() / 3,false);
+        weiXinInfoAdapter = new WeiXinInfoAdapter(this, App.getApp().getModuleInfoWrapper() != null ? App.getApp().getModuleInfoWrapper().getWx() : null, ScreenUtils.getScreenWidth() / 3, false);
         weixinListView.setAdapter(weiXinInfoAdapter);
+
+        Logger.i(JSON.toJSONString(App.getApp().getModuleInfoWrapper().getWx()));
 
         weiXinInfoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position == 0) {
+
+                int mid = weiXinInfoAdapter.getData().get(position).getId();
+
+                if (mid == 1) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeixindanliaoActivity.class);
                     startActivity(intent);
                 }
-                if (position == 1) {
-                    ToastUtils.showLong("暂无设置");
-                    return;
-                }
-                if (position == 2) {
-                    Intent intent = new Intent(WeiXinModuleActivity.this, RedPackageActivity.class);
-                    startActivity(intent);
-                }
-                if (position == 3) {
-                    Intent intent = new Intent(WeiXinModuleActivity.this, TransferActivity.class);
-                    startActivity(intent);
-                }
-                if (position == 4) {
+                if (mid == 2) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinMoneyActivity.class);
                     startActivity(intent);
                 }
-                if (position == 6) {
+                if (mid == 3) {
+                    //Intent intent = new Intent(WeiXinModuleActivity.this, RedPackageActivity.class);
+                    //startActivity(intent);
+                }
+                if (mid == 4) {
+                    //Intent intent = new Intent(WeiXinModuleActivity.this, TransferActivity.class);
+                    //startActivity(intent);
+                    //群聊
+                }
+                if (mid == 5) {
+                    Intent intent = new Intent(WeiXinModuleActivity.this, RedPackageActivity.class);
+                    startActivity(intent);
+                }
+                if (mid == 6) {
+                    Intent intent = new Intent(WeiXinModuleActivity.this, TransferActivity.class);
+                    startActivity(intent);
+                }
+                if (mid == 7) {
+                    Intent intent = new Intent(WeiXinModuleActivity.this, ExtractSetActivity.class);
+                    startActivity(intent);
+                }
+                if (mid == 8) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, MyWalletActivity.class);
                     startActivity(intent);
                 }
-                if (position == 7) {
+                if (mid == 9) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, MoneyDetailListActivity.class);
                     startActivity(intent);
                 }
-                if (position == 8) {
+                if (mid == 10) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, NewFriendListActivity.class);
                     startActivity(intent);
                 }
-                if (position == 9) {
+                if (mid == 11) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinCircleSetActivity.class);
                     startActivity(intent);
                 }
-                if (position == 10) {
+                if (mid == 12) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, ChatVideoSetActivity.class);
                     startActivity(intent);
                 }
-                if (position == 11) {
+                if (mid == 13) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, ChatVoiceSetActivity.class);
                     startActivity(intent);
                 }
-                if (position == 12) {
+                if (mid == 14) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, PaySuccessSetActivity.class);
                     startActivity(intent);
                 }
-                if (position == 13) {
+                if (mid == 15) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinPayListActivity.class);
                     startActivity(intent);
                 }
-                if (position == 14) {
+                if (mid == 16) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinBillActivity.class);
                     startActivity(intent);
                 }
-                if (position == 15) {
+                if (mid == 17) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinHomeActivity.class);
                     startActivity(intent);
                 }
-                if (position == 16) {
-                    Intent intent = new Intent(WeiXinModuleActivity.this, GroupVoiceSetActivity.class);
-                    startActivity(intent);
-                }
-                if (position == 17) {
-                    Intent intent = new Intent(WeiXinModuleActivity.this, ExtractSetActivity.class);
-                    startActivity(intent);
+                if (mid == 18) {
+                    //Intent intent = new Intent(WeiXinModuleActivity.this, ExtractSetActivity.class);
+                    //startActivity(intent);
                 }
             }
         });

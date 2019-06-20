@@ -1,6 +1,6 @@
 package com.yc.wsjt.api;
 
-import com.yc.wsjt.bean.ResultInfo;
+import com.yc.wsjt.bean.UserInfoRet;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -16,7 +16,7 @@ import rx.Observable;
 public interface UpdateServiceApi {
 
     @Multipart
-    @POST("member/changeAvatarc")
-    Observable<ResultInfo> updateHead(@Part("uid") RequestBody requestBody,
-                                      @Part MultipartBody.Part file);
+    @POST("member/changeAvatar")
+    Observable<UserInfoRet> updateHead(@Part("uid") RequestBody requestBody,
+                                       @Part MultipartBody.Part file);
 }

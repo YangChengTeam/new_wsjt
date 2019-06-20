@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,6 +32,9 @@ public class MyWalletActivity extends BaseActivity {
 
     @BindView(R.id.btn_show_pre)
     Button mShowPre;
+
+    @BindView(R.id.et_money)
+    EditText mMoneyEt;
 
     @Override
     protected int getLayoutId() {
@@ -56,7 +64,15 @@ public class MyWalletActivity extends BaseActivity {
 
     @OnClick(R.id.btn_show_pre)
     void preShow() {
+        if (StringUtils.isEmpty(mMoneyEt.getText())) {
+            ToastUtils.showLong("请输入零钱金额");
+            return;
+        }
+
         Intent intent = new Intent(this, MyWalletPreActivity.class);
+        DecimalFormat df = new DecimalFormat(".00");
+        String temp = df.format(Double.parseDouble(mMoneyEt.getText().toString()));
+        intent.putExtra("money", temp);
         startActivity(intent);
     }
 

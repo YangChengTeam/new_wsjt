@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.MoneyDetailInfo;
+import com.yc.wsjt.bean.MoneyDetail;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.MoneyDetailListPreAdapter;
 import com.yc.wsjt.ui.custom.NormalDecoration;
@@ -47,11 +47,11 @@ public class MoneyListPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        List<MoneyDetailInfo> list = new ArrayList<>();
-        MoneyDetailInfo moneyDetailInfo = new MoneyDetailInfo();
-        moneyDetailInfo.setTitle("微信面对面转账");
-        moneyDetailInfo.setTransactionDate("2019-05-12 12:23:21");
-        moneyDetailInfo.setTransactionMoney("-123");
+        List<MoneyDetail> list = new ArrayList<>();
+        MoneyDetail moneyDetailInfo = new MoneyDetail();
+        moneyDetailInfo.setMoneyTitle("微信面对面转账");
+        moneyDetailInfo.setAddTime("2019-05-12 12:23:21");
+        moneyDetailInfo.setMoney("-123");
 
         list.add(moneyDetailInfo);
         list.add(moneyDetailInfo);

@@ -6,15 +6,22 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
+import com.kyleduo.switchbutton.SwitchButton;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.BankListDialog;
 import com.yc.wsjt.ui.custom.CustomDateDialog;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,6 +39,15 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
 
     @BindView(R.id.tv_bank)
     TextView mBankNameTv;
+
+    @BindView(R.id.et_bank_number)
+    EditText mBankNumberEt;
+
+    @BindView(R.id.et_money)
+    EditText mMoneyEt;
+
+    @BindView(R.id.sb_server_charge)
+    SwitchButton mChargeBtn;
 
     CustomDateDialog customDateDialog;
 
@@ -62,12 +78,12 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
     @Override
     protected void initViews() {
         mConfigBtn.setVisibility(View.GONE);
-        mTitleTv.setText("提现流程");
+        mTitleTv.setText("零钱提现");
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mReceiveTimeTv.setText(TimeUtils.getNowString());
     }
 
     @OnClick(R.id.layout_receive_time)
@@ -102,7 +118,29 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
 
     @OnClick(R.id.btn_show_pre)
     void preShow() {
+        if (StringUtils.isEmpty(mBankNameTv.getText())) {
+            ToastUtils.showLong("请选择银行");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mBankNumberEt.getText())) {
+            ToastUtils.showLong("请输入银行卡后4位");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mMoneyEt.getText())) {
+            ToastUtils.showLong("请输入提现金额");
+            return;
+        }
+
         Intent intent = new Intent(this, ExtractPreActivity.class);
+        intent.putExtra("receive_date", mReceiveTimeTv.getText());
+        intent.putExtra("show_charge", mChargeBtn.isChecked());
+        intent.putExtra("bank_name", mBankNameTv.getText());
+        intent.putExtra("bank_last_number", mBankNumberEt.getText().toString() + "");
+        DecimalFormat df = new DecimalFormat(".00");
+        String temp = df.format(Double.parseDouble(mMoneyEt.getText().toString()));
+        intent.putExtra("money", temp);
         startActivity(intent);
     }
 
