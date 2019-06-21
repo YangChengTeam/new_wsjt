@@ -52,10 +52,10 @@
         android:layout_weight="1">
 
         <ImageView
+            android:id="@+id/iv_pay_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/meizhi014" />
+            android:scaleType="centerCrop" />
 
         <FrameLayout
             android:layout_width="match_parent"

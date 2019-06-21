@@ -64,6 +64,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_pay_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_rmb_symbol"
@@ -84,12 +85,14 @@
             android:textSize="16sp" />
 
         <ImageView
+            android:id="@+id/iv_receive_user_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:src="@mipmap/user_head_def" />
 
         <TextView
+            android:id="@+id/tv_receive_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

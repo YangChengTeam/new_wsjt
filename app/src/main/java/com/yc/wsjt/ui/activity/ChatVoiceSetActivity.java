@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.SettingRoleDialog;
@@ -91,6 +94,15 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (App.getApp().getTempPerson() != null) {
+            mTargetUserNameTv.setText(App.getApp().getTempPerson().mName);
+            Glide.with(this).load(App.getApp().getTempPerson().mHead).into(mTargetUserHeadIv);
+        }
+    }
+
     @OnClick(R.id.tv_wait_voice)
     void imageType() {
         mWaitVoiceTv.setBackgroundResource(R.drawable.choose_type_selected);
@@ -114,7 +126,7 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
     @OnClick(R.id.layout_target)
     void targetUserInfo() {
         if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
-            settingRoleDialog.setType(0);
+            settingRoleDialog.setType(2);
             settingRoleDialog.show();
         }
     }
@@ -138,11 +150,24 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
 
     @OnClick(R.id.btn_pre_show)
     void preShow() {
+        if (mTargetUserNameTv.getText().equals("请选择")) {
+            ToastUtils.showLong("请选择通话对象");
+            return;
+        }
         if (mVoiceTimeLayout.getVisibility() == View.GONE) {
+            //待接听
             Intent intent = new Intent(this, ChatWaitVoicePreActivity.class);
             startActivity(intent);
         } else {
+
+            if (mConnectionTimeTv.getText().equals("00:00")) {
+                ToastUtils.showLong("请设置通话时长");
+                return;
+            }
+
+            //通话中
             Intent intent = new Intent(this, ChatVoiceingPreActivity.class);
+            intent.putExtra("connect_time", mConnectionTimeTv.getText().toString());
             startActivity(intent);
         }
     }

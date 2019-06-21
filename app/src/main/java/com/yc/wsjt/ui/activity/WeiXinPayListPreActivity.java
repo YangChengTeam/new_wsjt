@@ -1,19 +1,25 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.bumptech.glide.Glide;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.WeiXinPayInfo;
+import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.MultipleItemQuickAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by zhangdinghui on 2019/5/29.
@@ -24,6 +30,9 @@ public class WeiXinPayListPreActivity extends BaseActivity {
 
     @BindView(R.id.pay_list)
     SwipeRecyclerView mPayListView;
+
+    @BindView(R.id.iv_pay_bg)
+    ImageView mPayBgIv;
 
     MultipleItemQuickAdapter multipleItemQuickAdapter;
 
@@ -39,23 +48,7 @@ public class WeiXinPayListPreActivity extends BaseActivity {
 
     @Override
     protected void initVars() {
-        List<WeiXinPayInfo> list = new ArrayList<>();
-        WeiXinPayInfo weiXinPayInfo = new WeiXinPayInfo(WeiXinPayInfo.PERSON);
-        WeiXinPayInfo weiXinPayInfo1 = new WeiXinPayInfo(WeiXinPayInfo.MERCHANT);
-        WeiXinPayInfo weiXinPayInfo2 = new WeiXinPayInfo(WeiXinPayInfo.RECEIVE_CODE);
-
-        WeiXinPayInfo weiXinPayInfo3 = new WeiXinPayInfo(WeiXinPayInfo.MONEY_START);
-        WeiXinPayInfo weiXinPayInfo4 = new WeiXinPayInfo(WeiXinPayInfo.MONEY_END);
-        WeiXinPayInfo weiXinPayInfo5 = new WeiXinPayInfo(WeiXinPayInfo.RECEIVE_MERCHANT);
-
-        list.add(weiXinPayInfo);
-        list.add(weiXinPayInfo1);
-        list.add(weiXinPayInfo2);
-        list.add(weiXinPayInfo3);
-        list.add(weiXinPayInfo4);
-        list.add(weiXinPayInfo5);
-
-        multipleItemQuickAdapter = new MultipleItemQuickAdapter(this,list);
+        multipleItemQuickAdapter = new MultipleItemQuickAdapter(this, null);
         mPayListView.setLayoutManager(new LinearLayoutManager(this));
         mPayListView.setAdapter(multipleItemQuickAdapter);
     }
@@ -67,6 +60,22 @@ public class WeiXinPayListPreActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        String payBg = SPUtils.getInstance().getString("pay_bg", "");
+        if (!StringUtils.isEmpty(payBg)) {
+            Glide.with(this).load(payBg).into(mPayBgIv);
+        }
 
+        mAppDatabase.payInfoDao()
+                .loadPayInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<PayInfo>>() {
+                    @Override
+                    public void accept(List<PayInfo> payInfos) {
+                        if (payInfos != null) {
+                            multipleItemQuickAdapter.setNewData(payInfos);
+                        }
+                    }
+                });
     }
 }

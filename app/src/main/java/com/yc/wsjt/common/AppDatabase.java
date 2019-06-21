@@ -12,6 +12,7 @@ import com.yc.wsjt.bean.GroupMessage;
 import com.yc.wsjt.bean.ImageMessage;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.MoneyDetail;
+import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.bean.PersonMessage;
 import com.yc.wsjt.bean.QuickInfo;
 import com.yc.wsjt.bean.RedPackageMessage;
@@ -30,6 +31,7 @@ import com.yc.wsjt.daos.GroupMessageDao;
 import com.yc.wsjt.daos.ImageMessageDao;
 import com.yc.wsjt.daos.MessageContentDao;
 import com.yc.wsjt.daos.MoneyDetailDao;
+import com.yc.wsjt.daos.PayInfoDao;
 import com.yc.wsjt.daos.PersonMessageDao;
 import com.yc.wsjt.daos.QuickInfoDao;
 import com.yc.wsjt.daos.RedMessageDao;
@@ -59,7 +61,9 @@ import com.yc.wsjt.daos.WeixinChatInfoDao;
         GroupMessage.class,
         SystemTipsMessage.class,
         MoneyDetail.class,
-        FriendInfo.class}, version = 1, exportSchema = false)
+        FriendInfo.class,
+        PayInfo.class}, version = 1, exportSchema = false)
+
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -98,4 +102,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract MoneyDetailDao moneyDetailDao();
 
     public abstract FriendInfoDao friendInfoDao();
+
+    public abstract PayInfoDao payInfoDao();
 }
