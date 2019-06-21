@@ -8,11 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.CustomDateDialog;
 import com.yc.wsjt.ui.custom.NoticeDateDialog;
 import com.yc.wsjt.ui.custom.PayDateDialog;
+import com.yc.wsjt.util.DataUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,6 +37,12 @@ public class WxPayEndActivity extends BaseActivity implements NoticeDateDialog.N
 
     @BindView(R.id.et_pay_time)
     EditText mPayDateEt;
+
+    @BindView(R.id.et_pay_money)
+    EditText mPayMoneyEt;
+
+    @BindView(R.id.et_bank)
+    EditText mBankEt;
 
     @BindView(R.id.et_get_time)
     EditText mGetDateEt;
@@ -134,6 +144,46 @@ public class WxPayEndActivity extends BaseActivity implements NoticeDateDialog.N
 
     @OnClick(R.id.btn_config)
     void config() {
+
+        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+            ToastUtils.showLong("请输入通知时间");
+            return;
+        }
+        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+            ToastUtils.showLong("请输入支付时间");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mPayMoneyEt.getText())) {
+            ToastUtils.showLong("请填写金额");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mBankEt.getText())) {
+            ToastUtils.showLong("请填写银行名称及后四位");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mGetDateEt.getText())) {
+            ToastUtils.showLong("请填写提现时间");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mArrivalDateEt.getText())) {
+            ToastUtils.showLong("请填写到账时间");
+            return;
+        }
+
+        PayInfo payInfo = new PayInfo(PayInfo.MONEY_END);
+        payInfo.setPayType(5);
+        payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
+        payInfo.setPayDate(mPayDateEt.getText().toString());
+        payInfo.setPayMoney(DataUtils.getMoney(mPayMoneyEt.getText().toString()));
+        payInfo.setBankName(mBankEt.getText().toString());
+        payInfo.setGetMoneyDate(mGetDateEt.getText().toString());
+        payInfo.setReceiveMoneyDate(mArrivalDateEt.getText().toString());
+        mAppDatabase.payInfoDao().insert(payInfo);
+
         finish();
     }
 

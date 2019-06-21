@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ckr.decoration.DividerGridItemDecoration;
 import com.jaeger.library.StatusBarUtil;
-import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
@@ -57,7 +55,7 @@ public class WeiXinModuleActivity extends BaseActivity {
         weiXinInfoAdapter = new WeiXinInfoAdapter(this, App.getApp().getModuleInfoWrapper() != null ? App.getApp().getModuleInfoWrapper().getWx() : null, ScreenUtils.getScreenWidth() / 3, false);
         weixinListView.setAdapter(weiXinInfoAdapter);
 
-        Logger.i(JSON.toJSONString(App.getApp().getModuleInfoWrapper().getWx()));
+        //Logger.i(JSON.toJSONString(App.getApp().getModuleInfoWrapper().getWx()));
 
         weiXinInfoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

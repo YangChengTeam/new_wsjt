@@ -28,6 +28,16 @@ public class MerchantHotHeadDialog extends Dialog {
 
     MerchantHeadAdapter merchantHeadAdapter;
 
+    public interface ChooseHeadListener {
+        void chooseHead(int headUrl);
+    }
+
+    public ChooseHeadListener chooseHeadListener;
+
+    public void setChooseHeadListener(ChooseHeadListener chooseHeadListener) {
+        this.chooseHeadListener = chooseHeadListener;
+    }
+
     public MerchantHotHeadDialog(Context context) {
         super(context);
         this.mContext = context;
@@ -66,7 +76,8 @@ public class MerchantHotHeadDialog extends Dialog {
         merchantHeadAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                int headUrl = Constants.typeImages[position];
+                chooseHeadListener.chooseHead(headUrl);
                 dismiss();
             }
         });

@@ -5,36 +5,36 @@ import android.content.Context;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.WeiXinPayInfo;
+import com.yc.wsjt.bean.PayInfo;
 
 import java.util.List;
 
 /**
  *
  */
-public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<WeiXinPayInfo, BaseViewHolder> {
+public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<PayInfo, BaseViewHolder> {
 
-    public MultipleItemQuickAdapter(Context context, List<WeiXinPayInfo> list) {
+    public MultipleItemQuickAdapter(Context context, List<PayInfo> list) {
         super(list);
-        addItemType(WeiXinPayInfo.PERSON, R.layout.pay_person_item);
-        addItemType(WeiXinPayInfo.MERCHANT, R.layout.pay_merchant_item);
-        addItemType(WeiXinPayInfo.RECEIVE_CODE, R.layout.pay_receive_code_item);
-        addItemType(WeiXinPayInfo.MONEY_START, R.layout.pay_money_start_item);
-        addItemType(WeiXinPayInfo.MONEY_END, R.layout.pay_money_end_item);
-        addItemType(WeiXinPayInfo.RECEIVE_MERCHANT, R.layout.pay_receive_merchant_item);
+        addItemType(PayInfo.PERSON, R.layout.pay_person_item);
+        addItemType(PayInfo.MERCHANT, R.layout.pay_merchant_item);
+        addItemType(PayInfo.RECEIVE_CODE, R.layout.pay_receive_code_item);
+        addItemType(PayInfo.MONEY_START, R.layout.pay_money_start_item);
+        addItemType(PayInfo.MONEY_END, R.layout.pay_money_end_item);
+        addItemType(PayInfo.RECEIVE_MERCHANT, R.layout.pay_receive_merchant_item);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, WeiXinPayInfo item) {
+    protected void convert(BaseViewHolder helper, PayInfo item) {
         switch (helper.getItemViewType()) {
-            case WeiXinPayInfo.PERSON:
-                helper.setText(R.id.tv_top_title, "支付的标题测试");
+            case PayInfo.PERSON:
+                helper.setText(R.id.tv_top_title, "AAA");
                 break;
-            case WeiXinPayInfo.MERCHANT:
-                helper.setText(R.id.tv_top_title, "商户名称");
+            case PayInfo.MERCHANT:
+                helper.setText(R.id.tv_top_title, "BBB");
                 break;
-            case WeiXinPayInfo.RECEIVE_CODE:
-                helper.setText(R.id.tv_top_title, "收款到账通知");
+            case PayInfo.RECEIVE_CODE:
+                helper.setText(R.id.tv_top_title, "CCC");
                 break;
             default:
                 break;

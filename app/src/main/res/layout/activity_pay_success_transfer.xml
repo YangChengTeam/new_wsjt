@@ -48,12 +48,13 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_receive_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="待王小明确认收钱"
+            android:text="待xxx确认收钱"
             android:textColor="@color/black2"
             android:textSize="16sp" />
 
@@ -74,6 +75,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_pay_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_rmb_symbol"

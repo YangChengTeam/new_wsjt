@@ -48,6 +48,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_merchant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -74,6 +75,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_pay_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_rmb_symbol"
@@ -118,6 +120,7 @@
             android:button="@mipmap/follow_icon" />
 
         <TextView
+            android:id="@+id/tv_follow_merchant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"

@@ -8,10 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.NoticeDateDialog;
 import com.yc.wsjt.ui.custom.PayDateDialog;
+import com.yc.wsjt.util.DataUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,6 +37,18 @@ public class WxPayReceiveCodeActivity extends BaseActivity implements NoticeDate
 
     @BindView(R.id.et_pay_time)
     EditText mPayDateEt;
+
+    @BindView(R.id.et_receive_money)
+    EditText mReceiveMoneyEt;
+
+    @BindView(R.id.et_total_money)
+    EditText mTotalMoneyEt;
+
+    @BindView(R.id.et_total_number)
+    EditText mTotalCountEt;
+
+    @BindView(R.id.et_pay_remark)
+    EditText mPayRemarkEt;
 
     NoticeDateDialog noticeDateDialog;
 
@@ -98,6 +114,41 @@ public class WxPayReceiveCodeActivity extends BaseActivity implements NoticeDate
 
     @OnClick(R.id.btn_config)
     void config() {
+
+        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+            ToastUtils.showLong("请输入通知时间");
+            return;
+        }
+        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+            ToastUtils.showLong("请输入支付时间");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mReceiveMoneyEt.getText())) {
+            ToastUtils.showLong("请填写本次收款金额");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mTotalMoneyEt.getText())) {
+            ToastUtils.showLong("请填写累计收款金额");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mTotalCountEt.getText())) {
+            ToastUtils.showLong("请填写累计收款笔数");
+            return;
+        }
+
+        PayInfo payInfo = new PayInfo(PayInfo.RECEIVE_CODE);
+        payInfo.setPayType(3);
+        payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
+        payInfo.setPayDate(mPayDateEt.getText().toString());
+        payInfo.setThisReceiveMoney(DataUtils.getMoney(mReceiveMoneyEt.getText().toString()));
+        payInfo.setTotalMoney(DataUtils.getMoney(mTotalMoneyEt.getText().toString()));
+        payInfo.setTotalCount(Integer.parseInt(mTotalCountEt.getText().toString()));
+        payInfo.setPayRemark(mPayRemarkEt.getText().toString());
+        mAppDatabase.payInfoDao().insert(payInfo);
+
         finish();
     }
 

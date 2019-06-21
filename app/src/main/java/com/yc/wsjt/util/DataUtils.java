@@ -5,6 +5,8 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 
 public final class DataUtils {
 
@@ -35,6 +37,18 @@ public final class DataUtils {
         System.out.println("解密后文字: \r\n" + responseText);
         Log.i(TAG, "解密后的字符串" + response);
         return responseText;
+    }
+
+    /**
+     * 获取金额，保留小数后2位
+     *
+     * @param inputMoney
+     * @return
+     */
+    public static String getMoney(String inputMoney) {
+        DecimalFormat df2 = new DecimalFormat(".00");
+        String temp = df2.format(Double.parseDouble(inputMoney));
+        return temp;
     }
 
 }
