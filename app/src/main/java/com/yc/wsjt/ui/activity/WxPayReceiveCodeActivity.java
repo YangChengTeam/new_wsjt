@@ -139,8 +139,8 @@ public class WxPayReceiveCodeActivity extends BaseActivity implements NoticeDate
             return;
         }
 
-        PayInfo payInfo = new PayInfo(PayInfo.RECEIVE_CODE);
-        payInfo.setPayType(3);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setPayType(PayInfo.RECEIVE_CODE);
         payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
         payInfo.setPayDate(mPayDateEt.getText().toString());
         payInfo.setThisReceiveMoney(DataUtils.getMoney(mReceiveMoneyEt.getText().toString()));

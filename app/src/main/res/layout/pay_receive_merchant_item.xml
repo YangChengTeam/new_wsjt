@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/pay_date_item_bg"
         android:gravity="center">
 
         <TextView
@@ -20,7 +19,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="3dp"
             android:text="2019-05-24 12:45"
-            android:textColor="@color/black1"
+            android:textColor="@color/bg_indicator_point_selected"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -62,7 +61,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="108dp"
             android:layout_below="@+id/layout_top"
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -92,6 +91,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_pay_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_rmb_symbol"
@@ -126,6 +126,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -149,10 +150,10 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_merchant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="京东退款"
                     android:textColor="@color/black1"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -172,10 +173,10 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="未收到货物，退款给你"
                     android:textColor="@color/black1"
                     android:textSize="13sp" />
             </LinearLayout>

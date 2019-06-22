@@ -5,13 +5,11 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-
 /**
  * Created by zhangdinghui on 2019/5/16.
  */
 @Entity(tableName = "pay_info", indices = {@Index(value = {"id"}, unique = true)})
-public class PayInfo implements MultiItemEntity {
+public class PayInfo {
     @Ignore
     public static final int PERSON = 1;
 
@@ -68,9 +66,6 @@ public class PayInfo implements MultiItemEntity {
     private String intoAccount;//入账账户
 
     private String intoMoneyRemark;//入账详情
-
-    @Ignore
-    private int itemType;
 
     public int getId() {
         return id;
@@ -224,16 +219,5 @@ public class PayInfo implements MultiItemEntity {
         this.merchantLocalHead = merchantLocalHead;
     }
 
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
-    }
 
-    public PayInfo(int itemType) {
-        this.itemType = itemType;
-    }
-
-    @Override
-    public int getItemType() {
-        return itemType;
-    }
 }

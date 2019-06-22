@@ -9,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/pay_date_item_bg"
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tv_pay_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -20,7 +20,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="3dp"
             android:text="2019-05-24 12:45"
-            android:textColor="@color/black1"
+            android:textColor="@color/bg_indicator_point_selected"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -45,7 +45,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="108dp"
             android:layout_below="@+id/tv_top_title"
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -75,6 +75,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_pay_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_rmb_symbol"
@@ -95,6 +96,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_pay_remark"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:gravity="left|center"
@@ -109,10 +111,10 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_pay_remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="你的包包退款给你"
                     android:textColor="@color/black1"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -132,6 +134,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_total_money_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -160,7 +163,7 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="收款成功，已@mipmap/user_head_def零钱。点击可查看详情"
+                    android:text="收款成功，已存入零钱。点击可查看详情"
                     android:textColor="@color/black1"
                     android:textSize="13sp" />
             </LinearLayout>

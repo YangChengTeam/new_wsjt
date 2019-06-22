@@ -174,8 +174,8 @@ public class WxPayEndActivity extends BaseActivity implements NoticeDateDialog.N
             return;
         }
 
-        PayInfo payInfo = new PayInfo(PayInfo.MONEY_END);
-        payInfo.setPayType(5);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setPayType(PayInfo.MONEY_END);
         payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
         payInfo.setPayDate(mPayDateEt.getText().toString());
         payInfo.setPayMoney(DataUtils.getMoney(mPayMoneyEt.getText().toString()));

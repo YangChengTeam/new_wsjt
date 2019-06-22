@@ -9,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/pay_date_item_bg"
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tv_pay_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -20,7 +20,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="3dp"
             android:text="2019-05-24 12:45"
-            android:textColor="@color/black1"
+            android:textColor="@color/bg_indicator_point_selected"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -42,12 +42,13 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/iv_merchant_head"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:src="@mipmap/mt" />
 
             <TextView
-                android:id="@+id/tv_top_title"
+                android:id="@+id/tv_merchant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="微信支付凭证"
@@ -88,6 +89,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_pay_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_rmb_symbol"

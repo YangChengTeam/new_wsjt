@@ -239,8 +239,8 @@ public class WxPayMerchantActivity extends BaseActivity implements NoticeDateDia
             return;
         }
 
-        PayInfo payInfo = new PayInfo(PayInfo.MERCHANT);
-        payInfo.setPayType(2);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setPayType(PayInfo.MERCHANT);
         payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
         payInfo.setPayDate(mPayDateEt.getText().toString());
         payInfo.setPayMoney(DataUtils.getMoney(mPayMoneyEt.getText().toString()));

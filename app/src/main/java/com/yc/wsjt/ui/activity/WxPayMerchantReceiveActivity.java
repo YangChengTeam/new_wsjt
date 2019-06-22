@@ -142,8 +142,8 @@ public class WxPayMerchantReceiveActivity extends BaseActivity implements Notice
             return;
         }
 
-        PayInfo payInfo = new PayInfo(PayInfo.RECEIVE_MERCHANT);
-        payInfo.setPayType(6);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setPayType(PayInfo.RECEIVE_MERCHANT);
         payInfo.setNoticeDate(mNoticeDateEt.getText().toString());
         payInfo.setPayDate(mPayDateEt.getText().toString());
         payInfo.setPayMoney(DataUtils.getMoney(mPayMoneyEt.getText().toString()));
