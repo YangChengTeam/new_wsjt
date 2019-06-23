@@ -3,6 +3,7 @@ package com.yc.wsjt.ui.activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -12,6 +13,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.SystemTipsMessage;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.presenter.Presenter;
 
 import butterknife.BindView;
@@ -22,11 +24,16 @@ import butterknife.OnClick;
  */
 public class ChatSystemInfoActivity extends BaseActivity {
 
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
+
     @BindView(R.id.btn_config)
     Button mConfigBtn;
 
     @BindView(R.id.et_system_info)
     EditText mSystemInfoEt;
+
+    private boolean isQunLiao;
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +57,11 @@ public class ChatSystemInfoActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isQunLiao = bundle.getBoolean("is_qunliao", false);
+        }
+        mTitleTv.setText("系统消息");
     }
 
     @OnClick(R.id.btn_recall)
@@ -94,15 +105,28 @@ public class ChatSystemInfoActivity extends BaseActivity {
         systemTipsMessage.setMessageType(type);
         Long sysId = mAppDatabase.systemTipsMessageDao().insert(systemTipsMessage);
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_system_info);
-        weixinChatInfo.setType(type);
-        weixinChatInfo.setChildTabId(sysId);
+        if (isQunLiao) {
+            //插入到外层的列表中
+            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setTypeIcon(R.mipmap.type_system_info);
+            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setChildTabId(sysId);
+            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+        } else {
+            //插入到外层的列表中
+            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setTypeIcon(R.mipmap.type_system_info);
+            weixinChatInfo.setType(type);
+            weixinChatInfo.setChildTabId(sysId);
+            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        }
+        finish();
+    }
 
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
+    @OnClick(R.id.iv_back)
+    void back() {
         finish();
     }
 }

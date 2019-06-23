@@ -23,6 +23,7 @@ import com.yc.wsjt.bean.TimeMessage;
 import com.yc.wsjt.bean.TransferMessage;
 import com.yc.wsjt.bean.VideoMessage;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.daos.AudioMessageDao;
 import com.yc.wsjt.daos.ChatDataInfoDao;
 import com.yc.wsjt.daos.EmojiMessageDao;
@@ -42,9 +43,11 @@ import com.yc.wsjt.daos.TimeMessageDao;
 import com.yc.wsjt.daos.TransferMessageDao;
 import com.yc.wsjt.daos.VideoMessageDao;
 import com.yc.wsjt.daos.WeixinChatInfoDao;
+import com.yc.wsjt.daos.WeixinQunChatInfoDao;
 
 @Database(entities = {
         WeixinChatInfo.class,
+        WeixinQunChatInfo.class,
         ChatDataInfo.class,
         QuickInfo.class,
         MessageContent.class,
@@ -68,6 +71,8 @@ import com.yc.wsjt.daos.WeixinChatInfoDao;
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract WeixinChatInfoDao weixinChatInfoDao();
+
+    public abstract WeixinQunChatInfoDao weixinQunChatInfoDao();
 
     public abstract ChatDataInfoDao chatDataInfoDao();
 

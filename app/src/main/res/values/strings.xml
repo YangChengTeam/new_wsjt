@@ -50,4 +50,6 @@
 
     <string name="vip_welfare_txt">1.超级权限，解锁所有VIP功能。\n2.超级权限，解锁所有VIP功能。\n3.超级权限，解锁所有VIP功能。</string>
     <string name="vip_share_txt">到应用市场好评\n可以免费体验VIP功能</string>
+
+    <string name="weixin_qun_liao">微信群聊</string>
 </resources>

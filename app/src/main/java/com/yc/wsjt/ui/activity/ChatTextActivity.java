@@ -25,6 +25,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.TextMessage;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.EmotionGridViewAdapter;
@@ -42,6 +43,9 @@ import butterknife.OnClick;
 public class ChatTextActivity extends BaseActivity {
 
     private EmotionPagerAdapter emotionPagerGvAdapter;
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
@@ -74,6 +78,8 @@ public class ChatTextActivity extends BaseActivity {
 
     private int emotion_map_type = EmotionUtils.EMOTION_CLASSIC_TYPE;
 
+    private boolean isQunLiao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_text;
@@ -97,6 +103,13 @@ public class ChatTextActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isQunLiao = bundle.getBoolean("is_qunliao", false);
+        }
+        mTitleTv.setText(isQunLiao ? "群聊文本" : "单聊文本");
+
         if (App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
@@ -260,15 +273,23 @@ public class ChatTextActivity extends BaseActivity {
         textMessage.setLocalMessageImg(R.mipmap.type_text);
         textMessage.setMessageContent(mChatEditText.getText().toString());
         Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
-
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_text);
-        weixinChatInfo.setChildTabId(txtId);
-        weixinChatInfo.setType(type);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-
+        if (isQunLiao) {
+            //插入到外层的列表中
+            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setTypeIcon(R.mipmap.type_text);
+            weixinQunChatInfo.setChildTabId(txtId);
+            weixinQunChatInfo.setType(type);
+            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+        } else {
+            //插入到外层的列表中
+            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setTypeIcon(R.mipmap.type_text);
+            weixinChatInfo.setChildTabId(txtId);
+            weixinChatInfo.setType(type);
+            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        }
         finish();
     }
 
@@ -293,5 +314,10 @@ public class ChatTextActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }

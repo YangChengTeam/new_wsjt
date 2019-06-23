@@ -144,6 +144,30 @@ public class Constants {
             R.string.type_join_group,
             R.string.type_system_info};
 
+
+    public static final int[] qunTypeImages = {
+            R.mipmap.type_time,
+            R.mipmap.type_text,
+            R.mipmap.type_image,
+            R.mipmap.type_voice,
+            R.mipmap.type_emoji,
+            R.mipmap.type_hongbao,
+            R.mipmap.type_hongbao,
+            R.mipmap.type_share,
+            R.mipmap.type_persion_card,
+            R.mipmap.type_system_info};
+
+    public static final int[] qunTypeNames = {
+            R.string.type_time,
+            R.string.type_text,
+            R.string.type_image,
+            R.string.type_voice,
+            R.string.type_emoji,
+            R.string.type_hongbao,
+            R.string.type_hongbao,
+            R.string.type_share,
+            R.string.type_persion_card,
+            R.string.type_system_info};
     public static final String IS_SELF = "current_choose_role";
 
     public static final String HOME_IS_FIRST_LOAD = "home_is_first_load";

@@ -13,6 +13,7 @@ import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.ModuleInfoWrapper;
 import com.yc.wsjt.bean.UserInfo;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.AppDatabase;
 
 import java.util.List;
@@ -44,6 +45,8 @@ public class App extends Application {
     private ContactPerson tempPerson;
 
     private List<WeixinChatInfo> chatList;
+
+    private List<WeixinQunChatInfo> qunChatList;
 
     public static Context getContext() {
         return applicationContext;
@@ -127,5 +130,13 @@ public class App extends Application {
 
     public void setChatList(List<WeixinChatInfo> chatList) {
         this.chatList = chatList;
+    }
+
+    public List<WeixinQunChatInfo> getQunChatList() {
+        return qunChatList;
+    }
+
+    public void setQunChatList(List<WeixinQunChatInfo> qunChatList) {
+        this.qunChatList = qunChatList;
     }
 }

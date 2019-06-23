@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
@@ -19,6 +20,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.TimeMessage;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.TwelveDialog;
 import com.yc.wsjt.ui.custom.TwentyFourDialog;
@@ -30,6 +32,9 @@ import butterknife.OnClick;
  * Created by zhangdinghui on 2019/5/8.
  */
 public class ChatTimeActivity extends BaseActivity implements OnDateSetListener, TwelveDialog.DateSelectListener, TwentyFourDialog.TFDateSelectListener {
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
@@ -46,6 +51,8 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
     TwelveDialog twelveDialog;
 
     TwentyFourDialog twentyFourDialog;
+
+    private boolean isQunLiao;
 
     @Override
     protected int getLayoutId() {
@@ -73,7 +80,11 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isQunLiao = bundle.getBoolean("is_qunliao", false);
+        }
+        mTitleTv.setText(isQunLiao ? "群聊时间" : "单聊时间");
     }
 
     @OnClick(R.id.btn_twelve)
@@ -138,13 +149,23 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
         Logger.i("timeId--->" + timeId);
 
         //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_time);
-        weixinChatInfo.setChatText(mSelectTimeEt.getText().toString());
-        weixinChatInfo.setType(MessageContent.CHAT_DATE);
-        weixinChatInfo.setChildTabId(timeId);
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        if (isQunLiao) {
+            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setTypeIcon(R.mipmap.type_time);
+            weixinQunChatInfo.setChatText(mSelectTimeEt.getText().toString());
+            weixinQunChatInfo.setType(MessageContent.CHAT_DATE);
+            weixinQunChatInfo.setChildTabId(timeId);
+            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+        } else {
+            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setTypeIcon(R.mipmap.type_time);
+            weixinChatInfo.setChatText(mSelectTimeEt.getText().toString());
+            weixinChatInfo.setType(MessageContent.CHAT_DATE);
+            weixinChatInfo.setChildTabId(timeId);
+            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        }
 
         finish();
     }

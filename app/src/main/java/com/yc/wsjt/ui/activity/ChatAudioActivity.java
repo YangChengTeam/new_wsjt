@@ -17,6 +17,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.bean.AudioMessage;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 
@@ -24,6 +25,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class ChatAudioActivity extends BaseActivity {
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
@@ -53,6 +57,8 @@ public class ChatAudioActivity extends BaseActivity {
 
     boolean isMySelf = true;
 
+    private boolean isQunLiao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_audio;
@@ -74,6 +80,12 @@ public class ChatAudioActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isQunLiao = bundle.getBoolean("is_qunliao", false);
+        }
+        mTitleTv.setText(isQunLiao ? "群聊语音" : "单聊语音");
+
         if (App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
@@ -146,7 +158,6 @@ public class ChatAudioActivity extends BaseActivity {
         }
 
 
-
         //插入一条时间设置记录
         AudioMessage audioMessage = new AudioMessage();
         audioMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
@@ -158,15 +169,28 @@ public class ChatAudioActivity extends BaseActivity {
         audioMessage.setOpenAudioTurn(mTurnSButton.isChecked());
         Long audioId = mAppDatabase.audioMessageDao().insert(audioMessage);
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(R.mipmap.type_voice);
-        weixinChatInfo.setType(type);
-        weixinChatInfo.setChildTabId(audioId);
+        if (isQunLiao) {
+            //插入到外层的列表中
+            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setTypeIcon(R.mipmap.type_voice);
+            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setChildTabId(audioId);
+            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+        } else {
+            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setTypeIcon(R.mipmap.type_voice);
+            weixinChatInfo.setType(type);
+            weixinChatInfo.setChildTabId(audioId);
+            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        }
 
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        finish();
+    }
 
+    @OnClick(R.id.iv_back)
+    void back() {
         finish();
     }
 }

@@ -27,6 +27,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.bean.ImageMessage;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.WeixinChatInfo;
+import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.Glide4Engine;
@@ -42,6 +43,9 @@ import butterknife.OnClick;
 public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.DateSelectListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
+
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
@@ -86,6 +90,8 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
     boolean isMySelf = true;
 
+    private boolean isQunLiao;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_image;
@@ -109,6 +115,12 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isQunLiao = bundle.getBoolean("is_qunliao", false);
+        }
+        mTitleTv.setText(isQunLiao ? "群聊图片" : "单聊图片");
+
         if (App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
@@ -241,14 +253,24 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
         imageMessage.setLocalMessageImg(R.mipmap.type_image);
         Long imageId = mAppDatabase.imageMessageDao().insert(imageMessage);
 
-        //插入到外层的列表中
-        WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
-        weixinChatInfo.setType(type);
-        weixinChatInfo.setChildTabId(imageId);
+        if (isQunLiao) {
+            //插入到外层的列表中
+            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
+            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setChildTabId(imageId);
+            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+        } else {
+            //插入到外层的列表中
+            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
+            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
+            weixinChatInfo.setType(type);
+            weixinChatInfo.setChildTabId(imageId);
+            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
+        }
 
-        mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
         finish();
     }
 
@@ -273,5 +295,10 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
                 }
             }
         }
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }

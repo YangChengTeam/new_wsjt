@@ -66,6 +66,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".ui.activity.QuickBarEditActivity"></activity>
         <activity android:name=".ui.activity.WeixindanliaoActivity"></activity>
+        <activity android:name=".ui.activity.WeixinqunliaoActivity"></activity>
         <activity android:name=".ui.activity.ChatTimeActivity"></activity>
         <activity android:name=".ui.activity.ChatTextActivity"></activity>
         <activity android:name=".ui.activity.ChatImageActivity"></activity>

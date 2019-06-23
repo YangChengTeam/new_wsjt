@@ -76,8 +76,8 @@ public class WeiXinModuleActivity extends BaseActivity {
                     //startActivity(intent);
                 }
                 if (mid == 4) {
-                    //Intent intent = new Intent(WeiXinModuleActivity.this, TransferActivity.class);
-                    //startActivity(intent);
+                    Intent intent = new Intent(WeiXinModuleActivity.this, WeixinqunliaoActivity.class);
+                    startActivity(intent);
                     //群聊
                 }
                 if (mid == 5) {
