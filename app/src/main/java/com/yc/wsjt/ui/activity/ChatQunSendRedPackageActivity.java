@@ -1,16 +1,22 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.MessageContent;
@@ -19,13 +25,15 @@ import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.CustomDateDialog;
+import com.yc.wsjt.ui.custom.RoleSelectDialog;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatQunSendRedPackageActivity extends BaseActivity {
+public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleSelectDialog.ChooseRoleListener, CustomDateDialog.DateSelectListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -34,6 +42,9 @@ public class ChatQunSendRedPackageActivity extends BaseActivity {
 
     @BindView(R.id.btn_config)
     Button mConfigBtn;
+
+    @BindView(R.id.iv_send_user_head)
+    ImageView mSendUserHeadIv;
 
     @BindView(R.id.layout_send_info)
     RelativeLayout mSendInfoLayout;
@@ -53,15 +64,23 @@ public class ChatQunSendRedPackageActivity extends BaseActivity {
     @BindView(R.id.et_red_remark)
     EditText mRedRemarkEt;
 
+    @BindView(R.id.tv_send_time)
+    TextView mSendTimeTv;
+
+    @BindView(R.id.tv_receive_time)
+    TextView mReceiveTimeTv;
+
     private File outputImage;
 
-    private String otherSideImgUrl;
+    private String sendUserName;
 
-    private String replyImgUrl;
+    private String sendUserHead;
 
-    private int chooseType = 1;//发，收
+    private int CHAT_TYPE = MessageContent.SEND_RED_PACKET;
 
-    boolean isMySelf = true;
+    CustomDateDialog customDateDialog;
+
+    private int chooseDateType = 1;
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +99,8 @@ public class ChatQunSendRedPackageActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        customDateDialog = new CustomDateDialog(this, R.style.date_dialog);
+        customDateDialog.setDateSelectListener(this);
     }
 
     @Override
@@ -88,18 +108,35 @@ public class ChatQunSendRedPackageActivity extends BaseActivity {
 
     }
 
+    @OnClick(R.id.layout_send_info)
+    void changeSendRole() {
+        RoleSelectDialog roleSelectDialog = new RoleSelectDialog(this, R.style.custom_dialog);
+        roleSelectDialog.setChooseRoleListener(this);
+        roleSelectDialog.show();
+
+        roleSelectDialog.setCanceledOnTouchOutside(true);
+        WindowManager.LayoutParams windowParams = roleSelectDialog.getWindow().getAttributes();
+        windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.92);
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        roleSelectDialog.getWindow().setAttributes(windowParams);
+    }
+
     @OnClick(R.id.btn_config)
     void config() {
-        if (chooseType == 1) {
-            if (StringUtils.isEmpty(mRedNumberEt.getText())) {
-                ToastUtils.showLong("请输入金额");
-                return;
-            }
+
+        if (StringUtils.isEmpty(sendUserName)) {
+            ToastUtils.showLong("请选择发送人");
+            return;
         }
 
-        int type = MessageContent.SEND_RED_PACKET;
-        if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
-            type = MessageContent.RECEIVE_RED_PACKET;
+        if (StringUtils.isEmpty(mRedCountEt.getText())) {
+            ToastUtils.showLong("请输入红包个数");
+            return;
+        }
+
+        if (StringUtils.isEmpty(mRedNumberEt.getText())) {
+            ToastUtils.showLong("请输入金额");
+            return;
         }
 
         //插入一条时间设置记录
@@ -107,31 +144,69 @@ public class ChatQunSendRedPackageActivity extends BaseActivity {
         redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
         redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
-        redPackageMessage.setMessageType(type);
-        redPackageMessage.setRedType(chooseType);
-        redPackageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        redPackageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        redPackageMessage.setOtherSideEmojiUrl(otherSideImgUrl);
-        redPackageMessage.setReplyEmojiUrl(replyImgUrl);
-        redPackageMessage.setLocalMessageImg(R.mipmap.type_hongbao);
+        redPackageMessage.setMessageType(CHAT_TYPE);
+
+        redPackageMessage.setMessageUserName(sendUserName);
+        redPackageMessage.setMessageUserHead(sendUserHead);
         Long redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
-        if (1 == 1) {
-            //插入到外层的列表中
-            WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-            weixinQunChatInfo.setTypeIcon(R.mipmap.type_hongbao);
-            weixinQunChatInfo.setType(type);
-            weixinQunChatInfo.setChildTabId(redId);
-            mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
-        } else {
-            //插入到外层的列表中
-            WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-            weixinChatInfo.setTypeIcon(R.mipmap.type_hongbao);
-            weixinChatInfo.setType(type);
-            weixinChatInfo.setChildTabId(redId);
-            mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
-        }
+
+        //插入到外层的列表中
+        WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
+        weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinQunChatInfo.setTypeIcon(R.mipmap.type_hongbao);
+        weixinQunChatInfo.setType(CHAT_TYPE);
+        weixinQunChatInfo.setChildTabId(redId);
+        mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
+
         finish();
+    }
+
+    @Override
+    public void chooseRole(int pos, String name, String head, int localHead) {
+        if (pos > 0) {
+            CHAT_TYPE = MessageContent.RECEIVE_RED_PACKET;
+        } else {
+            CHAT_TYPE = MessageContent.SEND_RED_PACKET;
+        }
+        mSendUserNameTv.setText(name);
+        sendUserName = name;
+        Glide.with(this).load(head).into(mSendUserHeadIv);
+        sendUserHead = head;
+    }
+
+    @OnClick(R.id.layout_send_time)
+    public void sendTime() {
+        chooseDateType = 1;
+
+        customDateDialog.show();
+        //设置Dialog从窗体底部弹出
+        customDateDialog.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams windowParams = customDateDialog.getWindow().getAttributes();
+        windowParams.width = ScreenUtils.getScreenWidth();
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        customDateDialog.getWindow().setAttributes(windowParams);
+    }
+
+    @OnClick(R.id.layout_receive_time)
+    public void receiveTime() {
+        chooseDateType = 2;
+
+        customDateDialog.show();
+        //设置Dialog从窗体底部弹出
+        customDateDialog.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams windowParams = customDateDialog.getWindow().getAttributes();
+        windowParams.width = ScreenUtils.getScreenWidth();
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        customDateDialog.getWindow().setAttributes(windowParams);
+    }
+
+    @Override
+    public void configDate(String selectDate) {
+        Logger.i("select date --->" + selectDate);
+        if (chooseDateType == 1) {
+            mSendTimeTv.setText(selectDate);
+        } else {
+            mReceiveTimeTv.setText(selectDate);
+        }
     }
 }

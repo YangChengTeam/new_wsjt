@@ -45,7 +45,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_send_user_head"
-                android:text="第一个用户"
+                android:text="未知用户"
                 android:textColor="@color/edit_color"
                 android:textSize="16sp" />
 
