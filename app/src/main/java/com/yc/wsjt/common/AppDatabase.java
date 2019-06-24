@@ -16,6 +16,7 @@ import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.bean.PersonMessage;
 import com.yc.wsjt.bean.QuickInfo;
 import com.yc.wsjt.bean.RedPackageMessage;
+import com.yc.wsjt.bean.RoleInfo;
 import com.yc.wsjt.bean.ShareMessage;
 import com.yc.wsjt.bean.SystemTipsMessage;
 import com.yc.wsjt.bean.TextMessage;
@@ -35,7 +36,9 @@ import com.yc.wsjt.daos.MoneyDetailDao;
 import com.yc.wsjt.daos.PayInfoDao;
 import com.yc.wsjt.daos.PersonMessageDao;
 import com.yc.wsjt.daos.QuickInfoDao;
+import com.yc.wsjt.daos.QunChatInfoDao;
 import com.yc.wsjt.daos.RedMessageDao;
+import com.yc.wsjt.daos.RoleInfoDao;
 import com.yc.wsjt.daos.ShareMessageDao;
 import com.yc.wsjt.daos.SystemTipsMessageDao;
 import com.yc.wsjt.daos.TextMessageDao;
@@ -44,11 +47,13 @@ import com.yc.wsjt.daos.TransferMessageDao;
 import com.yc.wsjt.daos.VideoMessageDao;
 import com.yc.wsjt.daos.WeixinChatInfoDao;
 import com.yc.wsjt.daos.WeixinQunChatInfoDao;
+import com.yc.wsjt.ui.activity.QunChatInfo;
 
 @Database(entities = {
         WeixinChatInfo.class,
         WeixinQunChatInfo.class,
         ChatDataInfo.class,
+        QunChatInfo.class,
         QuickInfo.class,
         MessageContent.class,
         TimeMessage.class,
@@ -65,7 +70,8 @@ import com.yc.wsjt.daos.WeixinQunChatInfoDao;
         SystemTipsMessage.class,
         MoneyDetail.class,
         FriendInfo.class,
-        PayInfo.class}, version = 1, exportSchema = false)
+        PayInfo.class,
+        RoleInfo.class}, version = 1, exportSchema = false)
 
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -75,6 +81,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract WeixinQunChatInfoDao weixinQunChatInfoDao();
 
     public abstract ChatDataInfoDao chatDataInfoDao();
+
+    public abstract QunChatInfoDao qunChatInfoDao();
 
     public abstract QuickInfoDao quickInfoDao();
 
@@ -109,4 +117,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FriendInfoDao friendInfoDao();
 
     public abstract PayInfoDao payInfoDao();
+
+    public abstract RoleInfoDao roleInfoDao();
 }

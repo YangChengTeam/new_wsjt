@@ -123,7 +123,6 @@
         <activity android:name=".ui.activity.WeiXinBillPreActivity"></activity>
         <activity android:name=".ui.activity.WeiXinHomeActivity"></activity>
         <activity android:name=".ui.activity.WxDanLiaoActivity"></activity>
-        <activity android:name=".ui.activity.WxQunLiaoActivity"></activity>
         <activity android:name=".ui.activity.WxPublicActivity"></activity>
         <activity android:name=".ui.activity.WxOtherSetActivity"></activity>
         <activity android:name=".ui.activity.GroupVoiceSetActivity"></activity>
@@ -140,6 +139,8 @@
         <activity android:name=".ui.activity.RedReceivePreActivity"></activity>
         <activity android:name=".ui.activity.RedSendPreActivity"></activity>
         <activity android:name=".ui.activity.TurnMoneyActivity"></activity>
+        <activity android:name=".ui.activity.QunChatDataSetActivity"></activity>
+        <activity android:name=".ui.activity.ChatQunSystemInfoActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

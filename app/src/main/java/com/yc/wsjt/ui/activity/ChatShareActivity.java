@@ -28,13 +28,14 @@ import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.EmojiModeDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
+import com.yc.wsjt.ui.custom.RoleSelectDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener {
+public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener, RoleSelectDialog.ChooseRoleListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -74,6 +75,12 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
     boolean isMySelf = true;
 
     private boolean isQunLiao;
+
+    private int CHAT_TYPE = MessageContent.SEND_SHARE;
+
+    private String sendUserName;
+
+    private String sendUserHead;
 
     @Override
     protected int getLayoutId() {
@@ -154,22 +161,34 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
     @OnClick(R.id.layout_send_info)
     void changeSendRole() {
-        if (App.getApp().chatDataInfo != null) {
-            isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-            isMySelf = !isMySelf;
-            SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
-            mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-            if (isMySelf) {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+        if (isQunLiao) {
+            RoleSelectDialog roleSelectDialog = new RoleSelectDialog(this, R.style.custom_dialog);
+            roleSelectDialog.setChooseRoleListener(this);
+            roleSelectDialog.show();
+
+            roleSelectDialog.setCanceledOnTouchOutside(true);
+            WindowManager.LayoutParams windowParams = roleSelectDialog.getWindow().getAttributes();
+            windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.92);
+            windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            roleSelectDialog.getWindow().setAttributes(windowParams);
+        } else {
+            if (App.getApp().chatDataInfo != null) {
+                isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+                isMySelf = !isMySelf;
+                SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
+                mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+                if (isMySelf) {
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                    }
                 } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
-                }
-            } else {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
-                } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    }
                 }
             }
         }
@@ -210,37 +229,54 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
             return;
         }
 
-        int type = MessageContent.SEND_SHARE;
-        if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
-            type = MessageContent.RECEIVE_SHARE;
-        }
-
-        //插入一条时间设置记录
-        ShareMessage shareMessage = new ShareMessage();
-        shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        shareMessage.setMessageType(type);
-        shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
-        shareMessage.setShareTitle(mShareTitleEt.getText().toString());
-        shareMessage.setShareContent(mShareContentEt.getText().toString());
-        shareMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        shareMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-
-        Long shareId = mAppDatabase.shareMessageDao().insert(shareMessage);
-
         if (isQunLiao) {
+            if (StringUtils.isEmpty(sendUserName)) {
+                ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            //插入一条时间设置记录
+            ShareMessage shareMessage = new ShareMessage();
+            shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            shareMessage.setMessageType(CHAT_TYPE);
+            shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
+            shareMessage.setShareTitle(mShareTitleEt.getText().toString());
+            shareMessage.setShareContent(mShareContentEt.getText().toString());
+            shareMessage.setMessageUserName(sendUserName);
+            shareMessage.setMessageUserHead(sendUserHead);
+
+            Long shareId = mAppDatabase.shareMessageDao().insert(shareMessage);
+
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
             weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_share);
-            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(shareId);
             mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
         } else {
+            CHAT_TYPE = MessageContent.SEND_SHARE;
+            if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
+                CHAT_TYPE = MessageContent.RECEIVE_SHARE;
+            }
+
+            //插入一条时间设置记录
+            ShareMessage shareMessage = new ShareMessage();
+            shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            shareMessage.setMessageType(CHAT_TYPE);
+            shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
+            shareMessage.setShareTitle(mShareTitleEt.getText().toString());
+            shareMessage.setShareContent(mShareContentEt.getText().toString());
+            shareMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            shareMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
+
+            Long shareId = mAppDatabase.shareMessageDao().insert(shareMessage);
+
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
             weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_share);
-            weixinChatInfo.setType(type);
+            weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(shareId);
 
             mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
@@ -251,5 +287,18 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
     @OnClick(R.id.iv_back)
     void back() {
         finish();
+    }
+
+    @Override
+    public void chooseRole(int pos, String name, String head, int localHead) {
+        if (pos > 0) {
+            CHAT_TYPE = MessageContent.RECEIVE_SHARE;
+        } else {
+            CHAT_TYPE = MessageContent.SEND_SHARE;
+        }
+        mSendUserNameTv.setText(name);
+        sendUserName = name;
+        Glide.with(this).load(head).into(mSendUserHeadIv);
+        sendUserHead = head;
     }
 }

@@ -15,6 +15,7 @@ import com.yc.wsjt.bean.UserInfo;
 import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.AppDatabase;
+import com.yc.wsjt.ui.activity.QunChatInfo;
 
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class App extends Application {
     private AppDatabase mAppDatabase;
 
     public ChatDataInfo chatDataInfo;
+
+    public QunChatInfo qunChatInfo;
 
     public static boolean isLoginAuth = false;
 
@@ -138,5 +141,13 @@ public class App extends Application {
 
     public void setQunChatList(List<WeixinQunChatInfo> qunChatList) {
         this.qunChatList = qunChatList;
+    }
+
+    public QunChatInfo getQunChatInfo() {
+        return qunChatInfo;
+    }
+
+    public void setQunChatInfo(QunChatInfo qunChatInfo) {
+        this.qunChatInfo = qunChatInfo;
     }
 }

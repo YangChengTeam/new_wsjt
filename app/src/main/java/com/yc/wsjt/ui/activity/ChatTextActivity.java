@@ -2,6 +2,7 @@ package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -32,6 +33,7 @@ import com.yc.wsjt.ui.adapter.EmotionGridViewAdapter;
 import com.yc.wsjt.ui.adapter.EmotionPagerAdapter;
 import com.yc.wsjt.ui.custom.EmojiIndicatorView;
 import com.yc.wsjt.ui.custom.GlobalOnItemClickManagerUtils;
+import com.yc.wsjt.ui.custom.RoleSelectDialog;
 import com.yc.wsjt.util.EmotionUtils;
 
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatTextActivity extends BaseActivity {
+public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.ChooseRoleListener {
 
     private EmotionPagerAdapter emotionPagerGvAdapter;
 
@@ -79,6 +81,12 @@ public class ChatTextActivity extends BaseActivity {
     private int emotion_map_type = EmotionUtils.EMOTION_CLASSIC_TYPE;
 
     private boolean isQunLiao;
+
+    private int CHAT_TYPE = MessageContent.SEND_TEXT;
+
+    private String sendUserName;
+
+    private String sendUserHead;
 
     @Override
     protected int getLayoutId() {
@@ -257,37 +265,48 @@ public class ChatTextActivity extends BaseActivity {
             return;
         }
 
-        //Logger.i("chat text--->" + mChatEditText.getText().toString());
-        int type = MessageContent.SEND_TEXT;
-        if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
-            type = MessageContent.RECEIVE_TEXT;
-        }
-
-
-        //插入一条时间设置记录
-        TextMessage textMessage = new TextMessage();
-        textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        textMessage.setMessageType(type);
-        textMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        textMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        textMessage.setLocalMessageImg(R.mipmap.type_text);
-        textMessage.setMessageContent(mChatEditText.getText().toString());
-        Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
         if (isQunLiao) {
-            //插入到外层的列表中
+            if (StringUtils.isEmpty(sendUserName)) {
+                ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            //插入一条时间设置记录
+            TextMessage textMessage = new TextMessage();
+            textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            textMessage.setMessageType(CHAT_TYPE);
+            textMessage.setMessageUserName(sendUserName);
+            textMessage.setMessageUserHead(sendUserHead);
+            textMessage.setMessageContent(mChatEditText.getText().toString());
+            Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
+
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
             weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_text);
             weixinQunChatInfo.setChildTabId(txtId);
-            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setType(CHAT_TYPE);
             mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
         } else {
-            //插入到外层的列表中
+            CHAT_TYPE = MessageContent.SEND_TEXT;
+            if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
+                CHAT_TYPE = MessageContent.RECEIVE_TEXT;
+            }
+
+            //插入一条时间设置记录
+            TextMessage textMessage = new TextMessage();
+            textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            textMessage.setMessageType(CHAT_TYPE);
+            textMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            textMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
+            textMessage.setLocalMessageImg(R.mipmap.type_text);
+            textMessage.setMessageContent(mChatEditText.getText().toString());
+            Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
+
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
             weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_text);
             weixinChatInfo.setChildTabId(txtId);
-            weixinChatInfo.setType(type);
+            weixinChatInfo.setType(CHAT_TYPE);
             mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
         }
         finish();
@@ -295,22 +314,34 @@ public class ChatTextActivity extends BaseActivity {
 
     @OnClick(R.id.layout_send_info)
     void changeSendRole() {
-        if (App.getApp().chatDataInfo != null) {
-            isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-            isMySelf = !isMySelf;
-            SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
-            mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-            if (isMySelf) {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+        if (isQunLiao) {
+            RoleSelectDialog roleSelectDialog = new RoleSelectDialog(this, R.style.custom_dialog);
+            roleSelectDialog.setChooseRoleListener(this);
+            roleSelectDialog.show();
+
+            roleSelectDialog.setCanceledOnTouchOutside(true);
+            WindowManager.LayoutParams windowParams = roleSelectDialog.getWindow().getAttributes();
+            windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.92);
+            windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            roleSelectDialog.getWindow().setAttributes(windowParams);
+        } else {
+            if (App.getApp().chatDataInfo != null) {
+                isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+                isMySelf = !isMySelf;
+                SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
+                mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+                if (isMySelf) {
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                    }
                 } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
-                }
-            } else {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
-                } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    }
                 }
             }
         }
@@ -319,5 +350,18 @@ public class ChatTextActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     void back() {
         finish();
+    }
+
+    @Override
+    public void chooseRole(int pos, String name, String head, int localHead) {
+        if (pos > 0) {
+            CHAT_TYPE = MessageContent.RECEIVE_TEXT;
+        } else {
+            CHAT_TYPE = MessageContent.SEND_TEXT;
+        }
+        mSendUserNameTv.setText(name);
+        sendUserName = name;
+        Glide.with(this).load(head).into(mSendUserHeadIv);
+        sendUserHead = head;
     }
 }

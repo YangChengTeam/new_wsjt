@@ -31,6 +31,7 @@ import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.Glide4Engine;
+import com.yc.wsjt.ui.custom.RoleSelectDialog;
 import com.yc.wsjt.ui.custom.VideoTimeDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -40,7 +41,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.DateSelectListener {
+public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.DateSelectListener, RoleSelectDialog.ChooseRoleListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -91,6 +92,14 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
     boolean isMySelf = true;
 
     private boolean isQunLiao;
+
+    private String sendUserName;
+
+    private String sendUserHead;
+
+    private int CHAT_TYPE = MessageContent.SEND_IMAGE;
+
+    private int chooseRolePos;
 
     @Override
     protected int getLayoutId() {
@@ -227,46 +236,74 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
             return;
         }
 
-        int type = MessageContent.SEND_IMAGE;
-
-        if (chooseType == 1) {
-            if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
-                type = MessageContent.RECEIVE_IMAGE;
-            }
-        } else {
-            type = MessageContent.SEND_IMAGE_FOR_VIDEO;
-            if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
-                type = MessageContent.RECEIVE_IMAGE_FOR_VIDEO;
-            }
-        }
-
-
-        //插入一条时间设置记录
-        ImageMessage imageMessage = new ImageMessage();
-        imageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        imageMessage.setMessageType(type);
-        imageMessage.setMediaType(chooseType);
-        imageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        imageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        imageMessage.setImageUrl(chooseType == 1 ? imagePath : videoPath);
-        imageMessage.setVideoTime(chooseType == 2 ? mVideoTimeTv.getText().toString() : "0:0");
-        imageMessage.setLocalMessageImg(R.mipmap.type_image);
-        Long imageId = mAppDatabase.imageMessageDao().insert(imageMessage);
-
         if (isQunLiao) {
+            if (StringUtils.isEmpty(sendUserName)) {
+                ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            CHAT_TYPE = MessageContent.SEND_IMAGE;
+            if (chooseType == 1) {
+                if (chooseRolePos > 0) {
+                    CHAT_TYPE = MessageContent.RECEIVE_IMAGE;
+                }
+            } else {
+                CHAT_TYPE = MessageContent.SEND_IMAGE_FOR_VIDEO;
+                if (chooseRolePos > 0) {
+                    CHAT_TYPE = MessageContent.RECEIVE_IMAGE_FOR_VIDEO;
+                }
+            }
+
+            //插入一条时间设置记录
+            ImageMessage imageMessage = new ImageMessage();
+            imageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            imageMessage.setMessageType(CHAT_TYPE);
+            imageMessage.setMediaType(chooseType);
+            imageMessage.setMessageUserName(sendUserName);
+            imageMessage.setMessageUserHead(sendUserHead);
+            imageMessage.setImageUrl(chooseType == 1 ? imagePath : videoPath);
+            imageMessage.setVideoTime(chooseType == 2 ? mVideoTimeTv.getText().toString() : "0:0");
+            imageMessage.setLocalMessageImg(R.mipmap.type_image);
+            Long imageId = mAppDatabase.imageMessageDao().insert(imageMessage);
+
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
             weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinQunChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
-            weixinQunChatInfo.setType(type);
+            weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(imageId);
             mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
         } else {
+
+            CHAT_TYPE = MessageContent.SEND_IMAGE;
+            if (chooseType == 1) {
+                if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
+                    CHAT_TYPE = MessageContent.RECEIVE_IMAGE;
+                }
+            } else {
+                CHAT_TYPE = MessageContent.SEND_IMAGE_FOR_VIDEO;
+                if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
+                    CHAT_TYPE = MessageContent.RECEIVE_IMAGE_FOR_VIDEO;
+                }
+            }
+
+            //插入一条时间设置记录
+            ImageMessage imageMessage = new ImageMessage();
+            imageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            imageMessage.setMessageType(CHAT_TYPE);
+            imageMessage.setMediaType(chooseType);
+            imageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            imageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
+            imageMessage.setImageUrl(chooseType == 1 ? imagePath : videoPath);
+            imageMessage.setVideoTime(chooseType == 2 ? mVideoTimeTv.getText().toString() : "0:0");
+            imageMessage.setLocalMessageImg(R.mipmap.type_image);
+            Long imageId = mAppDatabase.imageMessageDao().insert(imageMessage);
+
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
             weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
-            weixinChatInfo.setType(type);
+            weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(imageId);
             mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
         }
@@ -276,22 +313,34 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
     @OnClick(R.id.layout_send_info)
     void changeSendRole() {
-        if (App.getApp().chatDataInfo != null) {
-            isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
-            isMySelf = !isMySelf;
-            SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
-            mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-            if (isMySelf) {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+        if (isQunLiao) {
+            RoleSelectDialog roleSelectDialog = new RoleSelectDialog(this, R.style.custom_dialog);
+            roleSelectDialog.setChooseRoleListener(this);
+            roleSelectDialog.show();
+
+            roleSelectDialog.setCanceledOnTouchOutside(true);
+            WindowManager.LayoutParams windowParams = roleSelectDialog.getWindow().getAttributes();
+            windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.92);
+            windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            roleSelectDialog.getWindow().setAttributes(windowParams);
+        } else {
+            if (App.getApp().chatDataInfo != null) {
+                isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+                isMySelf = !isMySelf;
+                SPUtils.getInstance().put(Constants.IS_SELF, isMySelf);
+                mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+                if (isMySelf) {
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
+                    }
                 } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getPersonHead()).into(mSendUserHeadIv);
-                }
-            } else {
-                if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
-                    Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
-                } else {
-                    Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    if (StringUtils.isEmpty(App.getApp().chatDataInfo.getOtherPersonHead())) {
+                        Glide.with(this).load(R.mipmap.user_head_def).into(mSendUserHeadIv);
+                    } else {
+                        Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
+                    }
                 }
             }
         }
@@ -300,5 +349,27 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
     @OnClick(R.id.iv_back)
     void back() {
         finish();
+    }
+
+    @Override
+    public void chooseRole(int pos, String name, String head, int localHead) {
+        chooseRolePos = pos;
+
+        CHAT_TYPE = MessageContent.SEND_IMAGE;
+        if (chooseType == 1) {
+            if (chooseRolePos > 0) {
+                CHAT_TYPE = MessageContent.RECEIVE_IMAGE;
+            }
+        } else {
+            CHAT_TYPE = MessageContent.SEND_IMAGE_FOR_VIDEO;
+            if (chooseRolePos > 0) {
+                CHAT_TYPE = MessageContent.RECEIVE_IMAGE_FOR_VIDEO;
+            }
+        }
+
+        mSendUserNameTv.setText(name);
+        sendUserName = name;
+        Glide.with(this).load(head).into(mSendUserHeadIv);
+        sendUserHead = head;
     }
 }

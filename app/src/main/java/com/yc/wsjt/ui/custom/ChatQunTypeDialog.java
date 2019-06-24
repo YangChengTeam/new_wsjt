@@ -16,16 +16,13 @@ import com.yc.wsjt.bean.ChatTypeInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.ui.activity.ChatAudioActivity;
 import com.yc.wsjt.ui.activity.ChatEmojiActivity;
-import com.yc.wsjt.ui.activity.ChatGroupActivity;
 import com.yc.wsjt.ui.activity.ChatImageActivity;
 import com.yc.wsjt.ui.activity.ChatPersonCardActivity;
+import com.yc.wsjt.ui.activity.ChatQunSystemInfoActivity;
 import com.yc.wsjt.ui.activity.ChatRedPackageActivity;
 import com.yc.wsjt.ui.activity.ChatShareActivity;
-import com.yc.wsjt.ui.activity.ChatSystemInfoActivity;
 import com.yc.wsjt.ui.activity.ChatTextActivity;
 import com.yc.wsjt.ui.activity.ChatTimeActivity;
-import com.yc.wsjt.ui.activity.ChatTransferActivity;
-import com.yc.wsjt.ui.activity.ChatVideoActivity;
 import com.yc.wsjt.ui.adapter.ChatTypeAdapter;
 
 import java.util.ArrayList;
@@ -127,8 +124,7 @@ public class ChatQunTypeDialog extends Dialog {
                         mContext.startActivity(intent9);
                         break;
                     case 9:
-                        Intent intent11 = new Intent(mContext, ChatSystemInfoActivity.class);
-                        intent11.putExtra("is_qunliao", true);
+                        Intent intent11 = new Intent(mContext, ChatQunSystemInfoActivity.class);
                         mContext.startActivity(intent11);
                         break;
                 }

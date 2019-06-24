@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
@@ -16,20 +17,24 @@ public class InputDialog extends Dialog {
 
     private Context mContext;
 
-    EditText mWeixinNumberEt;
+    private String mTitle;
+
+    EditText mInputTxtEt;
 
     LinearLayout mConfigLayout;
 
     LinearLayout mCancelLayout;
 
-    public NumberListener numberListener;
+    public InputTxtListener txtListener;
 
-    public interface NumberListener {
-        void configNumber(String number);
+    private TextView mTitleTv;
+
+    public interface InputTxtListener {
+        void inputTxt(String inputTxt);
     }
 
-    public void setNumberListener(NumberListener numberListener) {
-        this.numberListener = numberListener;
+    public void setTxtListener(InputTxtListener txtListener) {
+        this.txtListener = txtListener;
     }
 
     public InputDialog(Context context) {
@@ -40,6 +45,16 @@ public class InputDialog extends Dialog {
     public InputDialog(Context context, int themeResId) {
         super(context, themeResId);
         this.mContext = context;
+    }
+
+    public InputDialog(Context context, int themeResId, String title) {
+        super(context, themeResId);
+        this.mContext = context;
+        this.mTitle = title;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
     @Override
@@ -53,18 +68,19 @@ public class InputDialog extends Dialog {
     private void initView() {
         mConfigLayout = findViewById(R.id.layout_config);
         mCancelLayout = findViewById(R.id.layout_cancel);
-        mWeixinNumberEt = findViewById(R.id.et_weixin_number);
-
+        mInputTxtEt = findViewById(R.id.et_input_txt);
+        mTitleTv = findViewById(R.id.tv_title);
+        mTitleTv.setText(mTitle);
         mConfigLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (StringUtils.isEmpty(mWeixinNumberEt.getText())) {
-                    ToastUtils.showLong("请输入微信号");
+                if (StringUtils.isEmpty(mInputTxtEt.getText())) {
+                    ToastUtils.showLong("请输入" + mTitle);
                     return;
                 }
 
-                numberListener.configNumber(mWeixinNumberEt.getText().toString());
+                txtListener.inputTxt(mInputTxtEt.getText().toString());
                 dismiss();
             }
         });

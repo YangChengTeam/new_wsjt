@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
@@ -25,8 +25,8 @@ import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 import com.yanzhenjie.recyclerview.widget.DefaultItemDecoration;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.MessageContent;
+import com.yc.wsjt.bean.RoleInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.WeixinqunliaoChatAdapter;
@@ -87,7 +87,7 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
     public MessageContent messageContent;
 
-    ChatDataInfo mChatDataInfo;
+    QunChatInfo mQunChatInfo;
 
     @Override
     protected int getLayoutId() {
@@ -159,40 +159,7 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        //初始化设置参数
-//        try {
-//            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId()) != null) {
-//                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId());
-//                RequestOptions options = new RequestOptions();
-//                options.placeholder(R.mipmap.user_head_def);
-//                options.error(R.mipmap.user_head_def);
-//                Glide.with(getApplicationContext()).load(mChatDataInfo.getPersonHead()).apply(options).into(mLeftHeadIv);
-//                Glide.with(getApplicationContext()).load(mChatDataInfo.getOtherPersonHead()).apply(options).into(mRightHeadTv);
-//                App.getApp().chatDataInfo = mChatDataInfo;
-//            } else {
-//                mChatDataInfo = new ChatDataInfo();
-//                mChatDataInfo.setDeviceId(PhoneUtils.getDeviceId());
-//                if (App.getApp().isLogin && App.getApp().mUserInfo != null) {
-//                    mChatDataInfo.setPersonHead(App.getApp().mUserInfo.getFace());
-//                    mChatDataInfo.setPersonName(App.getApp().mUserInfo.getNickName());
-//                } else {
-//                    mChatDataInfo.setPersonHeadLocal(R.mipmap.user_head_def);
-//                    mChatDataInfo.setPersonName("未知发送人");
-//                }
-//                mChatDataInfo.setOtherPersonHeadLocal(R.mipmap.user_head_def);
-//                mChatDataInfo.setOtherPersonName("未知用户");
-//                mAppDatabase.chatDataInfoDao().insert(mChatDataInfo);
-//                App.getApp().chatDataInfo = mChatDataInfo;
-//
-//                RequestOptions options = new RequestOptions();
-//                options.placeholder(R.mipmap.user_head_def);
-//                options.error(R.mipmap.user_head_def);
-//                Glide.with(getApplicationContext()).load(mChatDataInfo.getPersonHead()).apply(options).into(mLeftHeadIv);
-//                Glide.with(getApplicationContext()).load(mChatDataInfo.getOtherPersonHead()).apply(options).into(mRightHeadTv);
-//            }
-//        } catch (SecurityException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
     @Override
@@ -230,6 +197,33 @@ public class WeixinqunliaoActivity extends BaseActivity {
                             }
                         }
                     });
+
+            //资料设置信息
+            if (mAppDatabase.qunChatInfoDao().getItemById(PhoneUtils.getDeviceId()) != null) {
+                mQunChatInfo = mAppDatabase.qunChatInfoDao().getItemById(PhoneUtils.getDeviceId());
+                App.getApp().qunChatInfo = mQunChatInfo;
+                List<RoleInfo> roleList = mAppDatabase.roleInfoDao().getListById(mQunChatInfo.getId());
+                App.getApp().qunChatInfo.setRoleList(roleList);
+
+                if (roleList != null) {
+                    if (roleList.size() > 0) {
+                        if (StringUtils.isEmpty(roleList.get(0).getAvatar())) {
+                            Glide.with(this).load(roleList.get(0).getAvatarLocalImg()).into(mLeftHeadIv);
+                        } else {
+                            Glide.with(this).load(roleList.get(0).getAvatar()).into(mLeftHeadIv);
+                        }
+                    }
+
+                    if (roleList.size() > 1) {
+                        if (StringUtils.isEmpty(roleList.get(1).getAvatar())) {
+                            Glide.with(this).load(roleList.get(1).getAvatarLocalImg()).into(mRightHeadTv);
+                        } else {
+                            Glide.with(this).load(roleList.get(1).getAvatar()).into(mRightHeadTv);
+                        }
+                    }
+                }
+            }
+
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -258,7 +252,7 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
     @OnClick(R.id.layout_chat_data_set)
     void chatDataSet() {
-        Intent intent = new Intent(this, ChatDataSetActivity.class);
+        Intent intent = new Intent(this, QunChatDataSetActivity.class);
         startActivity(intent);
     }
 

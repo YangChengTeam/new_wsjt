@@ -116,7 +116,7 @@ public class WeiXinHomeActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.layout_qunliao:
-                Intent intent1 = new Intent(this, WxQunLiaoActivity.class);
+                Intent intent1 = new Intent(this, WeixinqunliaoActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.layout_public_code:
