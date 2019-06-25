@@ -58,4 +58,7 @@
     <string name="qun_message_recall">消息撤回提示</string>
     <string name="update_qun_name_txt">修改群名提示</string>
     <string name="security_name_txt">隐私安全提示</string>
+
+    <string name="qun_send_red">发红包</string>
+    <string name="qun_receive_red">收红包</string>
 </resources>

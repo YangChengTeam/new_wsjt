@@ -61,6 +61,9 @@ public class MessageContent {
     //系统提示
     public static final int SYSTEM_TIPS = 23;
 
+    //群聊收红包模块
+    public static final int QUN_RECEIVE_RED = 24;
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 

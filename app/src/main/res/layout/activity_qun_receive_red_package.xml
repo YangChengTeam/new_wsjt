@@ -37,12 +37,12 @@
                 android:textSize="16sp"></TextView>
 
             <TextView
-                android:id="@+id/tv_receive_transfer"
+                android:id="@+id/tv_from_me_red"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@+id/tv_turn_out_transfer"
+                android:layout_toLeftOf="@+id/tv_get_other_side_red"
                 android:background="@drawable/choose_type_selected"
                 android:gravity="center"
                 android:paddingLeft="6dp"
@@ -52,7 +52,7 @@
                 android:textSize="14sp"></TextView>
 
             <TextView
-                android:id="@+id/tv_turn_out_transfer"
+                android:id="@+id/tv_get_other_side_red"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@+id/iv_send_user_head"
+                android:layout_toLeftOf="@+id/iv_other_side_head"
                 android:text="请选择"
                 android:textColor="@color/edit_color"
                 android:textSize="16sp" />

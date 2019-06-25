@@ -18,8 +18,9 @@ import com.yc.wsjt.ui.activity.ChatAudioActivity;
 import com.yc.wsjt.ui.activity.ChatEmojiActivity;
 import com.yc.wsjt.ui.activity.ChatImageActivity;
 import com.yc.wsjt.ui.activity.ChatPersonCardActivity;
+import com.yc.wsjt.ui.activity.ChatQunReceiveRedPackageActivity;
+import com.yc.wsjt.ui.activity.ChatQunSendRedPackageActivity;
 import com.yc.wsjt.ui.activity.ChatQunSystemInfoActivity;
-import com.yc.wsjt.ui.activity.ChatRedPackageActivity;
 import com.yc.wsjt.ui.activity.ChatShareActivity;
 import com.yc.wsjt.ui.activity.ChatTextActivity;
 import com.yc.wsjt.ui.activity.ChatTimeActivity;
@@ -104,13 +105,11 @@ public class ChatQunTypeDialog extends Dialog {
                         mContext.startActivity(intent4);
                         break;
                     case 5:
-                        Intent intent5 = new Intent(mContext, ChatRedPackageActivity.class);
-                        intent5.putExtra("is_qunliao", true);
+                        Intent intent5 = new Intent(mContext, ChatQunSendRedPackageActivity.class);
                         mContext.startActivity(intent5);
                         break;
                     case 6:
-                        Intent intent6 = new Intent(mContext, ChatRedPackageActivity.class);
-                        intent6.putExtra("is_qunliao", true);
+                        Intent intent6 = new Intent(mContext, ChatQunReceiveRedPackageActivity.class);
                         mContext.startActivity(intent6);
                         break;
                     case 7:

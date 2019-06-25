@@ -141,6 +141,11 @@
         <activity android:name=".ui.activity.TurnMoneyActivity"></activity>
         <activity android:name=".ui.activity.QunChatDataSetActivity"></activity>
         <activity android:name=".ui.activity.ChatQunSystemInfoActivity"></activity>
+        <activity android:name=".ui.activity.ChatQunSendRedPackageActivity"></activity>
+        <activity android:name=".ui.activity.ChatQunReceiveRedPackageActivity"></activity>
+        <activity android:name=".ui.activity.ChatQunSessionActivity"></activity>
+        <activity android:name=".ui.activity.QunHongBaoActivity"></activity>
+        <activity android:name=".ui.activity.CircleBaseSetActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

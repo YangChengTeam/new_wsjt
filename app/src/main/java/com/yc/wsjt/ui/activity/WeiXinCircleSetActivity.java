@@ -62,7 +62,8 @@ public class WeiXinCircleSetActivity extends BaseActivity {
 
     @OnClick(R.id.layout_chat_setting)
     void circleUserInfo() {
-
+        Intent intent = new Intent(this, CircleBaseSetActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_add_data)

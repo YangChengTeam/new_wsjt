@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
@@ -21,9 +21,7 @@ import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.RedPackageMessage;
-import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
-import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.CustomDateDialog;
 import com.yc.wsjt.ui.custom.RoleSelectDialog;
@@ -95,12 +93,15 @@ public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleS
     @Override
     protected void initVars() {
         StatusBarUtil.setLightMode(this);
+        mTitleTv.setText("群聊发红包");
     }
 
     @Override
     protected void initViews() {
         customDateDialog = new CustomDateDialog(this, R.style.date_dialog);
         customDateDialog.setDateSelectListener(this);
+        mSendTimeTv.setText(TimeUtils.getNowString());
+        mReceiveTimeTv.setText(TimeUtils.getNowString());
     }
 
     @Override
@@ -142,10 +143,11 @@ public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleS
         //插入一条时间设置记录
         RedPackageMessage redPackageMessage = new RedPackageMessage();
         redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        redPackageMessage.setRedCount(Integer.parseInt(mRedCountEt.getText().toString()));
         redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
         redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
         redPackageMessage.setMessageType(CHAT_TYPE);
-
+        redPackageMessage.setRedType(1);
         redPackageMessage.setMessageUserName(sendUserName);
         redPackageMessage.setMessageUserHead(sendUserHead);
         Long redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
@@ -209,4 +211,5 @@ public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleS
             mReceiveTimeTv.setText(selectDate);
         }
     }
+
 }

@@ -168,6 +168,34 @@ public class Constants {
             R.string.type_share,
             R.string.type_persion_card,
             R.string.type_system_info};
+
+    public static final int[] qunNames = {
+            R.string.type_time,
+            R.string.type_text,
+            R.string.type_text,
+            R.string.type_image,
+            R.string.type_image,
+            R.string.type_video,
+            R.string.type_video,
+            R.string.type_voice,
+            R.string.type_voice,
+            R.string.type_emoji,
+            R.string.type_emoji,
+            R.string.qun_send_red,
+            R.string.qun_send_red,
+            R.string.type_zhuanzhang,
+            R.string.type_zhuanzhang,
+            R.string.type_image_for_video,
+            R.string.type_image_for_video,
+            R.string.type_share,
+            R.string.type_share,
+            R.string.type_persion_card,
+            R.string.type_persion_card,
+            R.string.type_join_group,
+            R.string.type_join_group,
+            R.string.type_system_info,
+            R.string.qun_receive_red};
+
     public static final String IS_SELF = "current_choose_role";
 
     public static final String HOME_IS_FIRST_LOAD = "home_is_first_load";

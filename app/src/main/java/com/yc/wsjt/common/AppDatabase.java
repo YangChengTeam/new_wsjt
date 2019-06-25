@@ -16,6 +16,7 @@ import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.bean.PersonMessage;
 import com.yc.wsjt.bean.QuickInfo;
 import com.yc.wsjt.bean.RedPackageMessage;
+import com.yc.wsjt.bean.RedRecordInfo;
 import com.yc.wsjt.bean.RoleInfo;
 import com.yc.wsjt.bean.ShareMessage;
 import com.yc.wsjt.bean.SystemTipsMessage;
@@ -38,6 +39,7 @@ import com.yc.wsjt.daos.PersonMessageDao;
 import com.yc.wsjt.daos.QuickInfoDao;
 import com.yc.wsjt.daos.QunChatInfoDao;
 import com.yc.wsjt.daos.RedMessageDao;
+import com.yc.wsjt.daos.RedRecordInfoDao;
 import com.yc.wsjt.daos.RoleInfoDao;
 import com.yc.wsjt.daos.ShareMessageDao;
 import com.yc.wsjt.daos.SystemTipsMessageDao;
@@ -71,7 +73,8 @@ import com.yc.wsjt.ui.activity.QunChatInfo;
         MoneyDetail.class,
         FriendInfo.class,
         PayInfo.class,
-        RoleInfo.class}, version = 1, exportSchema = false)
+        RoleInfo.class,
+        RedRecordInfo.class}, version = 1, exportSchema = false)
 
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -119,4 +122,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PayInfoDao payInfoDao();
 
     public abstract RoleInfoDao roleInfoDao();
+
+    public abstract RedRecordInfoDao redRecordInfoDao();
 }

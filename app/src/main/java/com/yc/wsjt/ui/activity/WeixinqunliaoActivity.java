@@ -1,6 +1,8 @@
 package com.yc.wsjt.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,9 +15,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jaeger.library.StatusBarUtil;
@@ -32,6 +37,7 @@ import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.WeixinqunliaoChatAdapter;
 import com.yc.wsjt.ui.custom.ChatQunTypeDialog;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,6 +94,8 @@ public class WeixinqunliaoActivity extends BaseActivity {
     public MessageContent messageContent;
 
     QunChatInfo mQunChatInfo;
+
+    private File outputImage;
 
     @Override
     protected int getLayoutId() {
@@ -222,6 +230,52 @@ public class WeixinqunliaoActivity extends BaseActivity {
                         }
                     }
                 }
+            } else {
+                mQunChatInfo = new QunChatInfo();
+                mQunChatInfo.setDeviceId(PhoneUtils.getDeviceId());
+                mQunChatInfo.setChatPersonNumber(3);
+                mQunChatInfo.setQunLiaoName("群聊");
+                mQunChatInfo.setOpenDisturb(false);
+                mQunChatInfo.setOpenNickName(false);
+                Long qunLiaoId = mAppDatabase.qunChatInfoDao().insert(mQunChatInfo);
+                mQunChatInfo.setId(qunLiaoId);
+
+                //初始化群聊角色信息
+                RoleInfo roleInfo = new RoleInfo();
+                Bitmap bmp1 = BitmapFactory.decodeResource(getResources(), R.mipmap.c1);
+                outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
+                Logger.i("out path1--->" + outputImage.getAbsolutePath());
+                ImageUtils.save(bmp1, outputImage, Bitmap.CompressFormat.PNG);
+                roleInfo.setAvatar(outputImage.getAbsolutePath());
+                roleInfo.setNickname("王小明");
+                roleInfo.setQunLiaoId(qunLiaoId);
+
+                RoleInfo roleInfo1 = new RoleInfo();
+                Bitmap bmp2 = BitmapFactory.decodeResource(getResources(), R.mipmap.c2);
+                outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
+                Logger.i("out path2--->" + outputImage.getAbsolutePath());
+                ImageUtils.save(bmp2, outputImage, Bitmap.CompressFormat.PNG);
+                roleInfo1.setAvatar(outputImage.getAbsolutePath());
+                roleInfo1.setNickname("张晓琳");
+                roleInfo1.setQunLiaoId(qunLiaoId);
+
+                RoleInfo roleInfo2 = new RoleInfo();
+                Bitmap bmp3 = BitmapFactory.decodeResource(getResources(), R.mipmap.c3);
+                outputImage = new File(PathUtils.getExternalAppPicturesPath(), TimeUtils.getNowMills() + ".png");
+                Logger.i("out path2--->" + outputImage.getAbsolutePath());
+                ImageUtils.save(bmp3, outputImage, Bitmap.CompressFormat.PNG);
+                roleInfo2.setAvatar(outputImage.getAbsolutePath());
+                roleInfo2.setNickname("李成明");
+                roleInfo2.setQunLiaoId(qunLiaoId);
+
+                mAppDatabase.roleInfoDao().insert(roleInfo, roleInfo1, roleInfo2);
+                Glide.with(this).load(bmp1).into(mLeftHeadIv);
+                Glide.with(this).load(bmp2).into(mRightHeadTv);
+
+                List<RoleInfo> roleList = mAppDatabase.roleInfoDao().getListById(mQunChatInfo.getId());
+                mQunChatInfo.setRoleList(roleList);
+
+                App.getApp().qunChatInfo = mQunChatInfo;
             }
 
         } catch (SecurityException e) {
@@ -246,7 +300,7 @@ public class WeixinqunliaoActivity extends BaseActivity {
     @OnClick(R.id.btn_pre_show)
     public void queryData() {
         App.getApp().setQunChatList(weixinqunliaoChatAdapter.getData());
-        Intent intent = new Intent(this, ChatSessionActivity.class);
+        Intent intent = new Intent(this, ChatQunSessionActivity.class);
         startActivity(intent);
     }
 
