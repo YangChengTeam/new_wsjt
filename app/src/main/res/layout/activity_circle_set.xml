@@ -33,17 +33,17 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/iv_pay_bg"
+            android:id="@+id/iv_role_head"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@+id/iv_pay_right_icon"
+            android:layout_toLeftOf="@+id/iv_role_icon"
             android:scaleType="centerCrop"
             android:src="@mipmap/user_head_def" />
 
         <ImageView
-            android:id="@+id/iv_pay_right_icon"
+            android:id="@+id/iv_role_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -68,12 +68,13 @@
             android:layout_marginBottom="75dp">
 
             <com.yanzhenjie.recyclerview.SwipeRecyclerView
-                android:id="@+id/money_detail_list"
+                android:id="@+id/circle_info_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
 
             <LinearLayout
+                android:id="@+id/layout_no_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"

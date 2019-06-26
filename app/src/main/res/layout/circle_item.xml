@@ -25,18 +25,19 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="周杰伦"
-                android:textColor="@color/black2"
+                android:text="未知用户"
+                android:textColor="@color/praise_color"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_circle_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="今天的天气还不错哦,大家出来一起玩吧"
-                android:textColor="@color/gray1"
+                android:textColor="@color/black4"
                 android:textSize="14sp" />
 
             <com.yc.wsjt.ui.custom.FriendsCircleImageLayout
@@ -51,11 +52,11 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:text="北京"
                     android:textColor="@color/color_blue"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -66,7 +67,7 @@
                 android:layout_marginTop="4dp">
 
                 <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/tv_publish_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -76,16 +77,19 @@
                     android:textSize="10sp" />
 
                 <TextView
+                    android:id="@+id/tv_merchant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
-                    android:layout_toRightOf="@+id/tv_date"
+                    android:layout_toRightOf="@+id/tv_publish_date"
                     android:text="拼多多"
+                    android:visibility="gone"
                     android:textColor="@color/gray1"
                     android:textSize="10sp" />
 
                 <ImageView
+                    android:id="@+id/iv_moments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -119,7 +123,7 @@
                         android:paddingLeft="4dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="6dp"
-                        android:text="     测试点赞内容,测试点赞内容测试点赞,内容测试点赞,内容测试点,赞内容测试点赞,内容测试点赞内容"
+                        android:text="     周杰伦，王大师"
                         android:textColor="@color/praise_color"
                         android:textSize="14sp" />
                 </FrameLayout>

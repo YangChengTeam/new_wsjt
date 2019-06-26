@@ -1,23 +1,46 @@
 package com.yc.wsjt.bean;
 
-import java.util.List;
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
 /**
  * Created by zhangdinghui on 2019/5/31.
  */
+@Entity(tableName = "circle_info", indices = {@Index(value = {"id"}, unique = true)})
 public class CircleInfo {
-    private String id;
-    private String userName;
-    private int userHead;
-    private String content;
-    private List<String> circleImages;
 
-    public String getId() {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    public String deviceId;
+
+    private String userName;
+
+    private String userHead;
+
+    private String content;
+
+    private String circleImages;//通过#号拼接图片地址
+
+    private String sendDate;
+
+    private String address;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getUserName() {
@@ -28,11 +51,11 @@ public class CircleInfo {
         this.userName = userName;
     }
 
-    public int getUserHead() {
+    public String getUserHead() {
         return userHead;
     }
 
-    public void setUserHead(int userHead) {
+    public void setUserHead(String userHead) {
         this.userHead = userHead;
     }
 
@@ -44,11 +67,27 @@ public class CircleInfo {
         this.content = content;
     }
 
-    public List<String> getCircleImages() {
+    public String getCircleImages() {
         return circleImages;
     }
 
-    public void setCircleImages(List<String> circleImages) {
+    public void setCircleImages(String circleImages) {
         this.circleImages = circleImages;
+    }
+
+    public String getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(String sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

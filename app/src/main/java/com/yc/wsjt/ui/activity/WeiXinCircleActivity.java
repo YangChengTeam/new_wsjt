@@ -1,25 +1,34 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.PhoneUtils;
+import com.blankj.utilcode.util.SizeUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.daasuu.bl.ArrowDirection;
+import com.daasuu.bl.BubbleLayout;
+import com.daasuu.bl.BubblePopupHelper;
 import com.google.android.material.appbar.AppBarLayout;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.CircleInfo;
+import com.yc.wsjt.bean.CircleBaseSetInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.CircleListAdapter;
 import com.yc.wsjt.ui.custom.AppBarStateChangeListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.yc.wsjt.ui.custom.RoundedCornersTransformation;
 
 import butterknife.BindView;
 
@@ -40,10 +49,23 @@ public class WeiXinCircleActivity extends BaseActivity {
     @BindView(R.id.iv_take_phone)
     ImageView mTakePhoneIv;
 
+    @BindView(R.id.iv_circle_cover)
+    ImageView mCircleCoverIv;
+
+    @BindView(R.id.tv_role_name)
+    TextView mRoleNameTv;
+
+    @BindView(R.id.iv_role_head)
+    ImageView mRoleHeadIv;
+
     @BindView(R.id.circle_list)
     RecyclerView circleListView;
 
     CircleListAdapter circleListAdapter;
+
+    CircleBaseSetInfo circleBaseSetInfo;
+
+    private PopupWindow popupWindow;
 
     @Override
     protected int getLayoutId() {
@@ -63,6 +85,9 @@ public class WeiXinCircleActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        final BubbleLayout bubbleLayout = (BubbleLayout) LayoutInflater.from(this).inflate(R.layout.parse_toast_view, null);
+        popupWindow = BubblePopupHelper.create(this, bubbleLayout);
+
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
@@ -79,19 +104,46 @@ public class WeiXinCircleActivity extends BaseActivity {
             }
         });
 
-        List<CircleInfo> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new CircleInfo());
-        }
-
-        circleListAdapter = new CircleListAdapter(this, list);
+        circleListAdapter = new CircleListAdapter(this, null);
         circleListView.setLayoutManager(new LinearLayoutManager(this));
         circleListView.setAdapter(circleListAdapter);
+        circleListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId() == R.id.iv_moments) {
+                    int[] location = new int[2];
+                    view.getLocationInWindow(location);
+                    bubbleLayout.setArrowDirection(ArrowDirection.RIGHT);
+                    popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
+                }
+            }
+        });
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (mAppDatabase.circleBaseSetInfoDao().getItemById(PhoneUtils.getDeviceId()) != null) {
+                circleBaseSetInfo = mAppDatabase.circleBaseSetInfoDao().getItemById(PhoneUtils.getDeviceId());
+                RequestOptions options = new RequestOptions();
+                options.transform(new RoundedCornersTransformation(SizeUtils.dp2px(8), 0));
+                Glide.with(this).load(circleBaseSetInfo.getRoleHead()).apply(options).into(mRoleHeadIv);
+                Glide.with(this).load(circleBaseSetInfo.getCoverImage()).into(mCircleCoverIv);
+                mRoleNameTv.setText(circleBaseSetInfo.getRoleName());
+            }
+
+            if (mAppDatabase.circleInfoDao().getListByDId(PhoneUtils.getDeviceId()) != null) {
+                circleListAdapter.setNewData(mAppDatabase.circleInfoDao().getListByDId(PhoneUtils.getDeviceId()));
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeState(boolean expand) {

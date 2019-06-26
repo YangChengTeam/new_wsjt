@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_role_head"
-                android:text="未知用户"
+                android:text="请选择"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
 
@@ -185,7 +185,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_unread_count_icon"
-                android:text="1"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
 

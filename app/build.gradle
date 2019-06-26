@@ -132,6 +132,7 @@ dependencies {
     implementation 'io.github.rockerhieu:emojicon:1.4.2'
     implementation 'com.github.Othershe:CombineBitmap:1.0.5'
     implementation 'com.github.lygttpod:SuperTextView:2.2.3'
+    implementation 'com.daasuu:BubbleLayout:1.2.0'
     implementation files('libs/open_sdk_r5756.jar')
     implementation files('libs/umeng-analytics-7.5.4.jar')
     implementation files('libs/umeng-common-1.5.4.jar')

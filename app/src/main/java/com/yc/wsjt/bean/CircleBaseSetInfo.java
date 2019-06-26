@@ -7,11 +7,13 @@ import androidx.room.PrimaryKey;
 /**
  * Created by zhangdinghui on 2019/5/16.
  */
-@Entity(tableName = "circle_setting_info", indices = {@Index(value = {"id"}, unique = true)})
-public class CircleSettingInfo {
+@Entity(tableName = "circle_base_set_info", indices = {@Index(value = {"id"}, unique = true)})
+public class CircleBaseSetInfo {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
+
+    public String deviceId;
 
     private String roleName;
 
@@ -23,7 +25,7 @@ public class CircleSettingInfo {
 
     private String unreadUserHead;
 
-    private int unreadCount;
+    private String unreadCount;
 
     public int getId() {
         return id;
@@ -31,6 +33,14 @@ public class CircleSettingInfo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getRoleName() {
@@ -73,11 +83,11 @@ public class CircleSettingInfo {
         this.unreadUserHead = unreadUserHead;
     }
 
-    public int getUnreadCount() {
+    public String getUnreadCount() {
         return unreadCount;
     }
 
-    public void setUnreadCount(int unreadCount) {
+    public void setUnreadCount(String unreadCount) {
         this.unreadCount = unreadCount;
     }
 }

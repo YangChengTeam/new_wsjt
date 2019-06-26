@@ -45,7 +45,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_send_user_head"
-                android:text="截图神器"
+                android:text="请选择"
                 android:textColor="@color/edit_color"
                 android:textSize="16sp" />
 
@@ -73,27 +73,36 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:minHeight="170dp"
+            android:minHeight="200dp"
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/et_circle_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginBottom="72dp"
                 android:background="@null"
                 android:hint="请输入消息内容"
                 android:padding="12dp"
-                android:layout_marginBottom="72dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/iv_add"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="12dp"
-                android:src="@mipmap/add_icon" />
+                android:layout_marginBottom="12dp"
+                android:gravity="center">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/circle_image_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"></androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
         </FrameLayout>
 
         <LinearLayout
@@ -102,7 +111,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/layout_send_time"
+                android:id="@+id/layout_publish"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="10dp"
@@ -140,7 +149,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/layout_receive_time"
+                android:id="@+id/layout_address"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="1dp"
