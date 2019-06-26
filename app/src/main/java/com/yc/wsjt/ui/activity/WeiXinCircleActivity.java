@@ -1,5 +1,6 @@
 package com.yc.wsjt.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -35,7 +37,7 @@ import butterknife.BindView;
 /**
  * Created by zhangdinghui on 2019/5/30.
  */
-public class WeiXinCircleActivity extends BaseActivity {
+public class WeiXinCircleActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.appbar)
     AppBarLayout appBarLayout;
@@ -67,6 +69,12 @@ public class WeiXinCircleActivity extends BaseActivity {
 
     private PopupWindow popupWindow;
 
+    private TextView mPraiseTv;
+
+    private TextView mCommentTv;
+
+    private int circleId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_circle;
@@ -85,8 +93,15 @@ public class WeiXinCircleActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        final BubbleLayout bubbleLayout = (BubbleLayout) LayoutInflater.from(this).inflate(R.layout.parse_toast_view, null);
+        View popView = LayoutInflater.from(this).inflate(R.layout.parse_toast_view, null);
+        mPraiseTv = popView.findViewById(R.id.tv_praise);
+        mCommentTv = popView.findViewById(R.id.tv_comment);
+
+        BubbleLayout bubbleLayout = (BubbleLayout) popView;
         popupWindow = BubblePopupHelper.create(this, bubbleLayout);
+
+        mPraiseTv.setOnClickListener(this);
+        mCommentTv.setOnClickListener(this);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
@@ -111,10 +126,11 @@ public class WeiXinCircleActivity extends BaseActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.iv_moments) {
+                    circleId = circleListAdapter.getData().get(position).getId();
                     int[] location = new int[2];
                     view.getLocationInWindow(location);
                     bubbleLayout.setArrowDirection(ArrowDirection.RIGHT);
-                    popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
+                    popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0] - SizeUtils.dp2px(200), location[1] - view.getHeight());
                 }
             }
         });
@@ -162,4 +178,22 @@ public class WeiXinCircleActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tv_praise) {
+            ToastUtils.showLong("点赞");
+            Intent intent = new Intent(this, AddPraiseActivity.class);
+            intent.putExtra("circle_id", circleId);
+            startActivity(intent);
+        }
+
+        if (v.getId() == R.id.tv_comment) {
+            ToastUtils.showLong("评论");
+        }
+    }
 }

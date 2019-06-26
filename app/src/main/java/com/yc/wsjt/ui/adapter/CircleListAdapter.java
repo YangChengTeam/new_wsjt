@@ -1,7 +1,10 @@
 package com.yc.wsjt.ui.adapter;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +38,15 @@ public class CircleListAdapter extends BaseQuickAdapter<CircleInfo, BaseViewHold
     protected void convert(BaseViewHolder holder, CircleInfo circleInfo) {
 
         holder.setText(R.id.tv_user_name, circleInfo.getUserName())
-                .setText(R.id.tv_circle_content, circleInfo.getContent());
+                .setText(R.id.tv_circle_content, circleInfo.getContent())
+                .setText(R.id.tv_praise_info, "     " + circleInfo.getPraiseInfo());
 
+        FrameLayout praiseLayout = holder.getView(R.id.layout_praise);
+        LinearLayout praiseCommentLayout = holder.getView(R.id.layout_praise_comment);
+        if (StringUtils.isEmpty(circleInfo.getPraiseInfo())) {
+            praiseLayout.setVisibility(View.GONE);
+            praiseCommentLayout.setVisibility(View.GONE);
+        }
         RequestOptions options = new RequestOptions();
         options.transform(new RoundedCornersTransformation(SizeUtils.dp2px(3), 0));
         Glide.with(mContext).load(circleInfo.getUserHead()).apply(options).into((ImageView) holder.getView(R.id.iv_user_head));
@@ -50,8 +60,11 @@ public class CircleListAdapter extends BaseQuickAdapter<CircleInfo, BaseViewHold
         }
 
         FriendsCircleImageLayout imageLayout = holder.getView(R.id.image_list);
-        imageLayout.setImageUrls(imagesList);
-
+        imageLayout.setVisibility(View.GONE);
+        //imageLayout.setImageUrls(imagesList);
+        if(imagesList != null && imagesList.size() == 0){
+            imageLayout.setVisibility(View.GONE);
+        }
         //评论列表
         List<CommentInfo> list = new ArrayList<>();
         for (int i = 0; i < 6; i++) {

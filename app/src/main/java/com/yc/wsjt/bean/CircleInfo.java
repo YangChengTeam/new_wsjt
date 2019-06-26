@@ -27,6 +27,8 @@ public class CircleInfo {
 
     private String address;
 
+    private String praiseInfo;
+
     public int getId() {
         return id;
     }
@@ -89,5 +91,13 @@ public class CircleInfo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPraiseInfo() {
+        return praiseInfo;
+    }
+
+    public void setPraiseInfo(String praiseInfo) {
+        this.praiseInfo = praiseInfo;
     }
 }

@@ -33,4 +33,7 @@ public interface CircleInfoDao {
 
     @Query("SELECT * from circle_info WHERE deviceId= :did ")
     List<CircleInfo> getListByDId(String did);
+
+    @Query("UPDATE circle_info SET praiseInfo = :praiseInfo WHERE id = :id")
+    void updatePraiseInfo(String praiseInfo, int id);
 }

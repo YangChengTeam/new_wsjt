@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:visibility="gone"
                 android:layout_marginBottom="12dp"></com.yc.wsjt.ui.custom.FriendsCircleImageLayout>
 
             <LinearLayout
@@ -97,12 +98,14 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/layout_praise_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/moments_bg"
                 android:orientation="vertical">
 
                 <FrameLayout
+                    android:id="@+id/layout_praise"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -116,6 +119,7 @@
                         android:src="@mipmap/moments_praise_blue" />
 
                     <TextView
+                        android:id="@+id/tv_praise_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="top"
@@ -123,7 +127,6 @@
                         android:paddingLeft="4dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="6dp"
-                        android:text="     周杰伦，王大师"
                         android:textColor="@color/praise_color"
                         android:textSize="14sp" />
                 </FrameLayout>
