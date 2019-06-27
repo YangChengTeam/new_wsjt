@@ -20,11 +20,14 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.MessageEvent;
 import com.yc.wsjt.bean.UserInfo;
 import com.yc.wsjt.bean.UserInfoRet;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.UserInfoPresenterImp;
 import com.yc.wsjt.view.UserInfoView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -132,6 +135,10 @@ public class LoginDialog extends Dialog implements View.OnClickListener, UserInf
                 App.getApp().setmUserInfo(userInfo);
                 App.getApp().setLogin(true);
                 SPUtils.getInstance().put(Constants.USER_INFO, JSONObject.toJSONString(tData.getData()));
+
+                MessageEvent event = new MessageEvent();
+                event.setLoginSuccess(true);
+                EventBus.getDefault().post(event);
             }
         } else {
             //ToastUtils.showLong(StringUtils.isEmpty(tData.getMsg()) ? "登录失败" : tData.getMsg());

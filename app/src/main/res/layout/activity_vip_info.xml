@@ -45,12 +45,12 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:text="2342342134"
                     android:textColor="@color/gray1"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -79,6 +79,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_over_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -111,100 +112,10 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/vip_list"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:text="38元/3个月"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:background="@drawable/renew_bg"
-                    android:text="立即续费"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@color/line_color"></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:text="58元/6个月"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:background="@drawable/renew_bg"
-                    android:text="立即续费"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@color/line_color"></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:text="88元/12个月"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:background="@drawable/renew_bg"
-                    android:text="立即续费"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </RelativeLayout>
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
         <LinearLayout

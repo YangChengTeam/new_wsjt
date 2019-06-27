@@ -8,6 +8,7 @@ import com.yc.wsjt.bean.AudioMessage;
 import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.CircleBaseSetInfo;
 import com.yc.wsjt.bean.CircleInfo;
+import com.yc.wsjt.bean.CommentInfo;
 import com.yc.wsjt.bean.EmojiMessage;
 import com.yc.wsjt.bean.FriendInfo;
 import com.yc.wsjt.bean.GroupMessage;
@@ -32,6 +33,7 @@ import com.yc.wsjt.daos.AudioMessageDao;
 import com.yc.wsjt.daos.ChatDataInfoDao;
 import com.yc.wsjt.daos.CircleBaseSetInfoDao;
 import com.yc.wsjt.daos.CircleInfoDao;
+import com.yc.wsjt.daos.CommentInfoDao;
 import com.yc.wsjt.daos.EmojiMessageDao;
 import com.yc.wsjt.daos.FriendInfoDao;
 import com.yc.wsjt.daos.GroupMessageDao;
@@ -80,7 +82,8 @@ import com.yc.wsjt.ui.activity.QunChatInfo;
         RoleInfo.class,
         RedRecordInfo.class,
         CircleBaseSetInfo.class,
-        CircleInfo.class}, version = 1, exportSchema = false)
+        CircleInfo.class,
+        CommentInfo.class}, version = 1, exportSchema = false)
 
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -134,4 +137,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CircleBaseSetInfoDao circleBaseSetInfoDao();
 
     public abstract CircleInfoDao circleInfoDao();
+
+    public abstract CommentInfoDao commentInfoDao();
 }

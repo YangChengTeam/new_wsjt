@@ -51,6 +51,16 @@ public class App extends Application {
 
     private List<WeixinQunChatInfo> qunChatList;
 
+    private boolean isOpenVip;
+
+    public boolean isOpenVip() {
+        return isOpenVip;
+    }
+
+    public void setOpenVip(boolean openVip) {
+        isOpenVip = openVip;
+    }
+
     public static Context getContext() {
         return applicationContext;
     }

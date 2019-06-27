@@ -22,7 +22,13 @@ public class WeiXinInfoAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHolde
 
     private boolean isShowAdd;
 
-    public WeiXinInfoAdapter(Context context, List<QuickInfo> datas, int tempWidth,boolean showAdd) {
+    private boolean isOpenVip;
+
+    public void setOpenVip(boolean openVip) {
+        isOpenVip = openVip;
+    }
+
+    public WeiXinInfoAdapter(Context context, List<QuickInfo> datas, int tempWidth, boolean showAdd) {
         super(R.layout.quick_weixin_item, datas);
         this.mContext = context;
         this.tempWidth = tempWidth;
@@ -38,6 +44,15 @@ public class WeiXinInfoAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHolde
         holder.setText(R.id.tv_weixin_info_name, quickInfo.getName());
         Glide.with(mContext).load(Constants.BASE_IMAGE_URL + quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_quick));
         holder.addOnClickListener(R.id.iv_add_quick);
-        holder.setVisible(R.id.iv_add_quick,isShowAdd);
+        holder.setVisible(R.id.iv_add_quick, isShowAdd);
+        if (isShowAdd) {
+            holder.setVisible(R.id.iv_is_vip, false);
+        } else {
+            if (isOpenVip) {
+                holder.setVisible(R.id.iv_is_vip, false);
+            } else {
+                holder.setVisible(R.id.iv_is_vip, quickInfo.getVip() == 0 ? false : true);
+            }
+        }
     }
 }

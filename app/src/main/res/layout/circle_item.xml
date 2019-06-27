@@ -37,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:minHeight="32dp"
                 android:textColor="@color/black4"
                 android:textSize="14sp" />
 
@@ -44,20 +45,19 @@
                 android:id="@+id/image_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:visibility="gone"
-                android:layout_marginBottom="12dp"></com.yc.wsjt.ui.custom.FriendsCircleImageLayout>
+                android:layout_marginBottom="12dp"
+                android:visibility="gone"></com.yc.wsjt.ui.custom.FriendsCircleImageLayout>
 
             <LinearLayout
+                android:id="@+id/layout_address"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:gravity="left|center">
 
                 <TextView
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:textColor="@color/color_blue"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -85,9 +85,9 @@
                     android:layout_marginLeft="12dp"
                     android:layout_toRightOf="@+id/tv_publish_date"
                     android:text="拼多多"
-                    android:visibility="gone"
                     android:textColor="@color/gray1"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/iv_moments"
@@ -132,14 +132,18 @@
                 </FrameLayout>
 
                 <View
+                    android:id="@+id/comment_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/line_color2"></View>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/comment_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:background="@color/pay_bottom_color"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

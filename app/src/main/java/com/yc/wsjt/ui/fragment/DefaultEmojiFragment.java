@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.EmojiInfoRet;
+import com.yc.wsjt.common.Constants;
+import com.yc.wsjt.presenter.EmojiInfoPresenterImp;
 import com.yc.wsjt.ui.activity.ChatEmojiActivity;
 import com.yc.wsjt.ui.adapter.EmojiListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.yc.wsjt.view.EmojiInfoView;
 
 import butterknife.BindView;
 
@@ -20,12 +21,14 @@ import butterknife.BindView;
  * Created by admin on 2017/4/20.
  */
 
-public class DefaultEmojiFragment extends BaseFragment {
+public class DefaultEmojiFragment extends BaseFragment implements EmojiInfoView {
 
     @BindView(R.id.def_emoji_list)
     RecyclerView mEmojiListView;
 
     EmojiListAdapter emojiListAdapter;
+
+    EmojiInfoPresenterImp emojiInfoPresenterImp;
 
     @Override
     protected int getContentView() {
@@ -34,11 +37,8 @@ public class DefaultEmojiFragment extends BaseFragment {
 
     @Override
     public void initVars() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            list.add(i + "A");
-        }
-        emojiListAdapter = new EmojiListAdapter(getActivity(), list);
+
+        emojiListAdapter = new EmojiListAdapter(getActivity(), null);
         mEmojiListView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         mEmojiListView.setAdapter(emojiListAdapter);
 
@@ -65,7 +65,8 @@ public class DefaultEmojiFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-
+        emojiInfoPresenterImp = new EmojiInfoPresenterImp(this, getActivity());
+        emojiInfoPresenterImp.getEmojiList();
     }
 
     @Override
@@ -73,4 +74,27 @@ public class DefaultEmojiFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void dismissProgress() {
+
+    }
+
+    @Override
+    public void loadDataSuccess(EmojiInfoRet tData) {
+        if (tData != null && tData.getCode() == Constants.SUCCESS) {
+            if (tData.getData() != null && tData.getData().size() > 0) {
+                emojiListAdapter.setNewData(tData.getData());
+            }
+        }
+    }
+
+    @Override
+    public void loadDataError(Throwable throwable) {
+
+    }
 }

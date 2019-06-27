@@ -81,6 +81,8 @@ public class Constants {
 
     public static final String LOCAL_GIF_URL = BASE_URL + "gifs/";
 
+    public static final String PAY_URL = "http://wsjt.zhuoyi51.com/api/pay/index";
+
     //public static final String BASE_URL = "http://192.168.9.97:8080/SuperProject/zdh/";
 
     public static final String WHETHER_URL = "http://api.avatardata.cn/";

@@ -19,9 +19,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -48,13 +45,8 @@ public class MyEmojiFragment extends BaseFragment {
 
     @Override
     public void initVars() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            list.add(i + "");
-        }
-
         mEmojiListView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        emojiListAdapter = new EmojiListAdapter(getActivity(), list);
+        emojiListAdapter = new EmojiListAdapter(getActivity(), null);
         mEmojiListView.setAdapter(emojiListAdapter);
 
         emojiListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -76,7 +68,7 @@ public class MyEmojiFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         Logger.i("onMessageEvent --->" + event.getMessageContent() + "---" + event.getMessageType());
-        emojiListAdapter.addData(0, event.getMessageContent());
+        //emojiListAdapter.addData(0, event.getMessageContent());
     }
 
     @Override

@@ -54,40 +54,10 @@
             android:background="@color/white"
             android:gravity="center">
 
-            <TextView
-                android:id="@+id/tv_three_month"
-                android:layout_width="76dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/feed_selected"
-                android:gravity="center"
-                android:text="3个月VIP\n38元"
-                android:textColor="@color/feed_line_select_color"
-                android:textSize="14sp"></TextView>
-
-            <TextView
-                android:id="@+id/tv_half_year"
-                android:layout_width="76dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:background="@drawable/feed_normal"
-                android:gravity="center"
-                android:text="半年VIP\n58元"
-                android:textColor="@color/tab_tv_normal"
-                android:textSize="14sp"></TextView>
-
-            <TextView
-                android:id="@+id/tv_one_year"
-                android:layout_width="76dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:background="@drawable/feed_normal"
-                android:gravity="center"
-                android:text="一年VIP\n88元"
-                android:textColor="@color/tab_tv_normal"
-                android:textSize="14sp"></TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/vip_list"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"></androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
         <LinearLayout

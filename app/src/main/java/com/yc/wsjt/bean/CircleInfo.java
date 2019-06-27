@@ -1,8 +1,11 @@
 package com.yc.wsjt.bean;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import java.util.List;
 
 /**
  * Created by zhangdinghui on 2019/5/31.
@@ -28,6 +31,9 @@ public class CircleInfo {
     private String address;
 
     private String praiseInfo;
+
+    @Ignore
+    private List<CommentInfo> commentInfos;
 
     public int getId() {
         return id;
@@ -99,5 +105,13 @@ public class CircleInfo {
 
     public void setPraiseInfo(String praiseInfo) {
         this.praiseInfo = praiseInfo;
+    }
+
+    public List<CommentInfo> getCommentInfos() {
+        return commentInfos;
+    }
+
+    public void setCommentInfos(List<CommentInfo> commentInfos) {
+        this.commentInfos = commentInfos;
     }
 }

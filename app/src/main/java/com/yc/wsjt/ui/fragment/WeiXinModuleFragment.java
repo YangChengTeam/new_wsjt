@@ -54,7 +54,7 @@ public class WeiXinModuleFragment extends BaseFragment {
         DividerGridItemDecoration.Builder builder = new DividerGridItemDecoration.Builder(getContext(), LinearLayoutManager.VERTICAL, 3);
         builder.setShowOtherStyle(true).setDivider(R.drawable.bg_divider_list);
         itemDecoration = builder.build();
-        //weixinListView.addItemDecoration(itemDecoration);
+        weixinListView.addItemDecoration(itemDecoration);
         weixinListView.setLayoutManager(new GridLayoutManager(getActivity(), 3, RecyclerView.VERTICAL, false));
 
         weiXinInfoAdapter = new WeiXinInfoAdapter(getActivity(), App.getApp().getModuleInfoWrapper().getWx(), ScreenUtils.getScreenWidth() / 3,true);

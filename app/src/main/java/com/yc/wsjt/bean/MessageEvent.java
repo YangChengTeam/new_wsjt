@@ -7,6 +7,8 @@ public class MessageEvent {
     private String messageContent;
     private QuickInfo addQuickInfo;
 
+    private boolean loginSuccess;
+
     private ModuleInfoWrapper moduleInfoWrapper;
 
     public int getMessageType() {
@@ -47,5 +49,13 @@ public class MessageEvent {
 
     public void setAddQuickInfo(QuickInfo addQuickInfo) {
         this.addQuickInfo = addQuickInfo;
+    }
+
+    public boolean isLoginSuccess() {
+        return loginSuccess;
+    }
+
+    public void setLoginSuccess(boolean loginSuccess) {
+        this.loginSuccess = loginSuccess;
     }
 }

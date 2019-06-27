@@ -19,27 +19,53 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_praise"
+        <LinearLayout
+            android:id="@+id/layout_praise"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="赞"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/moments_praise" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="赞"
+                android:layout_marginLeft="4dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="0.5dp"
             android:layout_height="30dp"
             android:background="@color/day_color"></View>
 
-        <TextView
-            android:id="@+id/tv_comment"
+        <LinearLayout
+            android:id="@+id/layout_comment"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="评论"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/moments_comments" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="评论"
+                android:layout_marginLeft="4dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
 </com.daasuu.bl.BubbleLayout>

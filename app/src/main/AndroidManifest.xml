@@ -147,6 +147,7 @@
         <activity android:name=".ui.activity.QunHongBaoActivity"></activity>
         <activity android:name=".ui.activity.CircleBaseSetActivity"></activity>
         <activity android:name=".ui.activity.AddPraiseActivity"></activity>
+        <activity android:name=".ui.activity.AddCommentActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

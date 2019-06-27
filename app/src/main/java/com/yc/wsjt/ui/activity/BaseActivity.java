@@ -11,6 +11,7 @@ import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.common.AppDatabase;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.ButterKnife;
 
@@ -23,6 +24,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Context context;
     public Presenter presenter;
     public AppDatabase mAppDatabase;
+
+    VipPayTypeDialog vipPayTypeDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +34,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         setStatusBar();
         context = this;
         ButterKnife.bind(this);
-        mAppDatabase = ((App)getApplication()).getAppDatabase();
+        mAppDatabase = ((App) getApplication()).getAppDatabase();
+        vipPayTypeDialog = new VipPayTypeDialog(this, R.style.custom_dialog);
         initVars();
         initViews();
         initData(savedInstanceState);
     }
 
     public void setStatusBar() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.colorPrimary),0);
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.colorPrimary), 0);
     }
 
     @Override
@@ -76,4 +81,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initViews();
 
     protected abstract void initData(Bundle savedInstanceState);
+
 }

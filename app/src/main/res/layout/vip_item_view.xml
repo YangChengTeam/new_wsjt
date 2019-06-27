@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_vip_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/layout_vip"
+        android:layout_width="76dp"
+        android:layout_height="60dp"
+        android:background="@drawable/feed_normal"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_vip_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="0个月"
+            android:textColor="@color/feed_line_select_color"
+            android:textSize="14sp"></TextView>
+
+        <TextView
+            android:id="@+id/tv_vip_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="0.00元"
+            android:textColor="@color/feed_line_select_color"
+            android:textSize="14sp"></TextView>
+    </LinearLayout>
+</LinearLayout>

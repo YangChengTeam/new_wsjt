@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.PhoneUtils;
 import com.blankj.utilcode.util.SizeUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,10 +27,14 @@ import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.CircleBaseSetInfo;
+import com.yc.wsjt.bean.CircleInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.CircleListAdapter;
 import com.yc.wsjt.ui.custom.AppBarStateChangeListener;
 import com.yc.wsjt.ui.custom.RoundedCornersTransformation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -69,9 +73,9 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
 
     private PopupWindow popupWindow;
 
-    private TextView mPraiseTv;
+    private LinearLayout mPraiseLayout;
 
-    private TextView mCommentTv;
+    private LinearLayout mCommentLayout;
 
     private int circleId;
 
@@ -94,14 +98,14 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initViews() {
         View popView = LayoutInflater.from(this).inflate(R.layout.parse_toast_view, null);
-        mPraiseTv = popView.findViewById(R.id.tv_praise);
-        mCommentTv = popView.findViewById(R.id.tv_comment);
+        mPraiseLayout = popView.findViewById(R.id.layout_praise);
+        mCommentLayout = popView.findViewById(R.id.layout_comment);
 
         BubbleLayout bubbleLayout = (BubbleLayout) popView;
         popupWindow = BubblePopupHelper.create(this, bubbleLayout);
 
-        mPraiseTv.setOnClickListener(this);
-        mCommentTv.setOnClickListener(this);
+        mPraiseLayout.setOnClickListener(this);
+        mCommentLayout.setOnClickListener(this);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
@@ -155,7 +159,12 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
             }
 
             if (mAppDatabase.circleInfoDao().getListByDId(PhoneUtils.getDeviceId()) != null) {
-                circleListAdapter.setNewData(mAppDatabase.circleInfoDao().getListByDId(PhoneUtils.getDeviceId()));
+                List<CircleInfo> tempList = new ArrayList<>();
+                for (CircleInfo circleInfo : mAppDatabase.circleInfoDao().getListByDId(PhoneUtils.getDeviceId())) {
+                    circleInfo.setCommentInfos(mAppDatabase.commentInfoDao().getListByCId(circleInfo.getId()));
+                    tempList.add(circleInfo);
+                }
+                circleListAdapter.setNewData(tempList);
             }
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -185,15 +194,16 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
      */
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.tv_praise) {
-            ToastUtils.showLong("点赞");
+        if (v.getId() == R.id.layout_praise) {
             Intent intent = new Intent(this, AddPraiseActivity.class);
             intent.putExtra("circle_id", circleId);
             startActivity(intent);
         }
 
-        if (v.getId() == R.id.tv_comment) {
-            ToastUtils.showLong("评论");
+        if (v.getId() == R.id.layout_comment) {
+            Intent intent = new Intent(this, AddCommentActivity.class);
+            intent.putExtra("circle_id", circleId);
+            startActivity(intent);
         }
     }
 }

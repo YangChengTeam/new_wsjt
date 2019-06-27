@@ -19,7 +19,7 @@ public class QuickInfo {
     private int sort;
     private int status;
     private String recommond;
-    private String vip;
+    private int vip;
     private int localImg;
 
     private Long addDate;
@@ -83,11 +83,11 @@ public class QuickInfo {
         this.recommond = recommond;
     }
 
-    public String getVip() {
+    public int getVip() {
         return vip;
     }
 
-    public void setVip(String vip) {
+    public void setVip(int vip) {
         this.vip = vip;
     }
 

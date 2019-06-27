@@ -21,7 +21,7 @@ public class UserInfo {
 
     private String face;
 
-    private int status;
+    private int status;//会员状态
 
     @SerializedName("reg_type")
     private int regType;
@@ -30,6 +30,9 @@ public class UserInfo {
     private String deviceId;
 
     private String avatar;
+
+    @SerializedName("expires_time")
+    private Long expiresTime;
 
     public String getId() {
         return id;
@@ -109,5 +112,13 @@ public class UserInfo {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Long getExpiresTime() {
+        return expiresTime;
+    }
+
+    public void setExpiresTime(Long expiresTime) {
+        this.expiresTime = expiresTime;
     }
 }

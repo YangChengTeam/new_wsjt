@@ -55,20 +55,36 @@ public class WeiXinModuleActivity extends BaseActivity {
         weiXinInfoAdapter = new WeiXinInfoAdapter(this, App.getApp().getModuleInfoWrapper() != null ? App.getApp().getModuleInfoWrapper().getWx() : null, ScreenUtils.getScreenWidth() / 3, false);
         weixinListView.setAdapter(weiXinInfoAdapter);
 
-        //Logger.i(JSON.toJSONString(App.getApp().getModuleInfoWrapper().getWx()));
+        //登录过，并且是VIP用户
+        if (App.getApp().isLogin && App.getApp().mUserInfo.getStatus() > 1) {
+            App.getApp().setOpenVip(true);
+        }
+
+        weiXinInfoAdapter.setOpenVip(App.getApp().isOpenVip());
 
         weiXinInfoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                boolean isUse = true;
+                //判断是否是VIP用户，以及功能模块是否是免费使用
+                if (weiXinInfoAdapter.getData().get(position).getVip() == 1 && !App.getApp().isOpenVip()) {
+                    isUse = false;
+                }
 
                 int mid = weiXinInfoAdapter.getData().get(position).getId();
 
                 if (mid == 1) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeixindanliaoActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 2) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinMoneyActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 3) {
@@ -77,59 +93,101 @@ public class WeiXinModuleActivity extends BaseActivity {
                 }
                 if (mid == 4) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeixinqunliaoActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                     //群聊
                 }
                 if (mid == 5) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, RedPackageActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 6) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, TransferActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 7) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, ExtractSetActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 8) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, MyWalletActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 9) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, MoneyDetailListActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 10) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, NewFriendListActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 11) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinCircleSetActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 12) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, ChatVideoSetActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 13) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, ChatVoiceSetActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 14) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, PaySuccessSetActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 15) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinPayListActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 16) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinBillActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 17) {
                     Intent intent = new Intent(WeiXinModuleActivity.this, WeiXinHomeActivity.class);
+                    if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
+                        intent.putExtra("is_use", isUse);
+                    }
                     startActivity(intent);
                 }
                 if (mid == 18) {
@@ -144,4 +202,5 @@ public class WeiXinModuleActivity extends BaseActivity {
     protected void initData(Bundle savedInstanceState) {
 
     }
+
 }

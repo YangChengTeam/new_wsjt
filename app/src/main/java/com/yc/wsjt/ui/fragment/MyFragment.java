@@ -1,11 +1,13 @@
 package com.yc.wsjt.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSON;
@@ -21,6 +23,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.MessageEvent;
 import com.yc.wsjt.bean.UserInfo;
 import com.yc.wsjt.bean.UserInfoRet;
 import com.yc.wsjt.common.Constants;
@@ -35,6 +38,10 @@ import com.yc.wsjt.ui.custom.LoginDialog;
 import com.yc.wsjt.ui.custom.OpenVipDialog;
 import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 import com.yc.wsjt.view.UserInfoView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,6 +64,9 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     @BindView(R.id.tv_user_id)
     TextView mUserIdTv;
 
+    @BindView(R.id.tv_state)
+    TextView mVipStateTv;
+
     @BindView(R.id.fake_status_bar)
     View mFakeView;
 
@@ -66,11 +76,16 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
     VipPayTypeDialog vipPayTypeDialog;
 
-    private boolean isLogin = false;
-
     private UserInfo mUserInfo;
 
     private UserInfoPresenterImp userInfoPresenterImp;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
 
     @Override
     protected int getContentView() {
@@ -108,20 +123,49 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     @Override
     public void onResume() {
         super.onResume();
-
+        Logger.i("myfragment ---onResume");
         //如果登录过，从本地获取数据
-        if (!StringUtils.isEmpty(SPUtils.getInstance().getString(Constants.USER_INFO))) {
-            Logger.i(SPUtils.getInstance().getString(Constants.USER_INFO));
-            mUserInfo = JSON.parseObject(SPUtils.getInstance().getString(Constants.USER_INFO), new TypeReference<UserInfo>() {
-            });
-        }
-
+        initUserInfo();
         if (mUserInfo != null) {
             userInfoPresenterImp.userInfo(mUserInfo);
         } else {
             RequestOptions options = new RequestOptions();
             options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
             Glide.with(getActivity()).load(R.mipmap.no_login_def).apply(options).into(mUserHeadIv);
+        }
+    }
+
+    public void initUserInfo() {
+        if (!StringUtils.isEmpty(SPUtils.getInstance().getString(Constants.USER_INFO))) {
+            Logger.i(SPUtils.getInstance().getString(Constants.USER_INFO));
+            mUserInfo = JSON.parseObject(SPUtils.getInstance().getString(Constants.USER_INFO), new TypeReference<UserInfo>() {
+            });
+            App.getApp().isLogin = true;
+            if (mUserInfo != null) {
+                mVipStateTv.setText(mUserInfo.getStatus() == 2 ? "已开通" : "试用会员");
+                if (mUserInfo.getStatus() == 1) {
+                    mVipStateTv.setText("未开通");
+                } else {
+                    mVipStateTv.setText(mUserInfo.getStatus() == 2 ? "已开通" : "试用会员");
+                }
+                //设置用户信息
+                mNickNameTv.setText(StringUtils.isEmpty(mUserInfo.getNickName()) ? "" : mUserInfo.getNickName());
+                mUserIdTv.setText(StringUtils.isEmpty(mUserInfo.getId()) ? "用户ID：xxxx" : "用户ID：" + mUserInfo.getId());
+
+                RequestOptions options = new RequestOptions();
+                options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
+                Glide.with(getActivity()).load(Constants.BASE_IMAGE_URL + mUserInfo.getFace()).apply(options).into(mUserHeadIv);
+            } else {
+                mVipStateTv.setText("未开通");
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (event != null && event.isLoginSuccess()) {
+            Logger.i("login success--->");
+            initUserInfo();
         }
     }
 
@@ -134,7 +178,6 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     protected void initFragmentConfig() {
 
     }
-
 
     @OnClick(R.id.layout_feed_back)
     void feedBack() {
@@ -180,12 +223,18 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
     @OnClick(R.id.layout_vip_info)
     void openVipView() {
-        if (isLogin) {
-            Intent intent = new Intent(getActivity(), VipInfoActivity.class);
-            startActivity(intent);
+        if (App.getApp().isLogin && mUserInfo != null) {
+            if (mUserInfo.getStatus() > 1) {
+                Intent intent = new Intent(getActivity(), VipInfoActivity.class);
+                startActivity(intent);
+            } else {
+                if (openVipDialog != null && !openVipDialog.isShowing()) {
+                    openVipDialog.show();
+                }
+            }
         } else {
-            if (openVipDialog != null && !openVipDialog.isShowing()) {
-                openVipDialog.show();
+            if (loginDialog != null && !loginDialog.isShowing()) {
+                loginDialog.show();
             }
         }
     }
@@ -212,6 +261,7 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
         if (tData != null && tData.getCode() == Constants.SUCCESS) {
             if (tData instanceof UserInfoRet) {
+
                 App.getApp().setmUserInfo(tData.getData());
                 App.getApp().setLogin(true);
                 SPUtils.getInstance().put(Constants.USER_INFO, JSONObject.toJSONString(tData.getData()));
@@ -221,7 +271,7 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
                 RequestOptions options = new RequestOptions();
                 options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
-                Glide.with(getActivity()).load(tData.getData().getFace()).apply(options).into(mUserHeadIv);
+                Glide.with(getActivity()).load(Constants.BASE_IMAGE_URL + tData.getData().getFace()).apply(options).into(mUserHeadIv);
             }
         } else {
             //ToastUtils.showLong(StringUtils.isEmpty(tData.getMsg()) ? "登录失败" : tData.getMsg());
@@ -233,5 +283,11 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     @Override
     public void loadDataError(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

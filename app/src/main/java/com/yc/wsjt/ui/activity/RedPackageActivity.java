@@ -113,6 +113,8 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
     private int chooseRole = 1;//发送人,领红包人
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_red_package;
@@ -131,6 +133,8 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
     @Override
     protected void initViews() {
         mTitleTv.setText("微信红包");
+        mConfigBtn.setVisibility(View.GONE);
+
         emojiModeDialog = new EmojiModeDialog(this, R.style.scale_dialog, "对方表情");
         emojiModeDialog.setModeClickListener(this);
 
@@ -139,6 +143,12 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", true);
+        }
+
         if (App.getApp().chatDataInfo != null) {
             //boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             sendUserName = App.getApp().chatDataInfo.getPersonName() != null ? App.getApp().chatDataInfo.getPersonName() : "";
@@ -294,6 +304,13 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
                 return;
             }
 
+            if (!isUse) {
+                if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+                    vipPayTypeDialog.show();
+                    return;
+                }
+            }
+
             Intent intent = new Intent(this, RedSendPreActivity.class);
 
             intent.putExtra("send_user_name", sendUserName);
@@ -315,6 +332,13 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
             if (StringUtils.isEmpty(mRedNumberEt.getText())) {
                 ToastUtils.showLong("请输入金额");
                 return;
+            }
+
+            if (!isUse) {
+                if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+                    vipPayTypeDialog.show();
+                    return;
+                }
             }
 
             Intent intent = new Intent(this, RedReceivePreActivity.class);
