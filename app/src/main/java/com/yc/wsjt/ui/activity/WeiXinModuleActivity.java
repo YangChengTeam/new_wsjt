@@ -78,6 +78,7 @@ public class WeiXinModuleActivity extends BaseActivity {
                     if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
                         intent.putExtra("is_use", isUse);
                     }
+                    intent.putExtra("model_type",0);
                     startActivity(intent);
                 }
                 if (mid == 2) {
@@ -96,6 +97,7 @@ public class WeiXinModuleActivity extends BaseActivity {
                     if (weiXinInfoAdapter.getData().get(position).getVip() == 1) {
                         intent.putExtra("is_use", isUse);
                     }
+                    intent.putExtra("model_type",0);
                     startActivity(intent);
                     //群聊
                 }

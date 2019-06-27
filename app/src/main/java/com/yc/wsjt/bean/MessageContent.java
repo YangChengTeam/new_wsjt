@@ -69,6 +69,8 @@ public class MessageContent {
 
     public int wxMainId;
 
+    public int modelType;//主要用于区分微信0，支付宝1，QQ2这几种类型
+
     public String deviceId;
 
     @Ignore
@@ -118,14 +120,6 @@ public class MessageContent {
         this.id = id;
     }
 
-    public int getWxMainId() {
-        return wxMainId;
-    }
-
-    public void setWxMainId(int wxMainId) {
-        this.wxMainId = wxMainId;
-    }
-
     public String getDeviceId() {
         return deviceId;
     }
@@ -166,4 +160,19 @@ public class MessageContent {
         this.messageUserHead = messageUserHead;
     }
 
+    public int getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(int modelType) {
+        this.modelType = modelType;
+    }
+
+    public int getWxMainId() {
+        return wxMainId;
+    }
+
+    public void setWxMainId(int wxMainId) {
+        this.wxMainId = wxMainId;
+    }
 }

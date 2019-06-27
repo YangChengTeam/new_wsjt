@@ -114,8 +114,8 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
                             chatDataInfo.setOtherPersonHead(contactPersonsList.get(group).get(child).mHead);
                         }
 
-                        if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId()) != null) {
-                            ChatDataInfo temp = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId());
+                        if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),0) != null) {
+                            ChatDataInfo temp = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),0);
                             Logger.i("已存在记录--->" + JSON.toJSONString(temp));
                             if (personType == 0) {
                                 temp.setPersonName(chatDataInfo.getPersonName());
@@ -129,13 +129,14 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
 
                             mAppDatabase.chatDataInfoDao().update(temp.getPersonName(), temp.getPersonHead(), temp.getOtherPersonName(), temp.getOtherPersonHead(), temp.getId());
                         } else {
-                            chatDataInfo.setFriendType(0);
-                            chatDataInfo.setMessageDisturb(false);
-                            chatDataInfo.setReceiverOpen(false);
-                            chatDataInfo.setShowWeiXinMoney(true);//显示
-                            chatDataInfo.setFontChange(true);
-
-                            mAppDatabase.chatDataInfoDao().insert(chatDataInfo);
+                            //TODO,此处暂时不新增聊天资料设置
+//                            chatDataInfo.setFriendType(0);
+//                            chatDataInfo.setMessageDisturb(false);
+//                            chatDataInfo.setReceiverOpen(false);
+//                            chatDataInfo.setShowWeiXinMoney(true);//显示
+//                            chatDataInfo.setFontChange(true);
+//
+//                            mAppDatabase.chatDataInfoDao().insert(chatDataInfo);
                         }
                     }
                 } catch (SecurityException e) {

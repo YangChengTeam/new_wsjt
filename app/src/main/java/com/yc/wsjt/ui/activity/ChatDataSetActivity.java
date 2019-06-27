@@ -85,6 +85,8 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
 
     private File outputImage;
 
+    private int modelType;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_data_set;
@@ -149,15 +151,18 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            modelType = bundle.getInt("model_type", 0);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         try {
-            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId()) != null) {
-                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId());
+            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType) != null) {
+                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType);
                 mMySelfNameTv.setText(mChatDataInfo.getPersonName());
                 mOtherSideNameTv.setText(mChatDataInfo.getOtherPersonName());
                 Glide.with(this).load(mChatDataInfo.getPersonHead()).into(mMySelfHeadIv);
@@ -181,6 +186,7 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
             } else {
                 mChatDataInfo = new ChatDataInfo();
                 mChatDataInfo.setDeviceId(PhoneUtils.getDeviceId());
+                mChatDataInfo.setModelType(modelType);
                 mAppDatabase.chatDataInfoDao().insert(mChatDataInfo);
             }
         } catch (SecurityException e) {

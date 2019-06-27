@@ -46,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by zhangdinghui on 2019/5/6.
  */
-public class WeixindanliaoActivity extends BaseActivity {
+public class AlipaydanliaoActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
@@ -104,7 +104,7 @@ public class WeixindanliaoActivity extends BaseActivity {
     @Override
     protected void initVars() {
         StatusBarUtil.setLightMode(this);
-        mTitleTv.setText(getResources().getString(R.string.weixin_danliao));
+        mTitleTv.setText(getResources().getString(R.string.alipay_danliao));
         mSettingTv.setText(getResources().getString(R.string.weixin_setting));
         mSettingTv.setVisibility(View.GONE);
     }
@@ -169,8 +169,8 @@ public class WeixindanliaoActivity extends BaseActivity {
 
         //初始化设置参数
         try {
-            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType) != null) {
-                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType);
+            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType);
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_head_def);
                 options.error(R.mipmap.user_head_def);

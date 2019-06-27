@@ -19,11 +19,11 @@ import io.reactivex.Flowable;
 @Dao
 public interface MessageContentDao {
 
-    @Query("SELECT * from wx_chat_info_main WHERE deviceId= :did")
-    MessageContent getItemById(String did);
+    @Query("SELECT * from wx_chat_info_main WHERE deviceId = :did and modelType = :modelType")
+    MessageContent getItemById(String did, int modelType);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(MessageContent... messageContents);
+    Long insert(MessageContent messageContents);
 
     @Query("select * from wx_chat_info_main")
     Flowable<List<MessageContent>> loadMessageContent();

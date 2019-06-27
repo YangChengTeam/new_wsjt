@@ -27,6 +27,7 @@ import com.yc.wsjt.bean.HomeDateInfoRet;
 import com.yc.wsjt.bean.QuickInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.HomeInfoPresenterImp;
+import com.yc.wsjt.ui.activity.AlipaydanliaoActivity;
 import com.yc.wsjt.ui.activity.BaseActivity;
 import com.yc.wsjt.ui.activity.QuickBarEditActivity;
 import com.yc.wsjt.ui.activity.WeiXinModuleActivity;
@@ -276,7 +277,9 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
                 startActivity(intent);
                 break;
             case R.id.layout_alipay:
-
+                Intent intent1 = new Intent(getActivity(), AlipaydanliaoActivity.class);
+                intent1.putExtra("model_type",1);
+                startActivity(intent1);
                 break;
             case R.id.layout_qq:
 

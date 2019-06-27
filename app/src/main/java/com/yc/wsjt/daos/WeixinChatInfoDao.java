@@ -26,8 +26,8 @@ public interface WeixinChatInfoDao {
     @Delete
     void deleteWeChatInfo(WeixinChatInfo... weixinChatInfos);
 
-    @Query("select * from weixin_chat_info where wxMainId = :wxMainId")
-    Flowable<List<WeixinChatInfo>> loadWeChatInfo(int wxMainId);
+    @Query("select * from weixin_chat_info where mainId = :mainId")
+    Flowable<List<WeixinChatInfo>> loadWeChatInfo(int mainId);
 
     @Query("SELECT * from weixin_chat_info WHERE id= :id")
     WeixinChatInfo getItemById(Long id);

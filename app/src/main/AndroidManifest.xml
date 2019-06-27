@@ -59,7 +59,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity"></activity>
+        <!--<activity android:name=".ui.activity.MainActivity"></activity>-->
         <activity android:name="com.yc.wsjt.ui.activity.HeadCategoryActivity"></activity>
         <activity
             android:name="com.yc.wsjt.ui.activity.HeadShowActivity"
@@ -148,6 +148,8 @@
         <activity android:name=".ui.activity.CircleBaseSetActivity"></activity>
         <activity android:name=".ui.activity.AddPraiseActivity"></activity>
         <activity android:name=".ui.activity.AddCommentActivity"></activity>
+        <activity android:name=".ui.activity.AlipaydanliaoActivity"></activity>
+
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

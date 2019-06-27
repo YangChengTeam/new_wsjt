@@ -13,7 +13,7 @@ public class WeixinChatInfo {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int wxMainId;
+    public int mainId;
 
     private int typeIcon;
 
@@ -55,12 +55,12 @@ public class WeixinChatInfo {
         this.chatText = chatText;
     }
 
-    public int getWxMainId() {
-        return wxMainId;
+    public int getMainId() {
+        return mainId;
     }
 
-    public void setWxMainId(int wxMainId) {
-        this.wxMainId = wxMainId;
+    public void setMainId(int mainId) {
+        this.mainId = mainId;
     }
 
     public Long getChildTabId() {

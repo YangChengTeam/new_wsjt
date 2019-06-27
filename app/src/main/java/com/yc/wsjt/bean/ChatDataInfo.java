@@ -16,6 +16,8 @@ public class ChatDataInfo {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    public int modelType;//微信，支付宝，qq
+
     public String deviceId;
 
     public String personName;//自己姓名
@@ -154,5 +156,13 @@ public class ChatDataInfo {
 
     public void setOtherPersonHeadLocal(int otherPersonHeadLocal) {
         this.otherPersonHeadLocal = otherPersonHeadLocal;
+    }
+
+    public int getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(int modelType) {
+        this.modelType = modelType;
     }
 }

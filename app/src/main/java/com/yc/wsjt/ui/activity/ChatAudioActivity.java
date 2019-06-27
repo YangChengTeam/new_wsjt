@@ -208,7 +208,7 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
             Long audioId = mAppDatabase.audioMessageDao().insert(audioMessage);
 
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_voice);
             weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(audioId);

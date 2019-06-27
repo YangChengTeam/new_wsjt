@@ -97,6 +97,8 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
     private File outputImage;
 
+    private int modelType;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_weixin_qunliao;
@@ -167,7 +169,10 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            modelType = bundle.getInt("model_type", 0);
+        }
     }
 
     @Override
@@ -175,15 +180,15 @@ public class WeixinqunliaoActivity extends BaseActivity {
         super.onResume();
         try {
             //查询是否有主记录
-            if (mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId()) != null) {
-                messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId());
+            if (mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType);
             } else {
                 //未查询到记录，新增一条
                 MessageContent tempMessageContent = new MessageContent();
                 tempMessageContent.setDeviceId(PhoneUtils.getDeviceId());
                 tempMessageContent.setWxMainId(1);
                 mAppDatabase.messageContentDao().insert(tempMessageContent);
-                messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId());
+                messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType);
             }
 
             App.getApp().setMessageContent(messageContent);
