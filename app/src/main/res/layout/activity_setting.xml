@@ -52,6 +52,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_new_help"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"

@@ -63,4 +63,5 @@
     <string name="qun_receive_red">收红包</string>
 
     <string name="alipay_danliao">支付宝聊天</string>
+    <string name="qq_danliao">QQ对话</string>
 </resources>

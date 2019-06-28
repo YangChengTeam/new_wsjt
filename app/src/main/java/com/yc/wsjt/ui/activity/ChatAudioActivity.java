@@ -175,7 +175,7 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
         if (isQunLiao) {
             //插入一条时间设置记录
             AudioMessage audioMessage = new AudioMessage();
-            audioMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //audioMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             audioMessage.setMessageType(CHAT_TYPE);
             audioMessage.setMessageUserName(sendUserName);
             audioMessage.setMessageUserHead(sendUserHead);
@@ -186,7 +186,7 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
 
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_voice);
             weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(audioId);
@@ -198,7 +198,7 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
             }
             //插入一条时间设置记录
             AudioMessage audioMessage = new AudioMessage();
-            audioMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //audioMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             audioMessage.setMessageType(CHAT_TYPE);
             audioMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
             audioMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());

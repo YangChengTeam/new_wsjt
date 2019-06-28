@@ -7,20 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.blankj.utilcode.util.ScreenUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yc.wsjt.R;
-import com.yc.wsjt.bean.ChatTypeInfo;
-import com.yc.wsjt.common.Constants;
-import com.yc.wsjt.ui.activity.ChatTimeActivity;
 import com.yc.wsjt.ui.activity.ChooseRoleActivity;
-import com.yc.wsjt.ui.adapter.ChatTypeAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SettingRoleDialog extends Dialog {
@@ -33,8 +21,18 @@ public class SettingRoleDialog extends Dialog {
 
     private int type;
 
+    private int modelType;
+
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(int modelType) {
+        this.modelType = modelType;
     }
 
     public SettingRoleDialog(Context context) {
@@ -64,6 +62,7 @@ public class SettingRoleDialog extends Dialog {
                 dismiss();
                 Intent intent = new Intent(mContext, ChooseRoleActivity.class);
                 intent.putExtra("person_type", type);
+                intent.putExtra("model_type",modelType);
                 mContext.startActivity(intent);
             }
         });

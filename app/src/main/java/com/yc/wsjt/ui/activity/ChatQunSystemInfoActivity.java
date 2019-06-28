@@ -99,14 +99,14 @@ public class ChatQunSystemInfoActivity extends BaseActivity {
 
         //插入一条时间设置记录
         SystemTipsMessage systemTipsMessage = new SystemTipsMessage();
-        systemTipsMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //systemTipsMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         systemTipsMessage.setMessageContent(mSystemInfoEt.getText().toString());
         systemTipsMessage.setMessageType(type);
         Long sysId = mAppDatabase.systemTipsMessageDao().insert(systemTipsMessage);
 
         //插入到外层的列表中
         WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-        weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinQunChatInfo.setTypeIcon(R.mipmap.type_system_info);
         weixinQunChatInfo.setType(type);
         weixinQunChatInfo.setChildTabId(sysId);

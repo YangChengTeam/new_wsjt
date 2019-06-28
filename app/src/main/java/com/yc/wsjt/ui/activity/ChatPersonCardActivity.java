@@ -202,7 +202,7 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
 
             //插入一条时间设置记录
             PersonMessage personMessage = new PersonMessage();
-            personMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //personMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             personMessage.setPersonHeadImg(App.getApp().getTempPerson().mHead);
             personMessage.setPersonName(App.getApp().getTempPerson().mName);
             personMessage.setMessageType(CHAT_TYPE);
@@ -213,7 +213,7 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
 
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_persion_card);
             weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(personId);
@@ -227,7 +227,7 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
 
             //插入一条时间设置记录
             PersonMessage personMessage = new PersonMessage();
-            personMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //personMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             personMessage.setPersonHeadImg(App.getApp().getTempPerson().mHead);
             personMessage.setPersonName(App.getApp().getTempPerson().mName);
             personMessage.setMessageType(CHAT_TYPE);
@@ -238,7 +238,7 @@ public class ChatPersonCardActivity extends BaseActivity implements InputDialog.
 
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_persion_card);
             weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(personId);

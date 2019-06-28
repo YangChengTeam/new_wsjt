@@ -2,6 +2,7 @@ package com.yc.wsjt.ui.adapter;
 
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
@@ -19,6 +20,8 @@ import com.yc.wsjt.bean.RedPackageMessage;
 import com.yc.wsjt.bean.ShareMessage;
 import com.yc.wsjt.bean.TransferMessage;
 import com.yc.wsjt.ui.custom.GlideRoundTransform;
+import com.yc.wsjt.util.EmotionUtils;
+import com.yc.wsjt.util.SpanStringUtils;
 
 import java.util.List;
 
@@ -97,7 +100,11 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_TEXT || messageContent.getMessageType() == MessageContent.RECEIVE_TEXT) {
-            helper.setText(R.id.tv_chat_text, messageContent.getMessageContent());
+            //helper.setText(R.id.tv_chat_text, messageContent.getMessageContent());
+
+            TextView sessionTv = helper.getView(R.id.tv_chat_text);
+            sessionTv.setText(SpanStringUtils.getEmotionContent(EmotionUtils.EMOTION_CLASSIC_TYPE,
+                    mContext, sessionTv, messageContent.getMessageContent()));
             Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
@@ -152,7 +159,7 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
         if (messageContent.getMessageType() == MessageContent.SEND_JOIN_GROUP || messageContent.getMessageType() == MessageContent.RECEIVE_JOIN_GROUP) {
             helper.setText(R.id.tv_group_title, ((GroupMessage) messageContent).getGroupName());
             helper.setText(R.id.tv_group_content, messageContent.getMessageContent());
-            if(!StringUtils.isEmpty(((GroupMessage) messageContent).getGroupHead())){
+            if (!StringUtils.isEmpty(((GroupMessage) messageContent).getGroupHead())) {
                 Glide.with(mContext).load(((GroupMessage) messageContent).getGroupHead()).into((ImageView) helper.getView(R.id.iv_group_thumb));
             }
             Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));

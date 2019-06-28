@@ -7,7 +7,6 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
 
 import java.util.List;
@@ -27,8 +26,8 @@ public interface WeixinQunChatInfoDao {
     @Delete
     void deleteQunWeChatInfo(WeixinQunChatInfo... weixinChatInfos);
 
-    @Query("select * from weixin_qun_chat_info where wxMainId = :wxMainId")
-    Flowable<List<WeixinQunChatInfo>> loadQunWeChatInfo(int wxMainId);
+    @Query("select * from weixin_qun_chat_info where mainId = :mainId")
+    Flowable<List<WeixinQunChatInfo>> loadQunWeChatInfo(int mainId);
 
     @Query("SELECT * from weixin_qun_chat_info WHERE id= :id")
     WeixinQunChatInfo getItemById(Long id);

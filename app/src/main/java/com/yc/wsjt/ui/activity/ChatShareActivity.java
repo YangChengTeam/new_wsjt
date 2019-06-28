@@ -237,7 +237,7 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入一条时间设置记录
             ShareMessage shareMessage = new ShareMessage();
-            shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             shareMessage.setMessageType(CHAT_TYPE);
             shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
             shareMessage.setShareTitle(mShareTitleEt.getText().toString());
@@ -249,7 +249,7 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_share);
             weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(shareId);
@@ -262,7 +262,7 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入一条时间设置记录
             ShareMessage shareMessage = new ShareMessage();
-            shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             shareMessage.setMessageType(CHAT_TYPE);
             shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
             shareMessage.setShareTitle(mShareTitleEt.getText().toString());
@@ -274,7 +274,7 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_share);
             weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(shareId);

@@ -5,6 +5,7 @@ package com.yc.wsjt.bean;
  */
 public class BannerInfo {
     private String id;
+    private String name;
     private int type;
     private String img;
     private String val;
@@ -19,6 +20,14 @@ public class BannerInfo {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getType() {

@@ -128,7 +128,7 @@ public class ChatQunReceiveRedPackageActivity extends BaseActivity implements Ro
 
         //插入一条时间设置记录
         RedPackageMessage redPackageMessage = new RedPackageMessage();
-        redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         redPackageMessage.setMessageType(CHAT_TYPE);
         redPackageMessage.setRedType(2);
         redPackageMessage.setReceiveType(receiveType);
@@ -139,7 +139,7 @@ public class ChatQunReceiveRedPackageActivity extends BaseActivity implements Ro
 
         //插入到外层的列表中
         WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-        weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinQunChatInfo.setTypeIcon(R.mipmap.type_hongbao);
         weixinQunChatInfo.setType(CHAT_TYPE);
         weixinQunChatInfo.setChildTabId(redId);

@@ -49,7 +49,7 @@ public class DefaultEmojiFragment extends BaseFragment implements EmojiInfoView 
                 //数据是使用Intent返回
                 Intent intent = new Intent();
                 //把返回数据存入Intent
-                intent.putExtra("emoji_url", R.mipmap.share_pre);
+                intent.putExtra("emoji_url", Constants.BASE_IMAGE_URL + emojiListAdapter.getData().get(position).getIcon());
                 //设置返回数据
                 getActivity().setResult(ChatEmojiActivity.REQUEST_CODE_EMOJI, intent);
                 //关闭Activity

@@ -56,6 +56,8 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
 
     private RoleInfoPresenterImp roleInfoPresenterImp;
 
+    private int modelType;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_choose_role;
@@ -82,6 +84,7 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             personType = bundle.getInt("person_type", 0);
+            modelType = bundle.getInt("model_type", 0);
         }
 
         roleInfoPresenterImp = new RoleInfoPresenterImp(this, this);
@@ -114,8 +117,8 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
                             chatDataInfo.setOtherPersonHead(contactPersonsList.get(group).get(child).mHead);
                         }
 
-                        if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),0) != null) {
-                            ChatDataInfo temp = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),0);
+                        if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                            ChatDataInfo temp = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType);
                             Logger.i("已存在记录--->" + JSON.toJSONString(temp));
                             if (personType == 0) {
                                 temp.setPersonName(chatDataInfo.getPersonName());
@@ -130,13 +133,14 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
                             mAppDatabase.chatDataInfoDao().update(temp.getPersonName(), temp.getPersonHead(), temp.getOtherPersonName(), temp.getOtherPersonHead(), temp.getId());
                         } else {
                             //TODO,此处暂时不新增聊天资料设置
-//                            chatDataInfo.setFriendType(0);
-//                            chatDataInfo.setMessageDisturb(false);
-//                            chatDataInfo.setReceiverOpen(false);
-//                            chatDataInfo.setShowWeiXinMoney(true);//显示
-//                            chatDataInfo.setFontChange(true);
-//
-//                            mAppDatabase.chatDataInfoDao().insert(chatDataInfo);
+                            chatDataInfo.setModelType(modelType);
+                            chatDataInfo.setFriendType(0);
+                            chatDataInfo.setMessageDisturb(false);
+                            chatDataInfo.setReceiverOpen(false);
+                            chatDataInfo.setShowWeiXinMoney(true);//显示
+                            chatDataInfo.setFontChange(true);
+
+                            mAppDatabase.chatDataInfoDao().insert(chatDataInfo);
                         }
                     }
                 } catch (SecurityException e) {

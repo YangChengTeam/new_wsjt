@@ -186,7 +186,7 @@ public class ChatGroupActivity extends BaseActivity {
 
         //插入一条时间设置记录
         GroupMessage groupMessage = new GroupMessage();
-        groupMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //groupMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         groupMessage.setGroupHead(!StringUtils.isEmpty(outputImage.getAbsolutePath()) && outputImage.exists() ? outputImage.getAbsolutePath() : "");
         String tempUserName = App.getApp().mUserInfo != null ? App.getApp().mUserInfo.getNickName() : "未知用户";
         groupMessage.setMessageContent("\"" +tempUserName + "\"邀请你加入群聊" + mGroupNameEt.getText().toString() + ",进入可查看详情。");
@@ -196,7 +196,7 @@ public class ChatGroupActivity extends BaseActivity {
 
         //插入到外层的列表中
         WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinChatInfo.setTypeIcon(R.mipmap.type_join_group);
         weixinChatInfo.setType(type);
         weixinChatInfo.setChildTabId(groupId);

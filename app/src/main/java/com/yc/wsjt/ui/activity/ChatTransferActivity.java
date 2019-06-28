@@ -236,7 +236,7 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
         //插入一条时间设置记录
         TransferMessage transferMessage = new TransferMessage();
-        transferMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //transferMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         transferMessage.setMessageType(type);
         transferMessage.setTransferType(chooseType);
         transferMessage.setTransferNum(mTransferNumberEt.getText().toString());
@@ -250,7 +250,7 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
         //插入到外层的列表中
         WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinChatInfo.setTypeIcon(R.mipmap.type_zhuanzhang);
         weixinChatInfo.setChatText(mTransferNumberEt.getText() + "元");
         weixinChatInfo.setType(type);

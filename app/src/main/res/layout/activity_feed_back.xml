@@ -48,6 +48,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tv_type1"
                     android:layout_width="84dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
@@ -58,6 +59,7 @@
                     android:textSize="14sp"></TextView>
 
                 <TextView
+                    android:id="@+id/tv_type2"
                     android:layout_width="84dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
@@ -69,6 +71,7 @@
                     android:textSize="14sp"></TextView>
 
                 <TextView
+                    android:id="@+id/tv_type3"
                     android:layout_width="84dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
@@ -104,6 +107,7 @@
                 android:minHeight="200dp">
 
                 <EditText
+                    android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="62dp"
@@ -144,6 +148,7 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/et_contact"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/white"

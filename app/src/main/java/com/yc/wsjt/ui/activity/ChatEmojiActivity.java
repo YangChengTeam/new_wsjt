@@ -55,7 +55,7 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
     @BindView(R.id.iv_choose_emoji)
     ImageView mChooseEmojiIv;
 
-    private int emojiUrl = -1;
+    private String emojiUrl;
 
     boolean isMySelf = true;
 
@@ -161,14 +161,14 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
         Logger.i("onActivityResult--->" + requestCode);
 
         if (data != null && data.getExtras() != null) {
-            emojiUrl = data.getExtras().getInt("emoji_url");
+            emojiUrl = data.getExtras().getString("emoji_url");
             Glide.with(this).load(emojiUrl).into(mChooseEmojiIv);
         }
     }
 
     @OnClick(R.id.btn_config)
     void config() {
-        if (emojiUrl < 0) {
+        if (StringUtils.isEmpty(emojiUrl)) {
             ToastUtils.showLong("请选择表情");
             return;
         }
@@ -181,7 +181,7 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
 
             //插入一条时间设置记录
             EmojiMessage emojiMessage = new EmojiMessage();
-            emojiMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //emojiMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             emojiMessage.setMessageUserName(sendUserName);
             emojiMessage.setMessageUserHead(sendUserHead);
             emojiMessage.setMessageType(CHAT_TYPE);
@@ -190,7 +190,7 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
 
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_emoji);
             weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(emojiId);
@@ -203,7 +203,7 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
 
             //插入一条时间设置记录
             EmojiMessage emojiMessage = new EmojiMessage();
-            emojiMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //emojiMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             emojiMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
             emojiMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
             emojiMessage.setMessageType(CHAT_TYPE);
@@ -211,7 +211,7 @@ public class ChatEmojiActivity extends BaseActivity implements RoleSelectDialog.
             Long emojiId = mAppDatabase.emojiMessageDao().insert(emojiMessage);
 
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_emoji);
             weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(emojiId);

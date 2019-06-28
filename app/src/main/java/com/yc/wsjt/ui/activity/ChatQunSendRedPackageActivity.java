@@ -142,7 +142,7 @@ public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleS
 
         //插入一条时间设置记录
         RedPackageMessage redPackageMessage = new RedPackageMessage();
-        redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         redPackageMessage.setRedCount(Integer.parseInt(mRedCountEt.getText().toString()));
         redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
         redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
@@ -154,7 +154,7 @@ public class ChatQunSendRedPackageActivity extends BaseActivity implements RoleS
 
         //插入到外层的列表中
         WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-        weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinQunChatInfo.setTypeIcon(R.mipmap.type_hongbao);
         weixinQunChatInfo.setType(CHAT_TYPE);
         weixinQunChatInfo.setChildTabId(redId);

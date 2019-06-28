@@ -89,7 +89,7 @@ public class AlipaydanliaoActivity extends BaseActivity {
 
     ChatDataInfo mChatDataInfo;
 
-    private int modelType;
+    private int modelType = 1;
 
     @Override
     protected int getLayoutId() {
@@ -164,7 +164,7 @@ public class AlipaydanliaoActivity extends BaseActivity {
     protected void initData(Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            modelType = bundle.getInt("model_type", 0);
+            modelType = bundle.getInt("model_type", 1);
         }
 
         //初始化设置参数

@@ -68,7 +68,7 @@
         <activity android:name=".ui.activity.WeixindanliaoActivity"></activity>
         <activity android:name=".ui.activity.WeixinqunliaoActivity"></activity>
         <activity android:name=".ui.activity.ChatTimeActivity"></activity>
-        <activity android:name=".ui.activity.ChatTextActivity"></activity>
+        <activity android:name=".ui.activity.ChatTextActivity" android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".ui.activity.ChatImageActivity"></activity>
         <activity android:name=".ui.activity.ChatAudioActivity"></activity>
         <activity android:name=".ui.activity.ChatEmojiActivity"></activity>
@@ -149,7 +149,10 @@
         <activity android:name=".ui.activity.AddPraiseActivity"></activity>
         <activity android:name=".ui.activity.AddCommentActivity"></activity>
         <activity android:name=".ui.activity.AlipaydanliaoActivity"></activity>
-
+        <activity android:name=".ui.activity.QQdanliaoActivity"></activity>
+        <activity android:name=".ui.activity.NewHelpActivity"></activity>
+        <activity android:name=".ui.activity.KeFuHelpActivity"></activity>
+        <activity android:name=".ui.activity.AdActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

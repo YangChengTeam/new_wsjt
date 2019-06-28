@@ -249,7 +249,7 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
 
         //插入一条时间设置记录
         VideoMessage videoMessage = new VideoMessage();
-        videoMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //videoMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         videoMessage.setMessageType(type);
         videoMessage.setMessageContent(mConnectionStateTv.getText() + " " + mVideoTimeTv.getText().toString());
         videoMessage.setChatVideoType(chooseType);
@@ -262,7 +262,7 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
 
         //插入到外层的列表中
         WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-        weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
         weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_video : R.mipmap.type_voice);
         weixinChatInfo.setChatText(mConnectionStateTv.getText() + " " + mVideoTimeTv.getText());
         weixinChatInfo.setType(type);

@@ -1,5 +1,6 @@
 package com.yc.wsjt.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by zhangdinghui on 2019/6/5.
@@ -48,5 +50,11 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initData(Bundle savedInstanceState) {
 
+    }
+
+    @OnClick(R.id.layout_new_help)
+    void newHelp() {
+        Intent intent = new Intent(this, NewHelpActivity.class);
+        startActivity(intent);
     }
 }

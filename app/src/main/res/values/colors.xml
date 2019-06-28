@@ -58,7 +58,7 @@
     <color name="chat_bg_color">#ededed</color>
     <color name="chat_top_line_color">#e6e6e6</color>
     <color name="share_content_color">#999999</color>
-
+    <color name="chat_session_line_color">#d2d2d2</color>
     <color name="bg_indicator_point_normal">#D8D8D8</color>
     <color name="bg_indicator_point_selected">#A6A6A6</color>
 

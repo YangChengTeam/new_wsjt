@@ -273,7 +273,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
 
             //插入一条时间设置记录
             TextMessage textMessage = new TextMessage();
-            textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             textMessage.setMessageType(CHAT_TYPE);
             textMessage.setMessageUserName(sendUserName);
             textMessage.setMessageUserHead(sendUserHead);
@@ -281,7 +281,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
             Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
 
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_text);
             weixinQunChatInfo.setChildTabId(txtId);
             weixinQunChatInfo.setType(CHAT_TYPE);
@@ -294,7 +294,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
 
             //插入一条时间设置记录
             TextMessage textMessage = new TextMessage();
-            textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //textMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             textMessage.setMessageType(CHAT_TYPE);
             textMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
             textMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
@@ -303,7 +303,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
             Long txtId = mAppDatabase.textMessageDao().insert(textMessage);
 
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_text);
             weixinChatInfo.setChildTabId(txtId);
             weixinChatInfo.setType(CHAT_TYPE);

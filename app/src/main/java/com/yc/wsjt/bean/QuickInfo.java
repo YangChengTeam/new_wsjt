@@ -15,6 +15,10 @@ public class QuickInfo {
     private int id;
     private String name;
     private String icon;
+
+    private String img;
+    private String val;
+
     private int type;
     private int sort;
     private int status;
@@ -113,5 +117,21 @@ public class QuickInfo {
 
     public void setAddDate(Long addDate) {
         this.addDate = addDate;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getVal() {
+        return val;
+    }
+
+    public void setVal(String val) {
+        this.val = val;
     }
 }

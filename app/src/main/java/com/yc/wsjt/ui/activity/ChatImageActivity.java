@@ -268,7 +268,7 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
             weixinQunChatInfo.setType(CHAT_TYPE);
             weixinQunChatInfo.setChildTabId(imageId);
@@ -289,7 +289,7 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
             //插入一条时间设置记录
             ImageMessage imageMessage = new ImageMessage();
-            imageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            //imageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             imageMessage.setMessageType(CHAT_TYPE);
             imageMessage.setMediaType(chooseType);
             imageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
@@ -301,7 +301,7 @@ public class ChatImageActivity extends BaseActivity implements VideoTimeDialog.D
 
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(chooseType == 1 ? R.mipmap.type_image : R.mipmap.type_video);
             weixinChatInfo.setType(CHAT_TYPE);
             weixinChatInfo.setChildTabId(imageId);

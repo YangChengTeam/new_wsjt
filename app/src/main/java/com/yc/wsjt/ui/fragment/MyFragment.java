@@ -30,6 +30,7 @@ import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.UserInfoPresenterImp;
 import com.yc.wsjt.ui.activity.AboutActivity;
 import com.yc.wsjt.ui.activity.FeedBackActivity;
+import com.yc.wsjt.ui.activity.KeFuHelpActivity;
 import com.yc.wsjt.ui.activity.SettingActivity;
 import com.yc.wsjt.ui.activity.UpdateUserInfoActivity;
 import com.yc.wsjt.ui.activity.VipInfoActivity;
@@ -154,7 +155,7 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
                 RequestOptions options = new RequestOptions();
                 options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
-                Glide.with(getActivity()).load(Constants.BASE_IMAGE_URL + mUserInfo.getFace()).apply(options).into(mUserHeadIv);
+                Glide.with(getActivity()).load(mUserInfo.getFace()).apply(options).into(mUserHeadIv);
             } else {
                 mVipStateTv.setText("未开通");
             }
@@ -177,6 +178,12 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     @Override
     protected void initFragmentConfig() {
 
+    }
+
+    @OnClick(R.id.layout_kefu)
+    void kefu() {
+        Intent intent = new Intent(getActivity(), KeFuHelpActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.layout_feed_back)
@@ -271,7 +278,7 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
                 RequestOptions options = new RequestOptions();
                 options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
-                Glide.with(getActivity()).load(Constants.BASE_IMAGE_URL + tData.getData().getFace()).apply(options).into(mUserHeadIv);
+                Glide.with(getActivity()).load(tData.getData().getFace()).apply(options).into(mUserHeadIv);
             }
         } else {
             //ToastUtils.showLong(StringUtils.isEmpty(tData.getMsg()) ? "登录失败" : tData.getMsg());
@@ -283,6 +290,22 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     @Override
     public void loadDataError(Throwable throwable) {
 
+    }
+
+    @OnClick(R.id.layout_logout)
+    void logout() {
+        if (App.getApp().isLogin && mUserInfo != null) {
+            ToastUtils.showLong("已退出");
+            App.getApp().setmUserInfo(null);
+            App.getApp().setLogin(false);
+            SPUtils.getInstance().put(Constants.USER_INFO, "");
+            mNickNameTv.setText("请登录");
+            mUserIdTv.setText("请点击登录");
+            mVipStateTv.setText("未开通");
+            RequestOptions options = new RequestOptions();
+            options.transform(new GlideCircleTransformWithBorder(getActivity(), 2, ContextCompat.getColor(getActivity(), R.color.white)));
+            Glide.with(getActivity()).load(R.mipmap.no_login_def).apply(options).into(mUserHeadIv);
+        }
     }
 
     @Override

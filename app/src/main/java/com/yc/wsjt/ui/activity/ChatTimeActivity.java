@@ -141,7 +141,7 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
 
         //插入一条时间设置记录
         TimeMessage timeMessage = new TimeMessage();
-        timeMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //timeMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         timeMessage.setMessageType(MessageContent.CHAT_DATE);
         timeMessage.setLocalMessageImg(R.mipmap.type_time);
         timeMessage.setMessageContent(mSelectTimeEt.getText().toString());
@@ -151,7 +151,7 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
         //插入到外层的列表中
         if (isQunLiao) {
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_time);
             weixinQunChatInfo.setChatText(mSelectTimeEt.getText().toString());
             weixinQunChatInfo.setType(MessageContent.CHAT_DATE);
@@ -159,7 +159,7 @@ public class ChatTimeActivity extends BaseActivity implements OnDateSetListener,
             mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
         } else {
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_time);
             weixinChatInfo.setChatText(mSelectTimeEt.getText().toString());
             weixinChatInfo.setType(MessageContent.CHAT_DATE);

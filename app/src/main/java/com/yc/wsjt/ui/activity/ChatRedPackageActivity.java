@@ -276,7 +276,7 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
 
         //插入一条时间设置记录
         RedPackageMessage redPackageMessage = new RedPackageMessage();
-        redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+        //redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
         redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
         redPackageMessage.setMessageType(type);
@@ -290,7 +290,7 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
         if (isQunLiao) {
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
-            weixinQunChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinQunChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinQunChatInfo.setTypeIcon(R.mipmap.type_hongbao);
             weixinQunChatInfo.setType(type);
             weixinQunChatInfo.setChildTabId(redId);
@@ -298,7 +298,7 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
         } else {
             //插入到外层的列表中
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();
-            weixinChatInfo.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            weixinChatInfo.setMainId(App.getApp().getMessageContent().getId());
             weixinChatInfo.setTypeIcon(R.mipmap.type_hongbao);
             weixinChatInfo.setType(type);
             weixinChatInfo.setChildTabId(redId);

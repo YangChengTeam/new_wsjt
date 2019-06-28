@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 /**
  * Created by zhangdinghui on 2019/5/16.
  */
-@Entity(tableName = "wx_chat_info_main",indices = {@Index(value = {"id","deviceId"}, unique = true)})
+@Entity(tableName = "wx_chat_info_main",indices = {@Index(value = {"id"}, unique = true)})
 public class MessageContent {
 
     //时间

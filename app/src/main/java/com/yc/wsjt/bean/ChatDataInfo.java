@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
  * Created by zhangdinghui on 2019/4/19.
  * 聊天资料设置
  */
-@Entity(tableName = "chat_data_info", indices = {@Index(value = {"deviceId"}, unique = true)})
+@Entity(tableName = "chat_data_info", indices = {@Index(value = {"id"}, unique = true)})
 
 public class ChatDataInfo {
 

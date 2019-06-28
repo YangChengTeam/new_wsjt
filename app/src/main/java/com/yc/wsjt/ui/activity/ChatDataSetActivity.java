@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.PhoneUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.jaeger.library.StatusBarUtil;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -165,8 +166,11 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
                 mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType);
                 mMySelfNameTv.setText(mChatDataInfo.getPersonName());
                 mOtherSideNameTv.setText(mChatDataInfo.getOtherPersonName());
-                Glide.with(this).load(mChatDataInfo.getPersonHead()).into(mMySelfHeadIv);
-                Glide.with(this).load(mChatDataInfo.getOtherPersonHead()).into(mOtherSideHeadIv);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.user_head_def);
+                options.error(R.mipmap.user_head_def);
+                Glide.with(this).load(mChatDataInfo.getPersonHead()).apply(options).into(mMySelfHeadIv);
+                Glide.with(this).load(mChatDataInfo.getOtherPersonHead()).apply(options).into(mOtherSideHeadIv);
                 Glide.with(this).load(mChatDataInfo.getChatBgImage()).into(mChatBgIv);
                 String tempStr = "好友";
                 if (mChatDataInfo.getFriendType() == 0) {
@@ -198,6 +202,7 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
     void setMySelf() {
         if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
             settingRoleDialog.setType(0);
+            settingRoleDialog.setModelType(modelType);
             settingRoleDialog.show();
         }
     }
@@ -206,6 +211,7 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
     void setOtherSide() {
         if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
             settingRoleDialog.setType(1);
+            settingRoleDialog.setModelType(modelType);
             settingRoleDialog.show();
         }
     }

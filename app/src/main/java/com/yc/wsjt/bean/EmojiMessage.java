@@ -2,7 +2,6 @@ package com.yc.wsjt.bean;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 /**
  * Created by zhangdinghui on 2019/5/16.
@@ -13,7 +12,7 @@ public class EmojiMessage extends MessageContent {
     @Ignore
     public int defUrl;
 
-    private int emojiUrl;
+    private String emojiUrl;
 
     public int getDefUrl() {
         return defUrl;
@@ -23,11 +22,11 @@ public class EmojiMessage extends MessageContent {
         this.defUrl = defUrl;
     }
 
-    public int getEmojiUrl() {
+    public String getEmojiUrl() {
         return emojiUrl;
     }
 
-    public void setEmojiUrl(int emojiUrl) {
+    public void setEmojiUrl(String emojiUrl) {
         this.emojiUrl = emojiUrl;
     }
 }

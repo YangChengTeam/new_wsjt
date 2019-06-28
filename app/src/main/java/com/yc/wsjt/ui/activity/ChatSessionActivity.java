@@ -1,9 +1,12 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.lqr.recyclerview.LQRRecyclerView;
 import com.yc.wsjt.App;
@@ -41,11 +44,19 @@ public class ChatSessionActivity extends BaseActivity {
     @BindView(R.id.chat_session_list)
     LQRRecyclerView mChatSessionListView;
 
+    @BindView(R.id.iv_voice)
+    ImageView mVoiceIv;
+
+    @BindView(R.id.tv_chat_touch)
+    TextView mTouchTv;
+
     SessionAdapter sessionAdapter;
 
     List<MessageContent> list = new ArrayList<>();
 
     Disposable disposable = null;
+
+    private boolean isPan;
 
     @Override
     protected int getLayoutId() {
@@ -148,6 +159,18 @@ public class ChatSessionActivity extends BaseActivity {
 
         sessionAdapter = new SessionAdapter(this, list);
         mChatSessionListView.setAdapter(sessionAdapter);
+    }
+
+    @OnClick(R.id.iv_voice)
+    void voiceClick() {
+        isPan = !isPan;
+        if (isPan) {
+            Glide.with(this).load(R.mipmap.chat_pan_icon).into(mVoiceIv);
+            mTouchTv.setText("");
+        } else {
+            Glide.with(this).load(R.mipmap.chat_voice_icon).into(mVoiceIv);
+            mTouchTv.setText("按住 说话");
+        }
     }
 
     @OnClick(R.id.iv_back)

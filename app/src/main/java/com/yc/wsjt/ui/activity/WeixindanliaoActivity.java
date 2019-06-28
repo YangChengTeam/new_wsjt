@@ -162,15 +162,23 @@ public class WeixindanliaoActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             modelType = bundle.getInt("model_type", 0);
         }
 
-        //初始化设置参数
         try {
-            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType) != null) {
-                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType);
+            //初始化设置参数
+
+            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType);
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.user_head_def);
                 options.error(R.mipmap.user_head_def);
@@ -199,15 +207,7 @@ public class WeixindanliaoActivity extends BaseActivity {
                 Glide.with(getApplicationContext()).load(mChatDataInfo.getPersonHead()).apply(options).into(mLeftHeadIv);
                 Glide.with(getApplicationContext()).load(mChatDataInfo.getOtherPersonHead()).apply(options).into(mRightHeadTv);
             }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
             //查询是否有主记录
             if (mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
                 messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType);
