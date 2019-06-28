@@ -107,6 +107,8 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
 
     private int transState = 1;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_transfer;
@@ -150,7 +152,10 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", true);
+        }
     }
 
     @OnClick(R.id.layout_send_time)
@@ -260,6 +265,14 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
             ToastUtils.showLong("请输入转账金额");
             return;
         }
+
+        if (!isUse) {
+            if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+                vipPayTypeDialog.show();
+                return;
+            }
+        }
+
         if (chooseType == 1) {
             Intent intent = new Intent(this, ReceiveMoneyActivity.class);
             intent.putExtra("trans_state", transState);
