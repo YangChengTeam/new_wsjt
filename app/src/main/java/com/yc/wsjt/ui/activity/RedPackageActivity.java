@@ -305,8 +305,8 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
             }
 
             if (!isUse) {
-                if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
-                    vipPayTypeDialog.show();
+                if (openVipDialog != null && !openVipDialog.isShowing()) {
+                    openVipDialog.show();
                     return;
                 }
             }
@@ -335,8 +335,8 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
             }
 
             if (!isUse) {
-                if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
-                    vipPayTypeDialog.show();
+                if (openVipDialog != null && !openVipDialog.isShowing()) {
+                    openVipDialog.show();
                     return;
                 }
             }
@@ -351,5 +351,11 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
 
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void addComment() {
+        super.addComment();
+        ToastUtils.showLong("点击了添加评论");
     }
 }

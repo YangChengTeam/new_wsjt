@@ -100,8 +100,6 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_TEXT || messageContent.getMessageType() == MessageContent.RECEIVE_TEXT) {
-            //helper.setText(R.id.tv_chat_text, messageContent.getMessageContent());
-
             TextView sessionTv = helper.getView(R.id.tv_chat_text);
             sessionTv.setText(SpanStringUtils.getEmotionContent(EmotionUtils.EMOTION_CLASSIC_TYPE,
                     mContext, sessionTv, messageContent.getMessageContent()));

@@ -48,7 +48,7 @@
     <string name="sys_say_hello">以上是打招呼的内容</string>
     <string name="sys_stranger">如果陌生人主动添加腻味朋友，请谨慎核实对方身份。</string>
 
-    <string name="vip_welfare_txt">1.超级权限，解锁所有VIP功能。\n2.超级权限，解锁所有VIP功能。\n3.超级权限，解锁所有VIP功能。</string>
+    <string name="vip_welfare_txt">1.超级权限，解锁所有VIP功能。\n2.去除广告，纯净无广告打扰。</string>
     <string name="vip_share_txt">到应用市场好评\n可以免费体验VIP功能</string>
     <string name="weixin_qun_liao">微信群聊</string>
     <string name="setting_qunliao">聊天设置</string>

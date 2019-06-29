@@ -36,6 +36,8 @@ public class MyWalletActivity extends BaseActivity {
     @BindView(R.id.et_money)
     EditText mMoneyEt;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_my_wallet;
@@ -59,7 +61,10 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", true);
+        }
     }
 
     @OnClick(R.id.btn_show_pre)
@@ -67,6 +72,13 @@ public class MyWalletActivity extends BaseActivity {
         if (StringUtils.isEmpty(mMoneyEt.getText())) {
             ToastUtils.showLong("请输入零钱金额");
             return;
+        }
+
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
         }
 
         Intent intent = new Intent(this, MyWalletPreActivity.class);

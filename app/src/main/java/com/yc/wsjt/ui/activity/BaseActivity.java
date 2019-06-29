@@ -11,6 +11,7 @@ import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.common.AppDatabase;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.OpenVipDialog;
 import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.ButterKnife;
@@ -19,11 +20,13 @@ import butterknife.ButterKnife;
  * Created by admin on 2017/4/8.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements OpenVipDialog.VipListener{
 
     public Context context;
     public Presenter presenter;
     public AppDatabase mAppDatabase;
+
+    OpenVipDialog openVipDialog;
 
     VipPayTypeDialog vipPayTypeDialog;
 
@@ -35,6 +38,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         context = this;
         ButterKnife.bind(this);
         mAppDatabase = ((App) getApplication()).getAppDatabase();
+        openVipDialog = new OpenVipDialog(this, R.style.custom_dialog);
+        openVipDialog.setVipListener(this);
         vipPayTypeDialog = new VipPayTypeDialog(this, R.style.custom_dialog);
         initVars();
         initViews();
@@ -82,4 +87,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void initData(Bundle savedInstanceState);
 
+    @Override
+    public void addComment() {
+    }
+
+    @Override
+    public void openVip() {
+        if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+            vipPayTypeDialog.show();
+        }
+    }
 }

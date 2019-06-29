@@ -55,6 +55,8 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
 
     WindowManager.LayoutParams windowParams;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_extract_set;
@@ -83,6 +85,11 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", true);
+        }
+
         mReceiveTimeTv.setText(TimeUtils.getNowString());
     }
 
@@ -131,6 +138,13 @@ public class ExtractSetActivity extends BaseActivity implements CustomDateDialog
         if (StringUtils.isEmpty(mMoneyEt.getText())) {
             ToastUtils.showLong("请输入提现金额");
             return;
+        }
+
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
         }
 
         Intent intent = new Intent(this, ExtractPreActivity.class);

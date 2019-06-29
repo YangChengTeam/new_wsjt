@@ -9,8 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.widget.TextView;
+
+import com.yc.wsjt.ui.custom.CenterAlignImageSpan;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,9 +44,10 @@ public class SpanStringUtils {
                 int size = (int) tv.getTextSize() * 13 / 10;
                 Bitmap bitmap = BitmapFactory.decodeResource(res, imgRes);
                 if (bitmap != null) {
-                    Bitmap scaleBitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
-                    ImageSpan span = new ImageSpan(context, scaleBitmap);
-                    spannableString.setSpan(span, start, start + key.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    Bitmap scaleBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                    //ImageSpan span = new ImageSpan(context, bitmap);
+                    CenterAlignImageSpan centerAlignImageSpan = new CenterAlignImageSpan(scaleBitmap);
+                    spannableString.setSpan(centerAlignImageSpan, start, start + key.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
         }

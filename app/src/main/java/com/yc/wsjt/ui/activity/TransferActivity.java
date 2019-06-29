@@ -91,7 +91,7 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
 
     private int chooseTime = 1;
 
-    private int chooseType;//转账(1)，收款
+    private int chooseType = 1;//1收款,2转账
 
     CustomDateDialog customDateDialog;
 
@@ -266,14 +266,15 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
             return;
         }
 
-        if (!isUse) {
-            if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
-                vipPayTypeDialog.show();
-                return;
-            }
-        }
-
         if (chooseType == 1) {
+
+            if (!isUse) {
+                if (openVipDialog != null && !openVipDialog.isShowing()) {
+                    openVipDialog.show();
+                    return;
+                }
+            }
+
             Intent intent = new Intent(this, ReceiveMoneyActivity.class);
             intent.putExtra("trans_state", transState);
             DecimalFormat df = new DecimalFormat(".00");
@@ -288,6 +289,13 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
             if (StringUtils.isEmpty(mOtherNickNameEt.getText())) {
                 ToastUtils.showLong("请填写对方昵称");
                 return;
+            }
+
+            if (!isUse) {
+                if (openVipDialog != null && !openVipDialog.isShowing()) {
+                    openVipDialog.show();
+                    return;
+                }
             }
 
             Intent intent = new Intent(this, TurnMoneyActivity.class);
