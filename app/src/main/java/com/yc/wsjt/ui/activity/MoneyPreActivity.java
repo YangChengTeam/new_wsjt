@@ -23,6 +23,8 @@ public class MoneyPreActivity extends BaseActivity {
     @BindView(R.id.tv_profit_remark)
     TextView mProfitRemarkTv;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_money_pre_show;
@@ -47,12 +49,29 @@ public class MoneyPreActivity extends BaseActivity {
                 mProfitRemarkTv.setText(bundle.getString("profit_remark"));
                 mProfitRemarkTv.setVisibility(View.VISIBLE);
             }
+            isUse = bundle.getBoolean("is_use", false);
         }
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+    }
 
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
     }
 
     @OnClick(R.id.iv_back)

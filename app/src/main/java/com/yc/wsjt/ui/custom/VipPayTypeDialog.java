@@ -58,6 +58,7 @@ public class VipPayTypeDialog extends Dialog implements View.OnClickListener, Vi
 
     public interface PayListener {
         void pay();
+        void payClose();
     }
 
     public PayListener payListener;
@@ -74,7 +75,6 @@ public class VipPayTypeDialog extends Dialog implements View.OnClickListener, Vi
     public VipPayTypeDialog(Context context, int themeResId) {
         super(context, themeResId);
         this.mContext = context;
-
     }
 
     @Override
@@ -155,6 +155,7 @@ public class VipPayTypeDialog extends Dialog implements View.OnClickListener, Vi
         switch (v.getId()) {
             case R.id.iv_close:
                 dismiss();
+                payListener.payClose();
                 break;
             case R.id.iv_alipay_choose:
                 mAlipayIv.setImageResource(R.mipmap.pay_selected_icon);

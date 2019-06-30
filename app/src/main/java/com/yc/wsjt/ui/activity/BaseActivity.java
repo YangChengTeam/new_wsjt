@@ -97,4 +97,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OpenVipD
             vipPayTypeDialog.show();
         }
     }
+
+    @Override
+    public void closeOpenVip() {
+
+    }
 }

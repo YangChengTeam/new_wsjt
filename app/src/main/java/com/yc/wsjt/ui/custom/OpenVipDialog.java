@@ -24,6 +24,8 @@ public class OpenVipDialog extends Dialog {
         void addComment();
 
         void openVip();
+
+        void closeOpenVip();
     }
 
     public VipListener vipListener;
@@ -46,7 +48,7 @@ public class OpenVipDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.open_vip_dialog_view);
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(false);
         initView();
     }
 
@@ -75,6 +77,7 @@ public class OpenVipDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 dismiss();
+                vipListener.closeOpenVip();
             }
         });
     }

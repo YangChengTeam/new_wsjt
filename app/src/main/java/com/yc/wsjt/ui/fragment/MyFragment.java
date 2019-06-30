@@ -228,6 +228,11 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
         }
     }
 
+    @Override
+    public void closeOpenVip() {
+
+    }
+
     @OnClick(R.id.layout_vip_info)
     void openVipView() {
         if (App.getApp().isLogin && mUserInfo != null) {
