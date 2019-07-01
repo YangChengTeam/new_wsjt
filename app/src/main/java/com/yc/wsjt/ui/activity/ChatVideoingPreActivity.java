@@ -5,12 +5,21 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
+import com.yc.wsjt.ui.custom.OpenVipDialog;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 /**
  * Created by zhangdinghui on 2019/5/28.
  */
-public class ChatVideoingPreActivity extends Activity {
+public class ChatVideoingPreActivity extends Activity implements OpenVipDialog.VipListener, VipPayTypeDialog.PayListener {
+
+    private boolean isUse;
+
+    OpenVipDialog openVipDialog;
+
+    VipPayTypeDialog vipPayTypeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +30,48 @@ public class ChatVideoingPreActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat_video_ing_show);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", false);
+        }
+
+        openVipDialog = new OpenVipDialog(this, R.style.custom_dialog);
+        openVipDialog.setVipListener(this);
+        vipPayTypeDialog = new VipPayTypeDialog(this, R.style.custom_dialog);
+        vipPayTypeDialog.setPayListener(this);
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
     }
 
+    @Override
+    public void addComment() {
+    }
+
+    @Override
+    public void openVip() {
+        if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+            vipPayTypeDialog.show();
+        }
+    }
+
+    @Override
+    public void closeOpenVip() {
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
+    }
 }

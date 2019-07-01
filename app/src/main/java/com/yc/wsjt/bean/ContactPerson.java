@@ -2,6 +2,10 @@ package com.yc.wsjt.bean;
 
 import android.text.TextUtils;
 
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
@@ -10,13 +14,50 @@ import com.orhanobut.logger.Logger;
 /**
  * Created by fighting on 2017/5/17.
  */
-
+@Entity(tableName = "contact_person", indices = {@Index(value = {"id"}, unique = true)})
 public class ContactPerson implements Comparable<ContactPerson> {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
     public String mName;
+
     public String mHead;
+
     public String mPinyin;
+
     public String firstLetter;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getmPinyin() {
+        return mPinyin;
+    }
+
+    public void setmPinyin(String mPinyin) {
+        this.mPinyin = mPinyin;
+    }
+
+    public String getFirstLetter() {
+        return firstLetter;
+    }
+
+    public void setFirstLetter(String firstLetter) {
+        this.firstLetter = firstLetter;
+    }
 
     public String getPinyin() {
         return mPinyin;

@@ -82,6 +82,8 @@ public class WeiXinPayListActivity extends BaseActivity implements View.OnClickL
 
     PayTypeInfoAdapter payTypeInfoAdapter;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_pay_list;
@@ -132,6 +134,11 @@ public class WeiXinPayListActivity extends BaseActivity implements View.OnClickL
         if (!StringUtils.isEmpty(payBg)) {
             Glide.with(this).load(payBg).into(mPayBgIv);
         }
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            isUse = bundle.getBoolean("is_use", false);
+        }
     }
 
     @Override
@@ -162,6 +169,7 @@ public class WeiXinPayListActivity extends BaseActivity implements View.OnClickL
     @OnClick(R.id.btn_pre_show)
     void preShow() {
         Intent intent = new Intent(this, WeiXinPayListPreActivity.class);
+        intent.putExtra("is_use", isUse);
         startActivity(intent);
     }
 

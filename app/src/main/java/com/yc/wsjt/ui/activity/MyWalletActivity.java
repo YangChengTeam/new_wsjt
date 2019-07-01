@@ -74,17 +74,11 @@ public class MyWalletActivity extends BaseActivity {
             return;
         }
 
-        if (!isUse) {
-            if (openVipDialog != null && !openVipDialog.isShowing()) {
-                openVipDialog.show();
-                return;
-            }
-        }
-
         Intent intent = new Intent(this, MyWalletPreActivity.class);
         DecimalFormat df = new DecimalFormat(".00");
         String temp = df.format(Double.parseDouble(mMoneyEt.getText().toString()));
         intent.putExtra("money", temp);
+        intent.putExtra("is_use", isUse);
         startActivity(intent);
     }
 

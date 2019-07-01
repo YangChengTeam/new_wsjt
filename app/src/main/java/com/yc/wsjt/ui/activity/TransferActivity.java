@@ -268,13 +268,6 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
 
         if (chooseType == 1) {
 
-            if (!isUse) {
-                if (openVipDialog != null && !openVipDialog.isShowing()) {
-                    openVipDialog.show();
-                    return;
-                }
-            }
-
             Intent intent = new Intent(this, ReceiveMoneyActivity.class);
             intent.putExtra("trans_state", transState);
             DecimalFormat df = new DecimalFormat(".00");
@@ -284,18 +277,12 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
             intent.putExtra("profit_remark", mProfitRemarkEt.getText());
             intent.putExtra("send_time", mSendTimeTv.getText());
             intent.putExtra("receive_time", mReceiveTimeTv.getText());
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         } else {
             if (StringUtils.isEmpty(mOtherNickNameEt.getText())) {
                 ToastUtils.showLong("请填写对方昵称");
                 return;
-            }
-
-            if (!isUse) {
-                if (openVipDialog != null && !openVipDialog.isShowing()) {
-                    openVipDialog.show();
-                    return;
-                }
             }
 
             Intent intent = new Intent(this, TurnMoneyActivity.class);
@@ -306,6 +293,7 @@ public class TransferActivity extends BaseActivity implements CustomDateDialog.D
             intent.putExtra("nick_name", mOtherNickNameEt.getText().toString());
             intent.putExtra("send_time", mSendTimeTv.getText());
             intent.putExtra("receive_time", mReceiveTimeTv.getText());
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         }
 

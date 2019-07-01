@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.FriendInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.NewFriendListAdapter;
+import com.yc.wsjt.ui.custom.OpenVipDialog;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import butterknife.OnClick;
 /**
  * Created by zhangdinghui on 2019/5/27.
  */
-public class NewFriendListActivity extends BaseActivity {
+public class NewFriendListActivity extends BaseActivity implements VipPayTypeDialog.PayListener {
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
@@ -44,6 +47,8 @@ public class NewFriendListActivity extends BaseActivity {
     public String[] userNames = {"周小姐", "王小明", "张大大", "徐晓清"};
 
     public int[] heads = {R.mipmap.c1, R.mipmap.c2, R.mipmap.c3, R.mipmap.c4};
+
+    private boolean isUse;
 
     @Override
     protected int getLayoutId() {
@@ -93,7 +98,49 @@ public class NewFriendListActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", false);
+        }
 
+        openVipDialog = new OpenVipDialog(this, R.style.custom_dialog);
+        openVipDialog.setVipListener(this);
+        vipPayTypeDialog = new VipPayTypeDialog(this, R.style.custom_dialog);
+        vipPayTypeDialog.setPayListener(this);
+
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void addComment() {
+    }
+
+    @Override
+    public void openVip() {
+        if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+            vipPayTypeDialog.show();
+        }
+    }
+
+    @Override
+    public void closeOpenVip() {
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
     }
 
     @OnClick(R.id.iv_back)

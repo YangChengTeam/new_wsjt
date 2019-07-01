@@ -34,6 +34,8 @@ public class WeiXinBillActivity extends BaseActivity {
     @BindView(R.id.btn_pre_show)
     Button mQueryDataBtn;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_bill_set;
@@ -57,7 +59,10 @@ public class WeiXinBillActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            isUse = bundle.getBoolean("is_use", false);
+        }
     }
 
     @OnClick(R.id.btn_add_data)
@@ -69,6 +74,7 @@ public class WeiXinBillActivity extends BaseActivity {
     @OnClick(R.id.btn_pre_show)
     void preShow() {
         Intent intent = new Intent(this, WeiXinBillPreActivity.class);
+        intent.putExtra("is_use", isUse);
         startActivity(intent);
     }
 

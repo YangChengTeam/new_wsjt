@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
+import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.Glide4Engine;
@@ -55,6 +56,12 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     @BindView(R.id.layout_video_ing)
     LinearLayout mVideoIngLayout;
 
+    @BindView(R.id.tv_target_user_name)
+    TextView mTargetUserNameTv;
+
+    @BindView(R.id.iv_target_user_head)
+    ImageView mTargetUserBgIv;
+
     @BindView(R.id.iv_video_bg)
     ImageView mVideoBgIv;
 
@@ -80,6 +87,8 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     private String videoIngOtherPath;
 
     private String videoIngMyPath;
+
+    private boolean isUse;
 
     @Override
     protected int getLayoutId() {
@@ -107,7 +116,17 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        isUse = bundle.getBoolean("is_use", false);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (App.getApp().getTempPerson() != null) {
+            Glide.with(this).load(App.getApp().getTempPerson().mHead).into(mTargetUserBgIv);
+            mTargetUserNameTv.setText(App.getApp().getTempPerson().mName);
+        }
     }
 
     @OnClick(R.id.tv_wait_video)
@@ -135,7 +154,7 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     @OnClick(R.id.layout_target)
     void targetUserInfo() {
         if (settingRoleDialog != null && !settingRoleDialog.isShowing()) {
-            settingRoleDialog.setType(0);
+            settingRoleDialog.setType(2);
             settingRoleDialog.show();
         }
     }
@@ -233,9 +252,16 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     void preShow() {
         if (mWaitVideoLayout.getVisibility() == View.VISIBLE) {
             Intent intent = new Intent(this, ChatVideoPreActivity.class);
+            intent.putExtra("target_user_name", mTargetUserNameTv.getText().toString());
+            intent.putExtra("target_user_head", App.getApp().getTempPerson().mHead);
+            intent.putExtra("video_bg", waitMyVideoPath);
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, ChatVideoingPreActivity.class);
+            intent.putExtra("is_use", isUse);
+            intent.putExtra("other_side_bg", videoIngOtherPath);
+            intent.putExtra("my_video_bg", videoIngMyPath);
             startActivity(intent);
         }
     }

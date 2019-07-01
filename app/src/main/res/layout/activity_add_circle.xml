@@ -85,6 +85,7 @@
                 android:background="@null"
                 android:hint="请输入消息内容"
                 android:padding="12dp"
+                android:minLines="2"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

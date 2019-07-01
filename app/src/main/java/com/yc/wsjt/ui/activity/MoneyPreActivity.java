@@ -6,13 +6,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MoneyPreActivity extends BaseActivity {
+public class MoneyPreActivity extends BaseActivity implements VipPayTypeDialog.PayListener{
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
@@ -42,6 +44,8 @@ public class MoneyPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        vipPayTypeDialog.setPayListener(this);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mMoneyTv.setText(bundle.getString("money"));
@@ -76,6 +80,17 @@ public class MoneyPreActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     void back() {
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
         finish();
     }
 }

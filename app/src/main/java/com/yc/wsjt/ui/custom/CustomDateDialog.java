@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
 import com.yc.wsjt.R;
+import com.yc.wsjt.util.MyDateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,6 +96,7 @@ public class CustomDateDialog extends Dialog {
         mMonthWheelView = findViewById(R.id.wheel_view_month);
         mMonthWheelView.setLoop(true);
         mMonthWheelView.setStyle(wheelViewStyle);
+        mMonthWheelView.setSelection(MyDateUtils.getCurrentMonth());
         mMonthWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMonthWheelView.setSkin(WheelView.Skin.Holo);
         mMonthWheelView.setWheelData(list);
@@ -108,6 +110,7 @@ public class CustomDateDialog extends Dialog {
         mTimeDayWheelView = findViewById(R.id.wheel_view_day_time);
         mTimeDayWheelView.setLoop(true);
         mTimeDayWheelView.setStyle(wheelViewStyle);
+        mTimeDayWheelView.setSelection(MyDateUtils.getCurrentDay() - 1);
         mTimeDayWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mTimeDayWheelView.setSkin(WheelView.Skin.Holo);
         mTimeDayWheelView.setWheelData(dayList);
@@ -120,6 +123,7 @@ public class CustomDateDialog extends Dialog {
         mHourWheelView = findViewById(R.id.wheel_view_hour);
         mHourWheelView.setLoop(true);
         mHourWheelView.setStyle(wheelViewStyle);
+        mHourWheelView.setSelection(MyDateUtils.getTwentyFourHour());
         mHourWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mHourWheelView.setSkin(WheelView.Skin.Holo);
         mHourWheelView.setWheelData(hourList);
@@ -132,6 +136,7 @@ public class CustomDateDialog extends Dialog {
         mMinuteWheelView = findViewById(R.id.wheel_view_minute);
         mMinuteWheelView.setLoop(true);
         mMinuteWheelView.setStyle(wheelViewStyle);
+        mMinuteWheelView.setSelection(MyDateUtils.getCurrentMinute());
         mMinuteWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMinuteWheelView.setSkin(WheelView.Skin.Holo);
         mMinuteWheelView.setWheelData(minuteList);
@@ -147,7 +152,7 @@ public class CustomDateDialog extends Dialog {
                 String hour = mHourWheelView.getSelectionItem().toString();
                 String minute = mMinuteWheelView.getSelectionItem().toString();
 
-                dateSelectListener.configDate(year + "-" + month + "-" + day + " "+ hour + ":" + minute);
+                dateSelectListener.configDate(year + "-" + month + "-" + day + " " + hour + ":" + minute);
                 dismiss();
             }
         });

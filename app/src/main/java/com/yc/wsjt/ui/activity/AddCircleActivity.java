@@ -183,6 +183,16 @@ public class AddCircleActivity extends BaseActivity implements CustomDateDialog.
         mAddressTv.setText(address);
     }
 
+    @OnClick(R.id.layout_address)
+    void inputAddress() {
+        inputDialog.show();
+
+        WindowManager.LayoutParams windowParams = inputDialog.getWindow().getAttributes();
+        windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.75);
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        inputDialog.getWindow().setAttributes(windowParams);
+    }
+
     @OnClick(R.id.btn_config)
     void config() {
         if (mSendUserNameTv.getText().equals("请选择")) {
@@ -204,7 +214,9 @@ public class AddCircleActivity extends BaseActivity implements CustomDateDialog.
         if (circleImageAdapter != null && circleImageAdapter.getData().size() > 0) {
 
             for (int i = 0; i < circleImageAdapter.getData().size(); i++) {
-                imageStr.append(circleImageAdapter.getData().get(i)).append("#");
+                if (circleImageAdapter.getData().get(i) instanceof String) {
+                    imageStr.append(circleImageAdapter.getData().get(i)).append("#");
+                }
             }
         }
         try {

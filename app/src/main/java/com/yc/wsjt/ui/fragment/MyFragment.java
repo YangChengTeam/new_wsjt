@@ -314,6 +314,11 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
     }
 
     @Override
+    public void payClose() {
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);

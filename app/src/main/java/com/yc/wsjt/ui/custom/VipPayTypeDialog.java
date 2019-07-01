@@ -81,10 +81,8 @@ public class VipPayTypeDialog extends Dialog implements View.OnClickListener, Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vip_type_select_view);
-        setCanceledOnTouchOutside(true);
-
+        setCanceledOnTouchOutside(false);
         iPayAbs = new I1PayAbs((Activity) mContext);
-
         initView();
     }
 

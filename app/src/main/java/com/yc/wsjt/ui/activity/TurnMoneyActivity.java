@@ -7,13 +7,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TurnMoneyActivity extends BaseActivity {
+public class TurnMoneyActivity extends BaseActivity implements VipPayTypeDialog.PayListener {
 
     private int chooseType = 1;
 
@@ -47,6 +49,8 @@ public class TurnMoneyActivity extends BaseActivity {
 
     private String transMoney;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_turn_money;
@@ -64,9 +68,10 @@ public class TurnMoneyActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        vipPayTypeDialog.setPayListener(this);
         Bundle bundle = getIntent().getExtras();
         transState = bundle.getInt("trans_state");
-
+        isUse = bundle.getBoolean("is_use", false);
         String otherSideName = bundle.getString("nick_name");
 
         if (transState == 1) {
@@ -97,7 +102,34 @@ public class TurnMoneyActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+    }
 
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
     }
 
     @OnClick(R.id.iv_back)

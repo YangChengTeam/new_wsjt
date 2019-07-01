@@ -10,13 +10,15 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ReceiveMoneyActivity extends BaseActivity {
+public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDialog.PayListener{
 
     private int chooseType = 1;
 
@@ -56,6 +58,8 @@ public class ReceiveMoneyActivity extends BaseActivity {
 
     private String transMoney;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_receive_money;
@@ -73,10 +77,13 @@ public class ReceiveMoneyActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        vipPayTypeDialog.setPayListener(this);
+
         mLookMoneyTv.setText("查看零钱");
         mLookMoneyTv.setTextColor(ContextCompat.getColor(this, R.color.look_money_color));
 
         Bundle bundle = getIntent().getExtras();
+        isUse = bundle.getBoolean("is_use", false);
         if (bundle.getInt("choose_type") > 0) {
             chooseType = bundle.getInt("choose_type");
         }
@@ -117,7 +124,34 @@ public class ReceiveMoneyActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+    }
 
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
     }
 
     @OnClick(R.id.iv_back)

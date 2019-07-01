@@ -11,7 +11,10 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
+import com.yc.wsjt.ui.custom.OpenVipDialog;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by zhangdinghui on 2019/5/29.
  * 发红包预览界面
  */
-public class RedSendPreActivity extends Activity {
+public class RedSendPreActivity extends Activity implements OpenVipDialog.VipListener,VipPayTypeDialog.PayListener {
 
     @BindView(R.id.layout_title)
     LinearLayout mTitleLayout;
@@ -49,6 +52,12 @@ public class RedSendPreActivity extends Activity {
     @BindView(R.id.tv_receive_money)
     TextView mReceiveMoneyTv;
 
+    private boolean isUse;
+
+    OpenVipDialog openVipDialog;
+
+    VipPayTypeDialog vipPayTypeDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +80,47 @@ public class RedSendPreActivity extends Activity {
             mReceiveMoneyTv.setText(bundle.getString("red_money", "0.00") + "元");
             mReceiveDateTv.setText(bundle.getString("red_receive_date"));
             Glide.with(this).load(bundle.getString("receive_user_head")).apply(requestOptions).into(mReceiveUserHeadIv);
+
+            isUse = bundle.getBoolean("is_use", false);
+        }
+
+        openVipDialog = new OpenVipDialog(this, R.style.custom_dialog);
+        openVipDialog.setVipListener(this);
+        vipPayTypeDialog = new VipPayTypeDialog(this, R.style.custom_dialog);
+        vipPayTypeDialog.setPayListener(this);
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
         }
     }
+
+    @Override
+    public void addComment() {
+    }
+
+    @Override
+    public void openVip() {
+        if (vipPayTypeDialog != null && !vipPayTypeDialog.isShowing()) {
+            vipPayTypeDialog.show();
+        }
+    }
+
+    @Override
+    public void closeOpenVip() {
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
+    }
+
 }

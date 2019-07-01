@@ -58,6 +58,8 @@ public class WeiXinCircleSetActivity extends BaseActivity {
 
     private CircleBaseSetInfo circleBaseSetInfo;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_circle_set;
@@ -81,6 +83,10 @@ public class WeiXinCircleSetActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", false);
+        }
         circleInfoListAdapter = new CircleInfoListAdapter(this, null);
         mCircleInfoListView.setLayoutManager(new LinearLayoutManager(this));
         mCircleInfoListView.addItemDecoration(new NormalDecoration(ContextCompat.getColor(this, R.color.line_color), 1));
@@ -123,6 +129,7 @@ public class WeiXinCircleSetActivity extends BaseActivity {
             return;
         }
         Intent intent = new Intent(this, WeiXinCircleActivity.class);
+        intent.putExtra("is_use", isUse);
         startActivity(intent);
     }
 

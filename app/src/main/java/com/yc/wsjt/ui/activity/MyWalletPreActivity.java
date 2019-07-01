@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.ckr.decoration.DividerGridItemDecoration;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.QuickInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.TencentServerAdapter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MyWalletPreActivity extends BaseActivity {
+public class MyWalletPreActivity extends BaseActivity implements VipPayTypeDialog.PayListener{
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
@@ -69,6 +71,8 @@ public class MyWalletPreActivity extends BaseActivity {
 
     TencentServerAdapter thirdServerAdapter;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_my_wallet_show;
@@ -86,12 +90,12 @@ public class MyWalletPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        vipPayTypeDialog.setPayListener(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mMoneyTv.setText("¥" + bundle.getString("money"));
         }
-
+        isUse = bundle.getBoolean("is_use", false);
         List<QuickInfo> list = new ArrayList<>();
         for (int i = 0; i < quickImages.length; i++) {
             QuickInfo quickInfo = new QuickInfo();
@@ -127,7 +131,34 @@ public class MyWalletPreActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+    }
 
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
     }
 
     @OnClick(R.id.iv_back)

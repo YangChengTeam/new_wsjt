@@ -87,6 +87,8 @@ public class PaySuccessSetActivity extends BaseActivity implements View.OnClickL
 
     SettingRoleDialog settingRoleDialog;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_pay_success_set;
@@ -123,7 +125,10 @@ public class PaySuccessSetActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", true);
+        }
     }
 
     @Override
@@ -201,7 +206,7 @@ public class PaySuccessSetActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(this, PaySuccessTransferActivity.class);
                 intent.putExtra("wx_name", mWeixinNameEt.getText());
                 intent.putExtra("wx_money", temp);
-
+                intent.putExtra("is_use", isUse);
                 startActivity(intent);
                 break;
             case 2:
@@ -223,7 +228,7 @@ public class PaySuccessSetActivity extends BaseActivity implements View.OnClickL
                 intent1.putExtra("receive_name", mReceiveUserNameTv.getText());
                 intent1.putExtra("receive_user_head", App.getApp().getTempPerson() != null ? App.getApp().getTempPerson().mHead : "");
                 intent1.putExtra("wx_money", temp1);
-
+                intent1.putExtra("is_use", isUse);
                 startActivity(intent1);
                 break;
             case 3:
@@ -246,7 +251,7 @@ public class PaySuccessSetActivity extends BaseActivity implements View.OnClickL
                 intent2.putExtra("wx_merchant_name", mMerchantNameEt.getText().toString());
                 intent2.putExtra("follow_merchant", mFollowMerchantBtn.isChecked());
                 intent2.putExtra("wx_money", temp2);
-
+                intent2.putExtra("is_use", isUse);
                 startActivity(intent2);
                 break;
             default:

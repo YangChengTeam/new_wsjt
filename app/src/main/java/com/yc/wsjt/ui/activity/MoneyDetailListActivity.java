@@ -2,8 +2,10 @@ package com.yc.wsjt.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -46,7 +48,12 @@ public class MoneyDetailListActivity extends BaseActivity {
     @BindView(R.id.money_detail_list)
     SwipeRecyclerView mDetailListView;
 
+    @BindView(R.id.layout_no_data)
+    LinearLayout mNoDataLayout;
+
     MoneyDetailListPreAdapter moneyDetailListPreAdapter;
+
+    private boolean isUse;
 
     @Override
     protected int getLayoutId() {
@@ -85,6 +92,7 @@ public class MoneyDetailListActivity extends BaseActivity {
                     public void accept(List<MoneyDetail> moneyDetails) {
                         if (moneyDetails != null) {
                             moneyDetailListPreAdapter.setNewData(moneyDetails);
+                            mNoDataLayout.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -92,7 +100,10 @@ public class MoneyDetailListActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isUse = bundle.getBoolean("is_use", false);
+        }
     }
 
     @OnClick(R.id.btn_add_data)
@@ -104,6 +115,7 @@ public class MoneyDetailListActivity extends BaseActivity {
     @OnClick(R.id.btn_pre_show)
     void preShow() {
         Intent intent = new Intent(this, MoneyListPreActivity.class);
+        intent.putExtra("is_use", isUse);
         startActivity(intent);
     }
 

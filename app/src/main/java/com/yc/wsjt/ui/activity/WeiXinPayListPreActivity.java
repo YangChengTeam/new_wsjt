@@ -13,17 +13,20 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.orhanobut.logger.Logger;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.PayInfo;
 import com.yc.wsjt.bean.WeiXinPayInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.MultipleItemQuickAdapter;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -33,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
  * <p>
  * 微信支付-生成预览
  */
-public class WeiXinPayListPreActivity extends BaseActivity {
+public class WeiXinPayListPreActivity extends BaseActivity implements VipPayTypeDialog.PayListener{
 
     @BindView(R.id.pay_list)
     SwipeRecyclerView mPayListView;
@@ -42,6 +45,8 @@ public class WeiXinPayListPreActivity extends BaseActivity {
     ImageView mPayBgIv;
 
     MultipleItemQuickAdapter multipleItemQuickAdapter;
+
+    private boolean isUse;
 
     @Override
     protected int getLayoutId() {
@@ -68,11 +73,21 @@ public class WeiXinPayListPreActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        vipPayTypeDialog.setPayListener(this);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        isUse = bundle.getBoolean("is_use", false);
+
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
+
         String payBg = SPUtils.getInstance().getString("pay_bg", "");
         if (!StringUtils.isEmpty(payBg)) {
             Glide.with(this).load(payBg).into(mPayBgIv);
@@ -97,5 +112,32 @@ public class WeiXinPayListPreActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }

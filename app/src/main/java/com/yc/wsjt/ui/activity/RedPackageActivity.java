@@ -3,6 +3,7 @@ package com.yc.wsjt.ui.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.CustomDateDialog;
 import com.yc.wsjt.ui.custom.EmojiModeDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
 import com.yc.wsjt.ui.custom.SettingRoleDialog;
@@ -38,7 +40,7 @@ import java.text.DecimalFormat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener {
+public class RedPackageActivity extends BaseActivity implements CustomDateDialog.DateSelectListener, EmojiModeDialog.ModeClickListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -93,6 +95,9 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
     @BindView(R.id.iv_get_user_head)
     ImageView mGetUserHeadIv;
 
+    @BindView(R.id.tv_red_receive_time)
+    TextView mReceiveDateTv;
+
     private File outputImage;
 
     private int chooseType = 1;
@@ -114,6 +119,8 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
     private int chooseRole = 1;//发送人,领红包人
 
     private boolean isUse;
+
+    CustomDateDialog customDateDialog;
 
     @Override
     protected int getLayoutId() {
@@ -139,6 +146,9 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
         emojiModeDialog.setModeClickListener(this);
 
         settingRoleDialog = new SettingRoleDialog(this, R.style.custom_dialog);
+
+        customDateDialog = new CustomDateDialog(this, R.style.date_dialog);
+        customDateDialog.setDateSelectListener(this);
     }
 
     @Override
@@ -270,7 +280,7 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
         mReceiveTypeTv.setBackgroundResource(R.drawable.choose_type_normal);
         mReceiveTypeTv.setTextColor(ContextCompat.getColor(this, R.color.add_chat_color));
         mGetUserInfoLayout.setVisibility(View.VISIBLE);
-        mOtherSideIv.setImageResource(0);
+        mOtherSideIv.setImageResource(R.mipmap.image_def);
     }
 
     @Override
@@ -291,6 +301,24 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
         Glide.with(this).load(R.mipmap.user_head_def).into(chooseType == 1 ? mOtherSideIv : mReplyEmojiIv);
     }
 
+    @OnClick(R.id.layout_receive_time)
+    void receiveDate() {
+        customDateDialog.show();
+
+        //设置Dialog从窗体底部弹出
+        customDateDialog.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams windowParams = customDateDialog.getWindow().getAttributes();
+        windowParams.width = ScreenUtils.getScreenWidth();
+        windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        customDateDialog.getWindow().setAttributes(windowParams);
+    }
+
+    @Override
+    public void configDate(String selectDate) {
+        Logger.i("select date --->" + selectDate);
+        mReceiveDateTv.setText(selectDate);
+    }
+
     @OnClick(R.id.btn_show_pre)
     void redPreShow() {
         if (isSend) {
@@ -304,24 +332,22 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
                 return;
             }
 
-            if (!isUse) {
-                if (openVipDialog != null && !openVipDialog.isShowing()) {
-                    openVipDialog.show();
-                    return;
-                }
+            if (mGetUserNameTv.getText().equals("请选择")) {
+                ToastUtils.showLong("请选择领红包人");
+                return;
             }
 
             Intent intent = new Intent(this, RedSendPreActivity.class);
-
             intent.putExtra("send_user_name", sendUserName);
             intent.putExtra("send_user_head", sendUserHead);
             DecimalFormat df = new DecimalFormat(".00");
             String temp = df.format(Double.parseDouble(mRedNumberEt.getText().toString()));
             intent.putExtra("red_money", temp);
             intent.putExtra("red_remark", StringUtils.isEmpty(mRedRemarkEt.getText()) ? "恭喜发财，大吉大利" : mRedRemarkEt.getText().toString());
-            intent.putExtra("red_receive_date", "12:33");
-            intent.putExtra("receive_user_name", StringUtils.isEmpty(receiveUserName) ? "未知用户" : receiveUserName);
+            intent.putExtra("red_receive_date", mReceiveDateTv.getText().toString());
+            intent.putExtra("receive_user_name", receiveUserName);
             intent.putExtra("receive_user_head", receiveUserHead);
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         } else {
             if (StringUtils.isEmpty(sendUserName)) {
@@ -334,13 +360,6 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
                 return;
             }
 
-            if (!isUse) {
-                if (openVipDialog != null && !openVipDialog.isShowing()) {
-                    openVipDialog.show();
-                    return;
-                }
-            }
-
             Intent intent = new Intent(this, RedReceivePreActivity.class);
             intent.putExtra("send_user_name", sendUserName);
             intent.putExtra("send_user_head", sendUserHead);
@@ -348,7 +367,7 @@ public class RedPackageActivity extends BaseActivity implements EmojiModeDialog.
             String temp = df.format(Double.parseDouble(mRedNumberEt.getText().toString()));
             intent.putExtra("red_money", temp);
             intent.putExtra("red_remark", StringUtils.isEmpty(mRedRemarkEt.getText()) ? "恭喜发财，大吉大利" : mRedRemarkEt.getText().toString());
-
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         }
     }

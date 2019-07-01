@@ -48,10 +48,6 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
 
     private ArrayList<ContactPerson> personList;
 
-    private String[] userNames = {"刀白凤", "丁春秋", "马夫人", "马五德", "小翠", "于光豪", "段延庆", "段誉", "段正淳", "范禹"};
-
-    private int[] userHeads = {R.mipmap.c1, R.mipmap.c2, R.mipmap.c3, R.mipmap.c4, R.mipmap.c5, R.mipmap.c6, R.mipmap.c7, R.mipmap.c8, R.mipmap.c9, R.mipmap.c10};
-
     private int personType = 0;//0自己，1对方
 
     private RoleInfoPresenterImp roleInfoPresenterImp;
@@ -87,8 +83,20 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
             modelType = bundle.getInt("model_type", 0);
         }
 
-        roleInfoPresenterImp = new RoleInfoPresenterImp(this, this);
-        roleInfoPresenterImp.getRoleList();
+        if (mAppDatabase.contactPersonDao().getPersonList() != null && mAppDatabase.contactPersonDao().getPersonList().size() > 0) {
+            personList = (ArrayList<ContactPerson>) mAppDatabase.contactPersonDao().getPersonList();
+            contactPersonsList = Utils.getSortDataList(personList);
+            /**设置适配器*/
+            mExpandableListView.setAdapter(new ContactsAdapter(this, contactPersonsList));
+
+            /**展开所有条目*/
+            for (int i = 0; i < contactPersonsList.size(); i++) {
+                mExpandableListView.expandGroup(i);
+            }
+        } else {
+            roleInfoPresenterImp = new RoleInfoPresenterImp(this, this);
+            roleInfoPresenterImp.getRoleList();
+        }
 
         /**设置group不可点击*/
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -199,6 +207,8 @@ public class ChooseRoleActivity extends BaseActivity implements RoleInfoView {
                     ContactPerson contactPerson = new ContactPerson(tData.getData().get(i).getNickname());
                     contactPerson.setmHead(Constants.BASE_IMAGE_URL + tData.getData().get(i).getAvatar());
                     personList.add(contactPerson);
+
+                    mAppDatabase.contactPersonDao().insert(contactPerson);
                 }
                 Logger.i("person list --->");
                 Logger.i(JSON.toJSONString(personList));

@@ -65,6 +65,8 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
 
     private int chooseType = 1;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_voice_setting;
@@ -91,7 +93,8 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        isUse = bundle.getBoolean("is_use", false);
     }
 
     @Override
@@ -157,6 +160,7 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
         if (mVoiceTimeLayout.getVisibility() == View.GONE) {
             //待接听
             Intent intent = new Intent(this, ChatWaitVoicePreActivity.class);
+            intent.putExtra("is_use", isUse);
             startActivity(intent);
         } else {
 
@@ -167,6 +171,7 @@ public class ChatVoiceSetActivity extends BaseActivity implements VideoTimeDialo
 
             //通话中
             Intent intent = new Intent(this, ChatVoiceingPreActivity.class);
+            intent.putExtra("is_use", isUse);
             intent.putExtra("connect_time", mConnectionTimeTv.getText().toString());
             startActivity(intent);
         }

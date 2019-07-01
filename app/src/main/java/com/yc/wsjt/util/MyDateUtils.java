@@ -4,6 +4,18 @@ import java.util.Calendar;
 
 public class MyDateUtils {
 
+    public static int getCurrentMonth() {
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);//月
+        return month;
+    }
+
+    public static int getCurrentDay() {
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.DAY_OF_MONTH);//日
+        return month;
+    }
+
     //24小时制
     public static int getTwentyFourHour() {
         Calendar c = Calendar.getInstance();

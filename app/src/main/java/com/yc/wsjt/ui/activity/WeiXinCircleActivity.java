@@ -32,16 +32,18 @@ import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.CircleListAdapter;
 import com.yc.wsjt.ui.custom.AppBarStateChangeListener;
 import com.yc.wsjt.ui.custom.RoundedCornersTransformation;
+import com.yc.wsjt.ui.custom.VipPayTypeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by zhangdinghui on 2019/5/30.
  */
-public class WeiXinCircleActivity extends BaseActivity implements View.OnClickListener {
+public class WeiXinCircleActivity extends BaseActivity implements View.OnClickListener, VipPayTypeDialog.PayListener {
 
     @BindView(R.id.appbar)
     AppBarLayout appBarLayout;
@@ -79,6 +81,8 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
 
     private int circleId;
 
+    private boolean isUse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_circle;
@@ -97,6 +101,7 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        vipPayTypeDialog.setPayListener(this);
         View popView = LayoutInflater.from(this).inflate(R.layout.parse_toast_view, null);
         mPraiseLayout = popView.findViewById(R.id.layout_praise);
         mCommentLayout = popView.findViewById(R.id.layout_comment);
@@ -142,7 +147,14 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        Bundle bundle = getIntent().getExtras();
+        isUse = bundle.getBoolean("is_use", false);
+        if (!isUse) {
+            if (openVipDialog != null && !openVipDialog.isShowing()) {
+                openVipDialog.show();
+                return;
+            }
+        }
     }
 
     @Override
@@ -165,6 +177,7 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
                     tempList.add(circleInfo);
                 }
                 circleListAdapter.setNewData(tempList);
+                circleListAdapter.notifyDataSetChanged();
             }
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -198,12 +211,45 @@ public class WeiXinCircleActivity extends BaseActivity implements View.OnClickLi
             Intent intent = new Intent(this, AddPraiseActivity.class);
             intent.putExtra("circle_id", circleId);
             startActivity(intent);
+            if(popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
         }
 
         if (v.getId() == R.id.layout_comment) {
+            if(popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
             Intent intent = new Intent(this, AddCommentActivity.class);
             intent.putExtra("circle_id", circleId);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void addComment() {
+        super.addComment();
+    }
+
+    @Override
+    public void closeOpenVip() {
+        super.closeOpenVip();
+        finish();
+    }
+
+    @Override
+    public void pay() {
+        Logger.i("打开支付--->");
+    }
+
+    @Override
+    public void payClose() {
+        Logger.i("支付界面关闭--->");
+        finish();
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }

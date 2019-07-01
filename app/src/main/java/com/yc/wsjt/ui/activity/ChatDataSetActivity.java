@@ -292,4 +292,9 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
             bottomSheetDialog.dismiss();
         }
     }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
+    }
 }
