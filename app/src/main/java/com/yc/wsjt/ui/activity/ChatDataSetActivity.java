@@ -22,6 +22,7 @@ import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.custom.ChatBgDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
 import com.yc.wsjt.ui.custom.SettingRoleDialog;
 import com.zhihu.matisse.Matisse;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
 /**
  * Created by zhangdinghui on 2019/5/9.
  */
-public class ChatDataSetActivity extends BaseActivity implements View.OnClickListener {
+public class ChatDataSetActivity extends BaseActivity implements View.OnClickListener, ChatBgDialog.ChatBgListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -88,6 +89,8 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
 
     private int modelType;
 
+    ChatBgDialog chatBgDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_data_set;
@@ -108,6 +111,8 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initViews() {
         settingRoleDialog = new SettingRoleDialog(this, R.style.custom_dialog);
+        chatBgDialog = new ChatBgDialog(this, R.style.custom_dialog);
+        chatBgDialog.setChatBgListener(this);
 
         bottomSheetDialog = new BottomSheetDialog(this);
         View friendStateView = LayoutInflater.from(this).inflate(R.layout.friend_state_view, null);
@@ -162,8 +167,8 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         try {
-            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType) != null) {
-                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(),modelType);
+            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType);
                 mMySelfNameTv.setText(mChatDataInfo.getPersonName());
                 mOtherSideNameTv.setText(mChatDataInfo.getOtherPersonName());
                 RequestOptions options = new RequestOptions();
@@ -225,15 +230,9 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
 
     @OnClick(R.id.layout_bg_image)
     void chooseImage() {
-        Matisse.from(this)
-                .choose(MimeType.ofImage())
-                .countable(true)
-                .maxSelectable(1)
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f)
-                .imageEngine(new Glide4Engine())
-                .showSingleMediaType(true)
-                .forResult(REQUEST_CODE_CHOOSE);
+        if (chatBgDialog != null && !chatBgDialog.isShowing()) {
+            chatBgDialog.show();
+        }
     }
 
     @Override
@@ -296,5 +295,23 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
     @OnClick(R.id.iv_back)
     void back() {
         finish();
+    }
+
+    @Override
+    public void customBg() {
+        Matisse.from(this)
+                .choose(MimeType.ofImage())
+                .countable(true)
+                .maxSelectable(1)
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new Glide4Engine())
+                .showSingleMediaType(true)
+                .forResult(REQUEST_CODE_CHOOSE);
+    }
+
+    @Override
+    public void chatNoBg() {
+        Glide.with(ChatDataSetActivity.this).load(0).into(mChatBgIv);
     }
 }

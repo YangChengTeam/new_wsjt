@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_color"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="290dp"
-        android:layout_height="230dp"
-        android:background="@drawable/common_white_bg"
+        android:layout_height="240dp"
+        android:background="@drawable/common_input_bg"
         android:gravity="top|center"
         android:orientation="vertical">
 
@@ -52,6 +51,7 @@
                 android:id="@+id/layout_weixin"
                 android:layout_width="250dp"
                 android:layout_height="50dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/pre_chat_bg"
                 android:gravity="center">
 
@@ -70,7 +70,7 @@
                 android:id="@+id/layout_qq"
                 android:layout_width="250dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/add_chat_bg"
                 android:gravity="center">
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.PayInfo;
@@ -75,6 +76,8 @@ public class WxPayMerchantReceiveActivity extends BaseActivity implements Notice
     @Override
     protected void initViews() {
         mTitleTv.setText("商家付款入账通知");
+        mNoticeDateEt.setText(TimeUtils.getNowString());
+        mPayDateEt.setText(TimeUtils.getNowString());
     }
 
     @Override

@@ -222,6 +222,7 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
 
     @OnClick(R.id.tv_send_red)
     void sendRed() {
+        chooseType = 1;
         mSendTypeTv.setBackgroundResource(R.drawable.choose_type_selected);
         mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.white));
 
@@ -233,6 +234,7 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
 
     @OnClick(R.id.tv_receive_red)
     void receiveRed() {
+        chooseType = 2;
         mSendTypeTv.setBackgroundResource(R.drawable.choose_type_normal);
         mSendTypeTv.setTextColor(ContextCompat.getColor(this, R.color.black));
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.PayInfo;
@@ -72,6 +73,8 @@ public class WxPayPersonActivity extends BaseActivity implements NoticeDateDialo
     @Override
     protected void initViews() {
         mTitleTv.setText("支付凭证 (个人)");
+        mNoticeDateEt.setText(TimeUtils.getNowString());
+        mPayDateEt.setText(TimeUtils.getNowString());
     }
 
     @Override
@@ -113,7 +116,7 @@ public class WxPayPersonActivity extends BaseActivity implements NoticeDateDialo
             ToastUtils.showLong("请输入通知时间");
             return;
         }
-        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+        if (StringUtils.isEmpty(mPayDateEt.getText())) {
             ToastUtils.showLong("请输入支付时间");
             return;
         }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.yc.wsjt.R;
@@ -105,6 +106,9 @@ public class WxPayStartActivity extends BaseActivity implements NoticeDateDialog
     @Override
     protected void initViews() {
         mTitleTv.setText("零钱提现发起");
+        mNoticeDateEt.setText(TimeUtils.getNowString());
+        mPayDateEt.setText(TimeUtils.getNowString());
+        mGetDateEt.setText(TimeUtils.getNowString());
     }
 
     @Override

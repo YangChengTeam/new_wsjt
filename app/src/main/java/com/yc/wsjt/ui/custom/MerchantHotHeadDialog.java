@@ -29,7 +29,7 @@ public class MerchantHotHeadDialog extends Dialog {
     MerchantHeadAdapter merchantHeadAdapter;
 
     public interface ChooseHeadListener {
-        void chooseHead(int headUrl);
+        void chooseHead(int headUrl,String merName);
     }
 
     public ChooseHeadListener chooseHeadListener;
@@ -60,10 +60,10 @@ public class MerchantHotHeadDialog extends Dialog {
 
         //聊天的类型
         List<MerchantInfo> headList = new ArrayList<>();
-        for (int i = 0; i < Constants.typeImages.length - 5; i++) {
+        for (int i = 0; i < Constants.merchantImages.length; i++) {
             MerchantInfo merchantInfo = new MerchantInfo();
-            merchantInfo.setMerchantImg(Constants.typeImages[i]);
-            merchantInfo.setMerchantName(mContext.getResources().getString(Constants.chatTypeNames[i]));
+            merchantInfo.setMerchantImg(Constants.merchantImages[i]);
+            merchantInfo.setMerchantName(mContext.getResources().getString(Constants.merchantNames[i]));
             headList.add(merchantInfo);
         }
 
@@ -76,8 +76,8 @@ public class MerchantHotHeadDialog extends Dialog {
         merchantHeadAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                int headUrl = Constants.typeImages[position];
-                chooseHeadListener.chooseHead(headUrl);
+                int headUrl = Constants.merchantImages[position];
+                chooseHeadListener.chooseHead(headUrl,mContext.getResources().getString(Constants.merchantNames[position]));
                 dismiss();
             }
         });

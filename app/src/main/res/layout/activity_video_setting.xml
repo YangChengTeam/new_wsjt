@@ -197,7 +197,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
                     android:layout_toLeftOf="@+id/iv_video_time_right_icon"
-                    android:text="12:23"
+                    android:text="00:00"
                     android:textColor="@color/gray1"
                     android:textSize="14sp" />
 

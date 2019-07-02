@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.PayInfo;
@@ -83,7 +84,10 @@ public class WxPayEndActivity extends BaseActivity implements NoticeDateDialog.N
 
     @Override
     protected void initViews() {
-        mTitleTv.setText("零钱提现发起");
+        mTitleTv.setText("零钱提现到账");
+        mNoticeDateEt.setText(TimeUtils.getNowString());
+        mPayDateEt.setText(TimeUtils.getNowString());
+        mGetDateEt.setText(TimeUtils.getNowString());
     }
 
     @Override

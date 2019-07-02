@@ -76,6 +76,7 @@ public class VideoTimeDialog extends Dialog {
         }
         mMinuteWheelView = findViewById(R.id.wheel_view_minute);
         mMinuteWheelView.setLoop(true);
+        mMinuteWheelView.setSelection(1);
         mMinuteWheelView.setStyle(wheelViewStyle);
         mMinuteWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMinuteWheelView.setSkin(WheelView.Skin.Holo);
@@ -88,6 +89,7 @@ public class VideoTimeDialog extends Dialog {
         }
         mSecondWheelView = findViewById(R.id.wheel_view_second);
         mSecondWheelView.setLoop(true);
+        mSecondWheelView.setSelection(1);
         mSecondWheelView.setStyle(wheelViewStyle);
         mSecondWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mSecondWheelView.setSkin(WheelView.Skin.Holo);

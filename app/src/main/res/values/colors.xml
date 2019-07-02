@@ -102,4 +102,6 @@
 
     <color name="red_total_color">#808080</color>
     <color name="red_top_color">#f25542</color>
+
+    <color name="bill_sticky_color">#f6f6f6</color>
 </resources>

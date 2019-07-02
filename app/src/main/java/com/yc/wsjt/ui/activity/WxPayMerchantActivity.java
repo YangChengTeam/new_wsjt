@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -106,6 +107,8 @@ public class WxPayMerchantActivity extends BaseActivity implements NoticeDateDia
     @Override
     protected void initViews() {
         mTitleTv.setText("支付凭证 (商户)");
+        mNoticeDateEt.setText(TimeUtils.getNowString());
+        mPayDateEt.setText(TimeUtils.getNowString());
 
         bottomSheetDialog = new BottomSheetDialog(this);
         View chooseView = LayoutInflater.from(this).inflate(R.layout.merchant_head_choose_view, null);
@@ -206,6 +209,7 @@ public class WxPayMerchantActivity extends BaseActivity implements NoticeDateDia
                     Logger.i(JSONObject.toJSONString(Matisse.obtainPathResult(data)));
                     if (Matisse.obtainPathResult(data) != null && Matisse.obtainPathResult(data).size() > 0) {
                         merchantCustomUrl = Matisse.obtainPathResult(data).get(0);
+                        Glide.with(this).load(merchantCustomUrl).into(mMerchantHeadIv);
                     }
                     break;
             }
@@ -229,7 +233,7 @@ public class WxPayMerchantActivity extends BaseActivity implements NoticeDateDia
             ToastUtils.showLong("请输入通知时间");
             return;
         }
-        if (StringUtils.isEmpty(mNoticeDateEt.getText())) {
+        if (StringUtils.isEmpty(mPayDateEt.getText())) {
             ToastUtils.showLong("请输入支付时间");
             return;
         }
@@ -267,8 +271,9 @@ public class WxPayMerchantActivity extends BaseActivity implements NoticeDateDia
     }
 
     @Override
-    public void chooseHead(int headUrl) {
+    public void chooseHead(int headUrl, String merName) {
         merchantHeadUrl = headUrl;
         Glide.with(this).load(headUrl).into(mMerchantHeadIv);
+        mMerchantNameEt.setText(merName);
     }
 }

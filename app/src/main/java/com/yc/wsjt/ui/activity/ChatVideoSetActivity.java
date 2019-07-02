@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
@@ -251,6 +252,11 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
     @OnClick(R.id.btn_pre_show)
     void preShow() {
         if (mWaitVideoLayout.getVisibility() == View.VISIBLE) {
+            if (App.getApp().getTempPerson() == null) {
+                ToastUtils.showLong("请选择通话对象");
+                return;
+            }
+
             Intent intent = new Intent(this, ChatVideoPreActivity.class);
             intent.putExtra("target_user_name", mTargetUserNameTv.getText().toString());
             intent.putExtra("target_user_head", App.getApp().getTempPerson().mHead);
@@ -258,10 +264,15 @@ public class ChatVideoSetActivity extends BaseActivity implements VideoTimeDialo
             intent.putExtra("is_use", isUse);
             startActivity(intent);
         } else {
+            if (mConnectionTimeTv.getText().equals("00:00")) {
+                ToastUtils.showLong("请设置通话时间");
+                return;
+            }
             Intent intent = new Intent(this, ChatVideoingPreActivity.class);
             intent.putExtra("is_use", isUse);
             intent.putExtra("other_side_bg", videoIngOtherPath);
             intent.putExtra("my_video_bg", videoIngMyPath);
+            intent.putExtra("video_time", mConnectionTimeTv.getText().toString());
             startActivity(intent);
         }
     }

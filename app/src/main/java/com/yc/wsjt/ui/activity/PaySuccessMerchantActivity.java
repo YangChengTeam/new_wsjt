@@ -58,7 +58,7 @@ public class PaySuccessMerchantActivity extends BaseActivity implements VipPayTy
         if (bundle != null) {
             isUse = bundle.getBoolean("is_use", false);
             mPayMoneyTv.setText(bundle.getString("wx_money"));
-            mFollowLayout.setVisibility(bundle.getBoolean("follow_merchant", false) ? View.VISIBLE : View.GONE);
+            mFollowLayout.setVisibility(bundle.getBoolean("follow_merchant", false) ? View.VISIBLE : View.INVISIBLE);
             mMerchantNameTv.setText(bundle.getString("wx_merchant_name"));
             mFollowMerchantNameTv.setText(bundle.getString("wx_merchant_name"));
         }

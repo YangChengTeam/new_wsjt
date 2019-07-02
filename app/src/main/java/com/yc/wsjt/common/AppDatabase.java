@@ -5,6 +5,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 import com.yc.wsjt.bean.AudioMessage;
+import com.yc.wsjt.bean.BillInfo;
 import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.CircleBaseSetInfo;
 import com.yc.wsjt.bean.CircleInfo;
@@ -31,6 +32,7 @@ import com.yc.wsjt.bean.VideoMessage;
 import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.bean.WeixinQunChatInfo;
 import com.yc.wsjt.daos.AudioMessageDao;
+import com.yc.wsjt.daos.BillInfoDao;
 import com.yc.wsjt.daos.ChatDataInfoDao;
 import com.yc.wsjt.daos.CircleBaseSetInfoDao;
 import com.yc.wsjt.daos.CircleInfoDao;
@@ -86,7 +88,8 @@ import com.yc.wsjt.ui.activity.QunChatInfo;
         CircleBaseSetInfo.class,
         CircleInfo.class,
         CommentInfo.class,
-        ContactPerson.class}, version = 1, exportSchema = false)
+        ContactPerson.class,
+        BillInfo.class}, version = 1, exportSchema = false)
 
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -144,4 +147,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CommentInfoDao commentInfoDao();
 
     public abstract ContactPersonDao contactPersonDao();
+
+    public abstract BillInfoDao billInfoDao();
 }

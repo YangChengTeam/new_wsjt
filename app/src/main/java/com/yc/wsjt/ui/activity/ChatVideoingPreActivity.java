@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
 import com.yc.wsjt.ui.custom.OpenVipDialog;
@@ -21,6 +24,18 @@ public class ChatVideoingPreActivity extends Activity implements OpenVipDialog.V
 
     VipPayTypeDialog vipPayTypeDialog;
 
+    private String myVideoBg;
+
+    private String otherSideVideoBg;
+
+    private String videoTime;
+
+    ImageView mMyVideoBgIv;
+
+    ImageView mOtherSideVideoBgIv;
+
+    TextView mVideoTimeTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +46,21 @@ public class ChatVideoingPreActivity extends Activity implements OpenVipDialog.V
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat_video_ing_show);
 
+        mMyVideoBgIv = findViewById(R.id.iv_my_video_bg);
+        mOtherSideVideoBgIv = findViewById(R.id.iv_other_side_video_bg);
+        mVideoTimeTv = findViewById(R.id.tv_video_time);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             isUse = bundle.getBoolean("is_use", false);
+            myVideoBg = bundle.getString("my_video_bg");
+            otherSideVideoBg = bundle.getString("other_side_bg");
+            videoTime = bundle.getString("video_time");
         }
+
+        Glide.with(this).load(myVideoBg).into(mMyVideoBgIv);
+        Glide.with(this).load(otherSideVideoBg).into(mOtherSideVideoBgIv);
+        mVideoTimeTv.setText(videoTime);
 
         openVipDialog = new OpenVipDialog(this, R.style.custom_dialog);
         openVipDialog.setVipListener(this);

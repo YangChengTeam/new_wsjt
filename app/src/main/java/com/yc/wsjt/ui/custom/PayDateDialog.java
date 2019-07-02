@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
 import com.yc.wsjt.R;
+import com.yc.wsjt.util.MyDateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class PayDateDialog extends Dialog {
         mMonthWheelView = findViewById(R.id.wheel_view_month);
         mMonthWheelView.setLoop(true);
         mMonthWheelView.setStyle(wheelViewStyle);
+        mMonthWheelView.setSelection(MyDateUtils.getCurrentMonth());
         mMonthWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMonthWheelView.setSkin(WheelView.Skin.Holo);
         mMonthWheelView.setWheelData(list);
@@ -88,6 +90,7 @@ public class PayDateDialog extends Dialog {
         mTimeDayWheelView = findViewById(R.id.wheel_view_day);
         mTimeDayWheelView.setLoop(true);
         mTimeDayWheelView.setStyle(wheelViewStyle);
+        mTimeDayWheelView.setSelection(MyDateUtils.getCurrentDay() - 1);
         mTimeDayWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mTimeDayWheelView.setSkin(WheelView.Skin.Holo);
         mTimeDayWheelView.setWheelData(dayList);
@@ -100,6 +103,7 @@ public class PayDateDialog extends Dialog {
         mHourWheelView = findViewById(R.id.wheel_view_hour);
         mHourWheelView.setLoop(true);
         mHourWheelView.setStyle(wheelViewStyle);
+        mHourWheelView.setSelection(MyDateUtils.getCurrentHour() - 1);
         mHourWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mHourWheelView.setSkin(WheelView.Skin.Holo);
         mHourWheelView.setWheelData(hourList);
@@ -111,6 +115,7 @@ public class PayDateDialog extends Dialog {
         }
         mMinuteWheelView = findViewById(R.id.wheel_view_minute);
         mMinuteWheelView.setLoop(true);
+        mMinuteWheelView.setSelection(MyDateUtils.getCurrentMinute());
         mMinuteWheelView.setStyle(wheelViewStyle);
         mMinuteWheelView.setWheelAdapter(new ArrayWheelAdapter(mContext));
         mMinuteWheelView.setSkin(WheelView.Skin.Holo);

@@ -198,6 +198,24 @@ public class Constants {
             R.string.type_system_info,
             R.string.qun_receive_red};
 
+    public static final int[] merchantImages = {
+            R.mipmap.aqy,
+            R.mipmap.dx,
+            R.mipmap.mt,
+            R.mipmap.pinduoduo,
+            R.mipmap.shenghuojiaofei,
+            R.mipmap.weixin_authenaction,
+            R.mipmap.xc};
+
+    public static final int[] merchantNames = {
+            R.string.mer_aqy,
+            R.string.mer_dx,
+            R.string.mer_mt,
+            R.string.mer_pdd,
+            R.string.mer_shjf,
+            R.string.mer_wx,
+            R.string.mer_xc};
+
     public static final String IS_SELF = "current_choose_role";
 
     public static final String HOME_IS_FIRST_LOAD = "home_is_first_load";

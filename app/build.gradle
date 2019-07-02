@@ -135,6 +135,7 @@ dependencies {
     implementation 'com.github.lygttpod:SuperTextView:2.2.3'
     implementation 'com.daasuu:BubbleLayout:1.2.0'
     implementation 'com.just.agentweb:agentweb:4.0.3-beta' // (必选)
+    implementation 'com.gavin.com.library:stickyDecoration:1.5.0'
     implementation files('libs/open_sdk_r5756.jar')
     implementation files('libs/umeng-analytics-7.5.4.jar')
     implementation files('libs/umeng-common-1.5.4.jar')

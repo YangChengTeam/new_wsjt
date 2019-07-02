@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_my_head"
-                android:text="火星用户"
+                android:text="未知用户"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
 
@@ -89,7 +89,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_other_side_head"
-                android:text="未知用户"
+                android:text="@string/app_name"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
 
@@ -100,7 +100,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_other_right_icon"
-                android:src="@mipmap/user_head_def" />
+                android:src="@mipmap/logo_angle" />
 
             <ImageView
                 android:id="@+id/iv_other_right_icon"

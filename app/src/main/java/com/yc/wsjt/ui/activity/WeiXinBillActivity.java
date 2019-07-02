@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
+import com.yc.wsjt.ui.adapter.BillInfoListAdapter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,6 +39,14 @@ public class WeiXinBillActivity extends BaseActivity {
     @BindView(R.id.btn_pre_show)
     Button mQueryDataBtn;
 
+    @BindView(R.id.layout_no_data)
+    LinearLayout mNoDataLayout;
+
+    @BindView(R.id.bill_list)
+    RecyclerView mBillListView;
+
+    BillInfoListAdapter billInfoListAdapter;
+
     private boolean isUse;
 
     @Override
@@ -55,13 +68,26 @@ public class WeiXinBillActivity extends BaseActivity {
     protected void initViews() {
         mTitleTv.setText("账单");
         mConfigBtn.setVisibility(View.GONE);
+
+        billInfoListAdapter = new BillInfoListAdapter(this, null);
+        mBillListView.setLayoutManager(new LinearLayoutManager(this));
+        mBillListView.setAdapter(billInfoListAdapter);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if (bundle != null) {
             isUse = bundle.getBoolean("is_use", false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAppDatabase.billInfoDao().getBillList() != null && mAppDatabase.billInfoDao().getBillList().size() > 0) {
+            billInfoListAdapter.setNewData(mAppDatabase.billInfoDao().getBillList());
+            mNoDataLayout.setVisibility(View.GONE);
         }
     }
 

@@ -33,7 +33,7 @@
             android:maxWidth="240dp"
             android:minHeight="40dp"
             android:padding="14dp"
-            android:text="接收到的消息测试"
+            android:text="接收到的消息"
             android:textColor="@color/chat_text_color"
             android:textSize="15sp" />
     </LinearLayout>

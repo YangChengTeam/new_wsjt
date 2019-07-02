@@ -343,6 +343,13 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
 
     @Override
     public void onClick(View v) {
+        if (!App.getApp().isLogin) {
+            if (loginDialog != null && !loginDialog.isShowing()) {
+                loginDialog.show();
+            }
+            return;
+        }
+
         switch (v.getId()) {
             case R.id.layout_weixin:
                 Intent intent = new Intent(getActivity(), WeiXinModuleActivity.class);

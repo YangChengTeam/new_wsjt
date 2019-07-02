@@ -66,6 +66,7 @@
         android:id="@+id/layout_random_user"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:visibility="gone"
         android:gravity="center">
 
         <TextView

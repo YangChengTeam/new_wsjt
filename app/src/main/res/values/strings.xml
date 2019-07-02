@@ -64,4 +64,13 @@
 
     <string name="alipay_danliao">支付宝聊天</string>
     <string name="qq_danliao">QQ对话</string>
+
+
+    <string name="mer_aqy">爱奇艺</string>
+    <string name="mer_dx">中国电信</string>
+    <string name="mer_mt">美团外卖</string>
+    <string name="mer_pdd">拼多多</string>
+    <string name="mer_shjf">生活缴费</string>
+    <string name="mer_wx">微信支付</string>
+    <string name="mer_xc">携程旅行</string>
 </resources>
