@@ -31,4 +31,7 @@ public interface WeixinChatInfoDao {
 
     @Query("SELECT * from weixin_chat_info WHERE id= :id")
     WeixinChatInfo getItemById(Long id);
+
+    @Query("DELETE from weixin_chat_info where mainId = :mainId")
+    void deleteAllByMainId(int mainId);
 }

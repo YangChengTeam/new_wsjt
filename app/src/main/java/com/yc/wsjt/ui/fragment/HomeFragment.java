@@ -2,6 +2,7 @@ package com.yc.wsjt.ui.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.AppUtils;
@@ -56,16 +58,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.PermissionRequest;
 
 /**
  * Created by admin on 2017/4/20.
  */
 
-public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+
+    @BindView(R.id.home_swipe)
+    SwipeRefreshLayout mRefreshLayout;
 
     @BindView(R.id.quick_list)
     RecyclerView quickListView;
@@ -107,6 +109,20 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
 
     @Override
     public void initViews() {
+        mRefreshLayout.setOnRefreshListener(this);
+        //设置进度View样式的大小，只有两个值DEFAULT和LARGE
+        //设置进度View下拉的起始点和结束点，scale 是指设置是否需要放大或者缩小动画
+        mRefreshLayout.setProgressViewOffset(true, -0, 200);
+        //设置进度View下拉的结束点，scale 是指设置是否需要放大或者缩小动画
+        mRefreshLayout.setProgressViewEndTarget(true, 180);
+        //设置进度View的组合颜色，在手指上下滑时使用第一个颜色，在刷新中，会一个个颜色进行切换
+        mRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.colorPrimary), Color.RED, Color.YELLOW, Color.BLUE);
+
+        //设置触发刷新的距离
+        mRefreshLayout.setDistanceToTriggerSync(200);
+        //如果child是自己自定义的view，可以通过这个回调，告诉mSwipeRefreshLayoutchild是否可以滑动
+        mRefreshLayout.setOnChildScrollUpCallback(null);
+
         setTopViewBgColor();
         //setTvTitleBackgroundColor(Color.TRANSPARENT);
         FileDownloader.setup(getActivity());
@@ -227,19 +243,11 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
         super.onResume();
         if (!SPUtils.getInstance().getBoolean(Constants.HOME_IS_FIRST_LOAD, true)) {
             try {
-                ((BaseActivity) getActivity()).mAppDatabase.quickInfoDao()
-                        .loadQuickInfo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<List<QuickInfo>>() {
-                            @Override
-                            public void accept(List<QuickInfo> list) {
-                                if (list != null) {
-                                    quickAdapter.setNewData(list);
-                                    addPlus();
-                                }
-                            }
-                        });
+                List<QuickInfo> list = ((BaseActivity) getActivity()).mAppDatabase.quickInfoDao().loadQuickInfoInHome();
+                if (list != null) {
+                    quickAdapter.setNewData(list);
+                }
+                addPlus();
             } catch (SecurityException e) {
                 e.printStackTrace();
             }
@@ -273,12 +281,13 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
 
     @Override
     public void dismissProgress() {
-
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void loadDataSuccess(HomeDateInfoRet tData) {
         Logger.i("home result --->" + JSON.toJSONString(tData));
+        mRefreshLayout.setRefreshing(false);
         if (tData != null && tData.getCode() == Constants.SUCCESS) {
             if (tData.getData() != null) {
 
@@ -303,15 +312,21 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
                 if (SPUtils.getInstance().getBoolean(Constants.HOME_IS_FIRST_LOAD, true)) {
                     if (tData.getData().getTool() != null && tData.getData().getTool().size() > 0) {
                         SPUtils.getInstance().put(Constants.HOME_IS_FIRST_LOAD, false);
-                        List<QuickInfo> tempList = tData.getData().getTool();
-                        quickAdapter.setNewData(tempList);
-                        //Logger.i("insert quick info--->" + JSON.toJSONString(tempList));
-                        for (int i = 0; i < tempList.size(); i++) {
-                            tempList.get(i).setAddDate(TimeUtils.date2Millis(new Date()));
+                        List<QuickInfo> tempList = new ArrayList<>();
+                        for (int i = 0; i < tData.getData().getTool().size(); i++) {
+                            QuickInfo temp = tData.getData().getTool().get(i);
+                            temp.setAddDate(TimeUtils.date2Millis(new Date()));
+
+                            //如果是广告组件，将ID增加
+                            if (!StringUtils.isEmpty(temp.getImg())) {
+                                temp.setId(10000 + temp.getId());
+                            }
+                            tempList.add(temp);
                         }
+
                         ((BaseActivity) getActivity()).mAppDatabase.quickInfoDao().insertList(tempList);
+                        quickAdapter.setNewData(((BaseActivity) getActivity()).mAppDatabase.quickInfoDao().loadQuickInfoInHome());
                     }
-                    addPlus();
                 }
             }
         }
@@ -319,7 +334,7 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
 
     @Override
     public void loadDataError(Throwable throwable) {
-
+        mRefreshLayout.setRefreshing(false);
     }
 
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
@@ -419,5 +434,12 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
                 });
 
         task.start();
+    }
+
+    @Override
+    public void onRefresh() {
+        mRefreshLayout.setRefreshing(true);
+        SPUtils.getInstance().put(Constants.HOME_IS_FIRST_LOAD, true);
+        homeInfoPresenterImp.getHomeList();
     }
 }

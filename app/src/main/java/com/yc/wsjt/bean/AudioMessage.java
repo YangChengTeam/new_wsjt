@@ -1,7 +1,6 @@
 package com.yc.wsjt.bean;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 /**
  * Created by zhangdinghui on 2019/5/16.
@@ -16,6 +15,8 @@ public class AudioMessage extends MessageContent{
     private boolean isRead;
 
     private boolean openAudioTurn;
+
+    private String audioText;//语音转换的文字
 
     public String getMessageTime() {
         return messageTime;
@@ -47,5 +48,13 @@ public class AudioMessage extends MessageContent{
 
     public void setAudioTime(int audioTime) {
         this.audioTime = audioTime;
+    }
+
+    public String getAudioText() {
+        return audioText;
+    }
+
+    public void setAudioText(String audioText) {
+        this.audioText = audioText;
     }
 }

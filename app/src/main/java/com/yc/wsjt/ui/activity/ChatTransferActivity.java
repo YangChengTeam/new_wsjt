@@ -87,7 +87,9 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
     private File outputImage;
 
-    private int chooseType = 1;//转账(1)，收款
+    private int chooseType = 1;
+
+    private int transType = 1; //转账(1)，收款
 
     CustomDateDialog customDateDialog;
 
@@ -204,6 +206,7 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
     @OnClick(R.id.tv_send_transfer)
     void sendTransfer() {
+        transType = 1;
         mSendTransferTv.setBackgroundResource(R.drawable.choose_type_selected);
         mSendTransferTv.setTextColor(ContextCompat.getColor(this, R.color.white));
 
@@ -214,6 +217,7 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
     @OnClick(R.id.tv_receive_transfer)
     void receiveTransfer() {
+        transType = 2;
         mSendTransferTv.setBackgroundResource(R.drawable.choose_type_normal);
         mSendTransferTv.setTextColor(ContextCompat.getColor(this, R.color.black));
 
@@ -236,9 +240,8 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
 
         //插入一条时间设置记录
         TransferMessage transferMessage = new TransferMessage();
-        //transferMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         transferMessage.setMessageType(type);
-        transferMessage.setTransferType(chooseType);
+        transferMessage.setTransferType(transType);
         transferMessage.setTransferNum(mTransferNumberEt.getText().toString());
         transferMessage.setTransferDesc(mTransferRemarkEt.getText().toString());
         transferMessage.setSendTime(mSendTransferTimeTv.getText().toString());

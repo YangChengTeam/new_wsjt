@@ -144,7 +144,8 @@ public class Constants {
             R.string.type_persion_card,
             R.string.type_join_group,
             R.string.type_join_group,
-            R.string.type_system_info};
+            R.string.type_system_info,
+            R.string.type_hongbao};
 
 
     public static final int[] qunTypeImages = {
@@ -218,9 +219,15 @@ public class Constants {
 
     public static final String IS_SELF = "current_choose_role";
 
+    public static final String IS_AGREE = "agree_explain";
+
     public static final String HOME_IS_FIRST_LOAD = "home_is_first_load";
 
     public static final int ADD_QUICK_INFO = 1000;
+
+    public static final int REMOVE_QUICK_INFO = 1001;
+
+    public static final int REMOVE_BAR_QUICK = 1002;
 
     public static final String USER_INFO = "login_user_info";
 

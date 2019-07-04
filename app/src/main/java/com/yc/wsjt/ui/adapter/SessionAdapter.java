@@ -1,9 +1,13 @@
 package com.yc.wsjt.ui.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -60,6 +64,8 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
 
     private static final int RECEIVE_RED_PACKET = R.layout.item_red_packet_receive;
 
+    private static final int ROB_RED_PACKET = R.layout.rob_red_package_item;
+
     private static final int SEND_TRANSFER = R.layout.item_transfer_send;
 
     private static final int RECEIVE_TRANSFER = R.layout.item_transfer_receive;
@@ -94,7 +100,11 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
 
     @Override
     public void convert(LQRViewHolderForRecyclerView helper, MessageContent messageContent, int position) {
-
+        if (position == mData.size() - 1) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, SizeUtils.dp2px(36));
+            helper.getConvertView().setLayoutParams(params);
+        }
         if (messageContent.getMessageType() == MessageContent.CHAT_DATE) {
             helper.setText(R.id.tv_chat_time, messageContent.getMessageContent());
         }
@@ -119,6 +129,22 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
         if (messageContent.getMessageType() == MessageContent.SEND_VOICE || messageContent.getMessageType() == MessageContent.RECEIVE_VOICE) {
             helper.setText(R.id.tv_audio_size, ((AudioMessage) messageContent).getAudioTime() + "''");
             Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+
+            int scale = SizeUtils.dp2px(242) / 60;
+            LinearLayout audioLayout = helper.getView(R.id.layout_audio);
+            int tempWidth = scale * ((AudioMessage) messageContent).getAudioTime() + SizeUtils.dp2px(40);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tempWidth > SizeUtils.dp2px(242) ? SizeUtils.dp2px(242) : tempWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, SizeUtils.dp2px(6), 0, 0);
+            audioLayout.setLayoutParams(params);
+
+            LinearLayout audioTxtLayout = helper.getView(R.id.layout_audio_txt);
+            if (((AudioMessage) messageContent).isOpenAudioTurn() && !StringUtils.isEmpty(((AudioMessage) messageContent).getAudioText())) {
+                audioTxtLayout.setVisibility(View.VISIBLE);
+                helper.setText(R.id.tv_audio_txt, ((AudioMessage) messageContent).getAudioText());
+            } else {
+                audioTxtLayout.setVisibility(View.GONE);
+            }
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_EMOJI || messageContent.getMessageType() == MessageContent.RECEIVE_EMOJI) {
@@ -130,9 +156,47 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
             helper.setText(R.id.tv_red_remark, ((RedPackageMessage) messageContent).getRedDesc());
             Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
-        if (messageContent.getMessageType() == MessageContent.SEND_TRANSFER || messageContent.getMessageType() == MessageContent.RECEIVE_TRANSFER) {
+        if (messageContent.getMessageType() == MessageContent.ROB_RED_PACKET) {
+            helper.setText(R.id.tv_rob_info, ((RedPackageMessage) messageContent).getRobInfo());
+        }
+
+        if (messageContent.getMessageType() == MessageContent.SEND_TRANSFER) {
+            RelativeLayout redBgLayout = helper.getView(R.id.layout_send);
             helper.setText(R.id.tv_trans_number, "¥" + ((TransferMessage) messageContent).getTransferNum());
-            helper.setText(R.id.tv_trans_remark, ((TransferMessage) messageContent).getTransferDesc());
+
+            String tempRemark = "已收钱";
+            int receiveType = ((TransferMessage) messageContent).getTransferType();
+            if (receiveType == 1) {
+                redBgLayout.setBackgroundResource(((TransferMessage) messageContent).isReceive() ? R.mipmap.transfer_send_config : R.mipmap.transfer_send);
+                if (!StringUtils.isEmpty(((TransferMessage) messageContent).getTransferDesc())) {
+                    tempRemark = ((TransferMessage) messageContent).getTransferDesc();
+                }
+            } else {
+                redBgLayout.setBackgroundResource(R.mipmap.transfer_send_config);
+            }
+
+            helper.setText(R.id.tv_trans_remark, tempRemark);
+
+            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+        }
+
+        if (messageContent.getMessageType() == MessageContent.RECEIVE_TRANSFER) {
+            RelativeLayout redBgLayout = helper.getView(R.id.layout_receive);
+            helper.setText(R.id.tv_trans_number, "¥" + ((TransferMessage) messageContent).getTransferNum());
+
+            String tempRemark = "已收钱";
+            int receiveType = ((TransferMessage) messageContent).getTransferType();
+            if (receiveType == 1) {
+                redBgLayout.setBackgroundResource(((TransferMessage) messageContent).isReceive() ? R.mipmap.trans_receive_config : R.mipmap.transfer_receive);
+                if (!((TransferMessage) messageContent).isReceive() && !StringUtils.isEmpty(((TransferMessage) messageContent).getTransferDesc())) {
+                    tempRemark = ((TransferMessage) messageContent).getTransferDesc();
+                }
+            } else {
+                redBgLayout.setBackgroundResource(R.mipmap.trans_receive_config);
+            }
+
+            helper.setText(R.id.tv_trans_remark, tempRemark);
+
             Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
@@ -243,6 +307,9 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
                 break;
             case 23:
                 layoutView = SYSTEM_TIPS;
+                break;
+            case 24:
+                layoutView = ROB_RED_PACKET;
                 break;
             default:
                 break;

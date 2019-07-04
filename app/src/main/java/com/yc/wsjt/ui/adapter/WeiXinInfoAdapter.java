@@ -42,12 +42,14 @@ public class WeiXinInfoAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHolde
         itemLayout.setLayoutParams(params);
 
         holder.setText(R.id.tv_weixin_info_name, quickInfo.getName());
-        Glide.with(mContext).load(Constants.BASE_IMAGE_URL + quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_quick));
-        holder.addOnClickListener(R.id.iv_add_quick);
-        holder.setVisible(R.id.iv_add_quick, isShowAdd);
+        Glide.with(mContext).load(Constants.BASE_IMAGE_URL + quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_quick_icon));
+        holder.addOnClickListener(R.id.iv_quick);
         if (isShowAdd) {
             holder.setVisible(R.id.iv_is_vip, false);
+            holder.setVisible(R.id.iv_quick, true);
+            holder.setImageResource(R.id.iv_quick, quickInfo.isAddQuickBar() ? R.mipmap.quick_delete : R.mipmap.add_quick_icon);
         } else {
+            holder.setVisible(R.id.iv_quick, false);
             if (isOpenVip) {
                 holder.setVisible(R.id.iv_is_vip, false);
             } else {

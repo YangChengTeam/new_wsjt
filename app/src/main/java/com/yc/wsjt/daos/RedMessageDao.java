@@ -30,4 +30,5 @@ public interface RedMessageDao {
 
     @Query("SELECT * from wx_red_package_info WHERE id= :id")
     RedPackageMessage getItemById(Long id);
+
 }

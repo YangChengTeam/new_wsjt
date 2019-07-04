@@ -30,6 +30,8 @@ public class RedPackageMessage extends MessageContent {
 
     private String otherSideHead;//对方人头像
 
+    private String robInfo;//领取红包后的汇总提示信息
+
     public int getRedType() {
         return redType;
     }
@@ -116,5 +118,13 @@ public class RedPackageMessage extends MessageContent {
 
     public void setOtherSideHead(String otherSideHead) {
         this.otherSideHead = otherSideHead;
+    }
+
+    public String getRobInfo() {
+        return robInfo;
+    }
+
+    public void setRobInfo(String robInfo) {
+        this.robInfo = robInfo;
     }
 }

@@ -34,9 +34,12 @@ public class MessageContent {
     public static final int SEND_EMOJI = 9;
     public static final int RECEIVE_EMOJI = 10;
 
-    //红包
+    //发红包-左右2边的样式
     public static final int SEND_RED_PACKET = 11;
     public static final int RECEIVE_RED_PACKET = 12;
+
+    //收红包-单一样式
+    public static final int ROB_RED_PACKET = 24;
 
     //转账
     public static final int SEND_TRANSFER = 13;
@@ -62,7 +65,7 @@ public class MessageContent {
     public static final int SYSTEM_TIPS = 23;
 
     //群聊收红包模块
-    public static final int QUN_RECEIVE_RED = 24;
+    public static final int QUN_RECEIVE_RED = 25;
 
     @PrimaryKey(autoGenerate = true)
     public int id;

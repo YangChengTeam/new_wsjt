@@ -20,10 +20,19 @@ public class QQInfoAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHolder> {
 
     private int tempWidth;
 
-    public QQInfoAdapter(Context context, List<QuickInfo> datas, int tempWidth) {
+    private boolean isShowAdd;
+
+    private boolean isOpenVip;
+
+    public void setOpenVip(boolean openVip) {
+        isOpenVip = openVip;
+    }
+
+    public QQInfoAdapter(Context context, List<QuickInfo> datas, int tempWidth, boolean isShow) {
         super(R.layout.quick_qq_item, datas);
         this.mContext = context;
         this.tempWidth = tempWidth;
+        this.isShowAdd = isShow;
     }
 
     @Override
@@ -33,7 +42,19 @@ public class QQInfoAdapter extends BaseQuickAdapter<QuickInfo, BaseViewHolder> {
         itemLayout.setLayoutParams(params);
 
         holder.setText(R.id.tv_weixin_info_name, quickInfo.getName());
-        Glide.with(mContext).load(Constants.BASE_IMAGE_URL + quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_quick));
-        holder.addOnClickListener(R.id.iv_add_quick);
+        Glide.with(mContext).load(Constants.BASE_IMAGE_URL + quickInfo.getIcon()).into((ImageView) holder.getView(R.id.iv_quick_icon));
+        holder.addOnClickListener(R.id.iv_quick);
+        if (isShowAdd) {
+            holder.setVisible(R.id.iv_is_vip, false);
+            holder.setVisible(R.id.iv_quick, true);
+            holder.setImageResource(R.id.iv_quick, quickInfo.isAddQuickBar() ? R.mipmap.quick_delete : R.mipmap.add_quick_icon);
+        } else {
+            holder.setVisible(R.id.iv_quick, false);
+            if (isOpenVip) {
+                holder.setVisible(R.id.iv_is_vip, false);
+            } else {
+                holder.setVisible(R.id.iv_is_vip, quickInfo.getVip() == 0 ? false : true);
+            }
+        }
     }
 }

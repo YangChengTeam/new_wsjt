@@ -312,6 +312,9 @@ public class ChatDataSetActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void chatNoBg() {
-        Glide.with(ChatDataSetActivity.this).load(0).into(mChatBgIv);
+        Glide.with(ChatDataSetActivity.this).load("").into(mChatBgIv);
+        if (mChatDataInfo != null) {
+            mAppDatabase.chatDataInfoDao().updateBgImage("", mChatDataInfo.getId());
+        }
     }
 }

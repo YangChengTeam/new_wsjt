@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
@@ -29,6 +32,7 @@ import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.ModuleInfoPresenterImp;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.MyFragmentAdapter;
+import com.yc.wsjt.ui.custom.ExplainDialog;
 import com.yc.wsjt.ui.fragment.HomeFragment;
 import com.yc.wsjt.ui.fragment.MyFragment;
 import com.yc.wsjt.view.ModuleInfoView;
@@ -36,6 +40,7 @@ import com.yc.wsjt.view.ModuleInfoView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -44,7 +49,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class Main1Activity extends BaseActivity implements ModuleInfoView {
+public class Main1Activity extends BaseActivity implements ModuleInfoView, ExplainDialog.ExplainListener {
 
     @BindView(R.id.tablayout)
     TabLayout tabLayout;
@@ -62,6 +67,10 @@ public class Main1Activity extends BaseActivity implements ModuleInfoView {
 
     ModuleInfoPresenterImp moduleInfoPresenterImp;
 
+    private long clickTime = 0;
+
+    private ExplainDialog explainDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main1;
@@ -75,7 +84,8 @@ public class Main1Activity extends BaseActivity implements ModuleInfoView {
     @Override
     protected void initVars() {
         Main1ActivityPermissionsDispatcher.showRecordWithCheck(this);
-
+        explainDialog = new ExplainDialog(this, R.style.scale_dialog);
+        explainDialog.setExplainListener(this);
         mFragmentList.add(new HomeFragment());
         mFragmentList.add(new MyFragment());
     }
@@ -146,6 +156,14 @@ public class Main1Activity extends BaseActivity implements ModuleInfoView {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        if (!SPUtils.getInstance().getBoolean(Constants.IS_AGREE, false)) {
+            explainDialog.show();
+            WindowManager.LayoutParams windowParams = explainDialog.getWindow().getAttributes();
+            windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.75);
+            windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            explainDialog.getWindow().setAttributes(windowParams);
+        }
+
         moduleInfoPresenterImp = new ModuleInfoPresenterImp(this, this);
         moduleInfoPresenterImp.getModuleList();
     }
@@ -218,5 +236,30 @@ public class Main1Activity extends BaseActivity implements ModuleInfoView {
     @Override
     public void loadDataError(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            clickTime = System.currentTimeMillis();
+            Toasty.normal(getApplicationContext(), "再按一次退出").show();
+        } else {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void configExplain() {
+        SPUtils.getInstance().put(Constants.IS_AGREE, true);
+    }
+
+    @Override
+    public void signOut() {
+        SPUtils.getInstance().put(Constants.IS_AGREE, false);
+        finish();
     }
 }

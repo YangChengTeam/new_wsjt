@@ -2,10 +2,13 @@ package com.yc.wsjt.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
@@ -31,6 +35,7 @@ import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.adapter.WeixindanliaoChatAdapter;
 import com.yc.wsjt.ui.custom.ChatTypeDialog;
+import com.yc.wsjt.ui.custom.ConfigDialog;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +51,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by zhangdinghui on 2019/5/6.
  */
-public class WeixindanliaoActivity extends BaseActivity {
+public class WeixindanliaoActivity extends BaseActivity implements View.OnClickListener, ConfigDialog.ConfigDeleteListener {
 
     @BindView(R.id.iv_back)
     ImageView mBackIv;
@@ -91,6 +96,14 @@ public class WeixindanliaoActivity extends BaseActivity {
 
     private int modelType;
 
+    BottomSheetDialog bottomSheetDialog;
+
+    LinearLayout mClearLayout;
+
+    LinearLayout mCancelLayout;
+
+    ConfigDialog configDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_weixin_danliao;
@@ -106,11 +119,21 @@ public class WeixindanliaoActivity extends BaseActivity {
         StatusBarUtil.setLightMode(this);
         mTitleTv.setText(getResources().getString(R.string.weixin_danliao));
         mSettingTv.setText(getResources().getString(R.string.weixin_setting));
-        mSettingTv.setVisibility(View.GONE);
     }
 
     @Override
     protected void initViews() {
+
+        bottomSheetDialog = new BottomSheetDialog(this);
+        View clearView = LayoutInflater.from(this).inflate(R.layout.danliao_setting_view, null);
+        mClearLayout = clearView.findViewById(R.id.layout_clear);
+        mCancelLayout = clearView.findViewById(R.id.layout_view_cancel);
+        mClearLayout.setOnClickListener(this);
+        mCancelLayout.setOnClickListener(this);
+        bottomSheetDialog.setContentView(clearView);
+
+        configDialog = new ConfigDialog(this, R.style.custom_dialog);
+        configDialog.setConfigDeleteListener(this);
 
         chatTypeDialog = new ChatTypeDialog(this, R.style.custom_dialog);
 
@@ -131,6 +154,14 @@ public class WeixindanliaoActivity extends BaseActivity {
                 }
             }
         });
+        weixindanliaoChatAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                Vibrator vibrator = (Vibrator) WeixindanliaoActivity.this.getSystemService(WeixindanliaoActivity.this.VIBRATOR_SERVICE);
+                vibrator.vibrate(100);
+                return false;
+            }
+        });
     }
 
     OnItemMoveListener mItemMoveListener = new OnItemMoveListener() {
@@ -138,7 +169,6 @@ public class WeixindanliaoActivity extends BaseActivity {
         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
             // 此方法在Item拖拽交换位置时被调用。
             // 第一个参数是要交换为之的Item，第二个是目标位置的Item。
-
             // 交换数据，并更新adapter。
             int fromPosition = srcHolder.getAdapterPosition();
             int toPosition = targetHolder.getAdapterPosition();
@@ -193,10 +223,10 @@ public class WeixindanliaoActivity extends BaseActivity {
                     mChatDataInfo.setPersonName(App.getApp().mUserInfo.getNickName());
                 } else {
                     mChatDataInfo.setPersonHeadLocal(R.mipmap.user_head_def);
-                    mChatDataInfo.setPersonName("未知发送人");
+                    mChatDataInfo.setPersonName("未知用户");
                 }
-                mChatDataInfo.setOtherPersonHeadLocal(R.mipmap.user_head_def);
-                mChatDataInfo.setOtherPersonName("未知用户");
+                mChatDataInfo.setOtherPersonHeadLocal(R.mipmap.logo_angle);
+                mChatDataInfo.setOtherPersonName(getResources().getString(R.string.app_name));
                 mChatDataInfo.setModelType(modelType);
                 mAppDatabase.chatDataInfoDao().insert(mChatDataInfo);
                 App.getApp().chatDataInfo = mChatDataInfo;
@@ -262,6 +292,7 @@ public class WeixindanliaoActivity extends BaseActivity {
     public void queryData() {
         App.getApp().setChatList(weixindanliaoChatAdapter.getData());
         Intent intent = new Intent(this, ChatSessionActivity.class);
+        intent.putExtra("model_type", modelType);
         startActivity(intent);
     }
 
@@ -270,6 +301,13 @@ public class WeixindanliaoActivity extends BaseActivity {
         Intent intent = new Intent(this, ChatDataSetActivity.class);
         intent.putExtra("model_type", modelType);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.tv_setting)
+    void setting() {
+        if (bottomSheetDialog != null && !bottomSheetDialog.isShowing()) {
+            bottomSheetDialog.show();
+        }
     }
 
     @Override
@@ -283,4 +321,37 @@ public class WeixindanliaoActivity extends BaseActivity {
         finish();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.layout_clear:
+                if (bottomSheetDialog != null && bottomSheetDialog.isShowing()) {
+                    bottomSheetDialog.dismiss();
+                }
+                if (configDialog != null && !configDialog.isShowing()) {
+                    configDialog.show();
+                }
+                break;
+            case R.id.layout_view_cancel:
+                if (bottomSheetDialog != null && bottomSheetDialog.isShowing()) {
+                    bottomSheetDialog.dismiss();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void configDelete() {
+        if (messageContent != null) {
+            mAppDatabase.weixinChatInfoDao().deleteAllByMainId(messageContent.getId());
+        }
+        weixindanliaoChatAdapter.setNewData(null);
+    }
+
+    @Override
+    public void cancelDelete() {
+
+    }
 }

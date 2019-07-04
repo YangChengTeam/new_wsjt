@@ -34,6 +34,7 @@ import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.EmojiModeDialog;
 import com.yc.wsjt.ui.custom.Glide4Engine;
+import com.yc.wsjt.ui.custom.ProposeDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
@@ -42,7 +43,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener {
+public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDialog.ModeClickListener, ProposeDialog.ProposeListener {
 
     private static final int REQUEST_CODE_CHOOSE = 1000;
 
@@ -104,6 +105,8 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
 
     private boolean isQunLiao;
 
+    ProposeDialog proposeDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat_red_package;
@@ -123,6 +126,8 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
     protected void initViews() {
         emojiModeDialog = new EmojiModeDialog(this, R.style.scale_dialog, "对方表情");
         emojiModeDialog.setModeClickListener(this);
+        proposeDialog = new ProposeDialog(this, R.style.custom_dialog);
+        proposeDialog.setProposeListener(this);
     }
 
     @Override
@@ -271,24 +276,50 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
             }
         }
 
+        if (chooseType == 1 && Double.parseDouble(mRedNumberEt.getText().toString()) > 200) {
+            proposeDialog.show();
+            WindowManager.LayoutParams windowParams = proposeDialog.getWindow().getAttributes();
+            windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.75);
+            windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            proposeDialog.getWindow().setAttributes(windowParams);
+            return;
+        }
+
+        insertData();
+    }
+
+    public void insertData() {
+        String robInfo = "你领取了" + App.getApp().chatDataInfo.getOtherPersonName() + "的";
         int type = MessageContent.SEND_RED_PACKET;
         if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
             type = MessageContent.RECEIVE_RED_PACKET;
+            robInfo = App.getApp().chatDataInfo.getOtherPersonName() + "领取了你的";
         }
 
-        //插入一条时间设置记录
-        RedPackageMessage redPackageMessage = new RedPackageMessage();
-        //redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
-        redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
-        redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
-        redPackageMessage.setMessageType(type);
-        redPackageMessage.setRedType(chooseType);
-        redPackageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
-        redPackageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
-        redPackageMessage.setOtherSideEmojiUrl(otherSideImgUrl);
-        redPackageMessage.setReplyEmojiUrl(replyImgUrl);
-        redPackageMessage.setLocalMessageImg(R.mipmap.type_hongbao);
-        Long redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
+        Long redId = 0L;
+        if (chooseType == 1) {
+            RedPackageMessage redPackageMessage = new RedPackageMessage();
+            //redPackageMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
+            redPackageMessage.setRedNumber(mRedNumberEt.getText().toString());
+            redPackageMessage.setRedDesc(StringUtils.isEmpty(mRedRemarkEt.getText()) ? mRedRemarkEt.getText().toString() : "恭喜发财，大吉大利!");
+            redPackageMessage.setMessageType(type);
+            redPackageMessage.setRedType(chooseType);
+            redPackageMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
+            redPackageMessage.setMessageUserHead(isMySelf ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.getOtherPersonHead());
+            redPackageMessage.setOtherSideEmojiUrl(otherSideImgUrl);
+            redPackageMessage.setReplyEmojiUrl(replyImgUrl);
+            redPackageMessage.setLocalMessageImg(R.mipmap.type_hongbao);
+            redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
+        } else {
+            type = MessageContent.ROB_RED_PACKET;
+
+            RedPackageMessage redPackageMessage = new RedPackageMessage();
+            redPackageMessage.setMessageType(type);
+            redPackageMessage.setRedType(chooseType);
+            redPackageMessage.setRobInfo(robInfo);
+            redId = mAppDatabase.redMessageDao().insert(redPackageMessage);
+        }
+
         if (isQunLiao) {
             //插入到外层的列表中
             WeixinQunChatInfo weixinQunChatInfo = new WeixinQunChatInfo();
@@ -306,6 +337,17 @@ public class ChatRedPackageActivity extends BaseActivity implements EmojiModeDia
             weixinChatInfo.setChildTabId(redId);
             mAppDatabase.weixinChatInfoDao().insert(weixinChatInfo);
         }
+
         finish();
+    }
+
+    @Override
+    public void continueUse() {
+        insertData();
+    }
+
+    @Override
+    public void cancelUse() {
+
     }
 }

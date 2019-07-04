@@ -10,6 +10,7 @@
     android:paddingBottom="6dp">
 
     <RelativeLayout
+        android:id="@+id/layout_send"
         android:layout_width="212dp"
         android:layout_height="75dp"
         android:layout_marginLeft="6dp"
@@ -28,10 +29,9 @@
                 android:id="@+id/tv_trans_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¥199.0"
+                android:text="¥0.00"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_trans_remark"

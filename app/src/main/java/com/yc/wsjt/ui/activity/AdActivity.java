@@ -13,6 +13,7 @@ import com.yc.wsjt.R;
 import com.yc.wsjt.presenter.Presenter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by myflying on 2018/11/23.
@@ -72,6 +73,11 @@ public class AdActivity extends BaseActivity {
                 .createAgentWeb()
                 .ready()
                 .go(adUrl);
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 
 }

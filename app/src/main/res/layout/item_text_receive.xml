@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="left"
     android:gravity="left"
-    android:paddingTop="4dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="4dp">
 
     <ImageView
         android:id="@+id/iv_chat_head"
@@ -25,17 +25,20 @@
             android:id="@+id/tv_chat_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:autoLink="phone|email|map|web"
-            android:background="@drawable/img_bubble_receive"
+            android:background="@mipmap/img_bubble_receive"
             android:gravity="left|center_vertical"
             android:lineSpacingMultiplier="1.2"
             android:linksClickable="true"
-            android:maxWidth="240dp"
-            android:minHeight="40dp"
-            android:padding="14dp"
-            android:text="接收到的消息"
+            android:maxWidth="242dp"
+            android:minHeight="36dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
             android:textColor="@color/chat_text_color"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>

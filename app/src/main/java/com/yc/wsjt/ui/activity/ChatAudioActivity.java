@@ -1,9 +1,13 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -55,6 +60,12 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
 
     @BindView(R.id.sb_turn_message)
     SwitchButton mTurnSButton;
+
+    @BindView(R.id.layout_audio_txt)
+    LinearLayout mAudioTxtLayout;
+
+    @BindView(R.id.et_audio_txt)
+    EditText mAudioTxtEt;
 
     private int audioTime;
 
@@ -132,6 +143,13 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
             }
         });
 
+        mTurnSButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAudioTxtLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            }
+        });
+
     }
 
     @OnClick(R.id.layout_send_info)
@@ -172,6 +190,11 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
 
     @OnClick(R.id.btn_config)
     void config() {
+        if (audioTime == 0) {
+            ToastUtils.showLong("请输入语音时长");
+            return;
+        }
+
         if (isQunLiao) {
             //插入一条时间设置记录
             AudioMessage audioMessage = new AudioMessage();
@@ -182,6 +205,7 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
             audioMessage.setAudioTime(audioTime);
             audioMessage.setRead(mIsReadSButton.isChecked());
             audioMessage.setOpenAudioTurn(mTurnSButton.isChecked());
+            audioMessage.setAudioText(mAudioTxtEt.getText().toString());
             Long audioId = mAppDatabase.audioMessageDao().insert(audioMessage);
 
             //插入到外层的列表中
@@ -205,6 +229,8 @@ public class ChatAudioActivity extends BaseActivity implements RoleSelectDialog.
             audioMessage.setAudioTime(audioTime);
             audioMessage.setRead(mIsReadSButton.isChecked());
             audioMessage.setOpenAudioTurn(mTurnSButton.isChecked());
+            audioMessage.setAudioText(mAudioTxtEt.getText().toString());
+
             Long audioId = mAppDatabase.audioMessageDao().insert(audioMessage);
 
             WeixinChatInfo weixinChatInfo = new WeixinChatInfo();

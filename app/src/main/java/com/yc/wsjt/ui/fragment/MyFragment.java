@@ -188,8 +188,14 @@ public class MyFragment extends BaseFragment implements UserInfoView, OpenVipDia
 
     @OnClick(R.id.layout_feed_back)
     void feedBack() {
-        Intent intent = new Intent(getActivity(), FeedBackActivity.class);
-        startActivity(intent);
+        if (App.getApp().isLogin) {
+            Intent intent = new Intent(getActivity(), FeedBackActivity.class);
+            startActivity(intent);
+        } else {
+            if (loginDialog != null && !loginDialog.isShowing()) {
+                loginDialog.show();
+            }
+        }
     }
 
     @OnClick(R.id.layout_user_info)

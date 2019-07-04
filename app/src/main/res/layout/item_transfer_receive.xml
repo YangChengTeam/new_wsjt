@@ -19,6 +19,7 @@
         android:src="@mipmap/user_head_def" />
 
     <RelativeLayout
+        android:id="@+id/layout_receive"
         android:layout_width="212dp"
         android:layout_height="75dp"
         android:layout_marginLeft="6dp"

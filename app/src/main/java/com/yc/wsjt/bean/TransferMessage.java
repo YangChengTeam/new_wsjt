@@ -1,7 +1,6 @@
 package com.yc.wsjt.bean;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 /**
  * Created by zhangdinghui on 2019/5/16.
@@ -15,7 +14,7 @@ public class TransferMessage extends MessageContent {
 
     private String transferDesc;//转账备注说明
 
-    private boolean isReceive; //转账是否接收
+    private boolean isReceive; //转账是否被点击领取
 
     private String sendTime;
 

@@ -145,10 +145,10 @@
                     android:id="@+id/sb_is_read"
                     android:layout_width="46dp"
                     android:layout_height="34dp"
-                    android:checked="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp" />
+                    android:layout_marginRight="12dp"
+                    android:checked="true" />
             </RelativeLayout>
 
             <View
@@ -176,11 +176,39 @@
                     android:id="@+id/sb_turn_message"
                     android:layout_width="46dp"
                     android:layout_height="34dp"
-                    android:checked="false"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp" />
+                    android:layout_marginRight="12dp"
+                    android:checked="false" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_audio_txt"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="12dp"
+                    android:background="@color/bg_color"></View>
+
+                <EditText
+                    android:id="@+id/et_audio_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:hint="语音转换内容"
+                    android:maxLength="60"
+                    android:textColor="@color/black1"
+                    android:textSize="14sp"></EditText>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

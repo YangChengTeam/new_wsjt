@@ -41,9 +41,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by zhangdinghui on 2019/4/29.
@@ -69,6 +66,16 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
     private DividerGridItemDecoration itemDecoration;
 
     public ModuleInfoWrapper moduleInfoWrapper;
+
+    public int quickBarTotalCount;
+
+    public int getQuickBarTotalCount() {
+        return quickBarTotalCount;
+    }
+
+    public void setQuickBarTotalCount(int quickBarTotalCount) {
+        this.quickBarTotalCount = quickBarTotalCount;
+    }
 
     public ModuleInfoWrapper getModuleInfoWrapper() {
         return moduleInfoWrapper;
@@ -97,7 +104,7 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
         DividerGridItemDecoration.Builder builder = new DividerGridItemDecoration.Builder(getContext(), LinearLayoutManager.VERTICAL, 3);
         builder.setShowOtherStyle(true).setDivider(R.drawable.bg_divider_list);
         itemDecoration = builder.build();
-        //editBarListView.addItemDecoration(itemDecoration);
+        editBarListView.addItemDecoration(itemDecoration);
         editBarListView.setLayoutManager(new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false));
 
         editBarListView.setAdapter(quickEditAdapter);
@@ -116,6 +123,12 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.iv_quick_delete) {
                     //ToastUtils.showLong("pos--->" + position);
+
+                    MessageEvent event = new MessageEvent();
+                    event.setMessageType(Constants.REMOVE_QUICK_INFO);
+                    event.setAddQuickInfo(quickEditAdapter.getData().get(position));
+                    EventBus.getDefault().post(event);
+
                     mAppDatabase.quickInfoDao().deleteQuickInfo(quickEditAdapter.getData().get(position));
                     quickEditAdapter.getData().remove(position);
                     quickEditAdapter.notifyDataSetChanged();
@@ -129,18 +142,11 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
         super.onResume();
         EventBus.getDefault().register(this);
         try {
-            mAppDatabase.quickInfoDao()
-                    .loadQuickInfo()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<QuickInfo>>() {
-                        @Override
-                        public void accept(List<QuickInfo> list) {
-                            if (list != null) {
-                                quickEditAdapter.setNewData(list);
-                            }
-                        }
-                    });
+            List<QuickInfo> list = mAppDatabase.quickInfoDao().loadQuickInfo();
+            if (list != null) {
+                quickEditAdapter.setNewData(list);
+                this.quickBarTotalCount = quickEditAdapter.getData().size();
+            }
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -160,12 +166,32 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         Logger.i("event type--->" + event.getMessageType());
-        if (event.getMessageType() == Constants.ADD_QUICK_INFO && event.getAddQuickInfo() != null) {
+
+        QuickInfo quickInfo = event.getAddQuickInfo();
+        if (quickInfo == null) return;
+
+        if (event.getMessageType() == Constants.ADD_QUICK_INFO) {
+//            if (quickEditAdapter.getData() != null && quickEditAdapter.getData().size() == 8) {
+//                ToastUtils.showLong("最多只能添加8个");
+//                return;
+//            }
             event.getAddQuickInfo().setAddDate(TimeUtils.date2Millis(new Date()));
-            List<Long> insertIds = mAppDatabase.quickInfoDao().insert(event.getAddQuickInfo());
+            List<Long> insertIds = mAppDatabase.quickInfoDao().insert(quickInfo);
             Logger.i("ids--->" + insertIds);
-            quickEditAdapter.addData(event.getAddQuickInfo());
+            quickEditAdapter.addData(quickInfo);
+        } else if (event.getMessageType() == Constants.REMOVE_BAR_QUICK) {
+            if (quickEditAdapter.getData() != null && quickEditAdapter.getData().size() > 0) {
+                mAppDatabase.quickInfoDao().deleteQuickInfo(quickInfo);
+                for (QuickInfo quickInfoTemp : quickEditAdapter.getData()) {
+                    if (quickInfoTemp.getId() == quickInfo.getId()) {
+                        quickEditAdapter.getData().remove(quickInfoTemp);
+                        break;
+                    }
+                }
+                quickEditAdapter.notifyDataSetChanged();
+            }
         }
+        this.quickBarTotalCount = quickEditAdapter.getData().size();
     }
 
     @OnClick(R.id.iv_config)
@@ -202,6 +228,11 @@ public class QuickBarEditActivity extends BaseActivity implements ModuleInfoView
     @Override
     public void loadDataError(Throwable throwable) {
 
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 
     @Override

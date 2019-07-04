@@ -40,6 +40,26 @@
                 android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/iv_handset_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@+id/tv_title"
+                android:src="@mipmap/wechat_handset_new"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_mute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@+id/iv_handset_new"
+                android:src="@mipmap/wechat_mute"
+                android:visibility="gone" />
+
+            <ImageView
                 android:id="@+id/iv_add_persion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,10 +74,21 @@
             android:layout_height="1dp"
             android:background="@color/chat_top_line_color"></View>
 
-        <com.lqr.recyclerview.LQRRecyclerView
-            android:id="@+id/chat_session_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_chat_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <com.lqr.recyclerview.LQRRecyclerView
+                android:id="@+id/chat_session_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
     </LinearLayout>
 
     <View
@@ -82,16 +113,17 @@
             android:layout_margin="6dp"
             android:src="@mipmap/chat_voice_icon" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_chat_touch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="14sp"
+            android:background="@drawable/common_white_bg"
+            android:gravity="left|center"
+            android:paddingLeft="8dp"
             android:textColor="@color/black1"
-            android:background="@drawable/common_white_bg" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="wrap_content"

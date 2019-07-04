@@ -31,6 +31,9 @@ public class QuickInfo {
     @Ignore
     private boolean isEdit;
 
+    @Ignore
+    private boolean isAddQuickBar;
+
     public int getId() {
         return id;
     }
@@ -133,5 +136,13 @@ public class QuickInfo {
 
     public void setVal(String val) {
         this.val = val;
+    }
+
+    public boolean isAddQuickBar() {
+        return isAddQuickBar;
+    }
+
+    public void setAddQuickBar(boolean addQuickBar) {
+        isAddQuickBar = addQuickBar;
     }
 }

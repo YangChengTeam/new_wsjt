@@ -27,9 +27,12 @@
     <string name="type_join_group">邀请加群</string>
     <string name="type_system_info">系统提醒</string>
 
+    <string name="agree_txt">我同意</string>
     <string name="config_txt">确定</string>
     <string name="cancel_txt">取消</string>
+    <string name="sign_out_txt">退出</string>
     <string name="role_list_txt">角色库</string>
+    <string name="continue_use">继续使用</string>
 
     <string name="must_input_txt">消息内容 (必填)</string>
 
@@ -73,4 +76,5 @@
     <string name="mer_shjf">生活缴费</string>
     <string name="mer_wx">微信支付</string>
     <string name="mer_xc">携程旅行</string>
+    <string name="explain_txt">本功能仅供娱乐使用，请勿用于非法用途，否则一切后果由使用者承担！如不同意，请退出使用！</string>
 </resources>

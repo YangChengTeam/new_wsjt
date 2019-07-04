@@ -11,8 +11,6 @@ import com.yc.wsjt.bean.QuickInfo;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-
 /**
  * Created by zhangdinghui on 2019/5/7.
  */
@@ -26,8 +24,11 @@ public interface QuickInfoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertList(List<QuickInfo> list);
 
-    @Query(" select * from quick_info order by addDate asc ")
-    Flowable<List<QuickInfo>> loadQuickInfo();
+    @Query("SELECT * from quick_info WHERE img is null order by addDate asc ")
+    List<QuickInfo> loadQuickInfo();
+
+    @Query("SELECT * from quick_info order by id asc ")
+    List<QuickInfo> loadQuickInfoInHome();
 
     @Delete
     void deleteQuickInfo(QuickInfo... quickInfo);

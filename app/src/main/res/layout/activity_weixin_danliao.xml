@@ -66,14 +66,14 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/bg_color">
 
             <com.yanzhenjie.recyclerview.SwipeRecyclerView
                 android:id="@+id/chat_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="75dp"
-                android:background="@color/white"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
+                android:background="@color/bg_color"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
 
             <LinearLayout
                 android:layout_width="match_parent"

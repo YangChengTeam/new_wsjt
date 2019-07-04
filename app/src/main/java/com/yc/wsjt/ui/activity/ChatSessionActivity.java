@@ -1,17 +1,26 @@
 package com.yc.wsjt.ui.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.PhoneUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
+import com.lqr.adapter.LQRViewHolder;
+import com.lqr.adapter.OnItemClickListener;
 import com.lqr.recyclerview.LQRRecyclerView;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.AudioMessage;
+import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.EmojiMessage;
 import com.yc.wsjt.bean.GroupMessage;
 import com.yc.wsjt.bean.ImageMessage;
@@ -47,8 +56,20 @@ public class ChatSessionActivity extends BaseActivity {
     @BindView(R.id.iv_voice)
     ImageView mVoiceIv;
 
+    @BindView(R.id.tv_title)
+    TextView mTitleTv;
+
     @BindView(R.id.tv_chat_touch)
-    TextView mTouchTv;
+    EditText mTouchEt;
+
+    @BindView(R.id.iv_handset_new)
+    ImageView mHandSetNewIv;
+
+    @BindView(R.id.iv_mute)
+    ImageView mMuteIv;
+
+    @BindView(R.id.iv_chat_bg)
+    ImageView mChatBgIv;
 
     SessionAdapter sessionAdapter;
 
@@ -57,6 +78,10 @@ public class ChatSessionActivity extends BaseActivity {
     Disposable disposable = null;
 
     private boolean isPan;
+
+    private int modelType;
+
+    ChatDataInfo mChatDataInfo;
 
     @Override
     protected int getLayoutId() {
@@ -87,7 +112,24 @@ public class ChatSessionActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            modelType = bundle.getInt("model_type", 0);
+        }
+
         try {
+            if (mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType) != null) {
+                mChatDataInfo = mAppDatabase.chatDataInfoDao().getItemById(PhoneUtils.getDeviceId(), modelType);
+            }
+
+            if (mChatDataInfo != null) {
+                mHandSetNewIv.setVisibility(mChatDataInfo.messageDisturb ? View.VISIBLE : View.GONE);
+                mMuteIv.setVisibility(mChatDataInfo.receiverOpen ? View.VISIBLE : View.GONE);
+                mTitleTv.setText(mChatDataInfo.getPersonName());
+                Glide.with(this).load(mChatDataInfo.getChatBgImage()).into(mChatBgIv);
+            } else {
+                Glide.with(this).load("").into(mChatBgIv);
+            }
 
             if (App.getApp().getChatList() != null && App.getApp().getChatList().size() > 0) {
                 for (WeixinChatInfo weixinChatInfo : App.getApp().getChatList()) {
@@ -118,6 +160,7 @@ public class ChatSessionActivity extends BaseActivity {
                             break;
                         case MessageContent.SEND_RED_PACKET:
                         case MessageContent.RECEIVE_RED_PACKET:
+                        case MessageContent.ROB_RED_PACKET:
                             RedPackageMessage redPackageMessage = mAppDatabase.redMessageDao().getItemById(weixinChatInfo.getChildTabId());
                             list.add(redPackageMessage);
                             break;
@@ -159,6 +202,20 @@ public class ChatSessionActivity extends BaseActivity {
 
         sessionAdapter = new SessionAdapter(this, list);
         mChatSessionListView.setAdapter(sessionAdapter);
+
+        sessionAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(LQRViewHolder helper, ViewGroup parent, View itemView, int position) {
+                if (sessionAdapter.getData().get(position) instanceof TransferMessage) {
+                    if (!((TransferMessage) list.get(position)).isReceive()) {
+                        mAppDatabase.transferMessageDao().updateTransReceive(!((TransferMessage)sessionAdapter.getData().get(position)).isReceive(), sessionAdapter.getData().get(position).getId());
+                        ((TransferMessage)sessionAdapter.getData().get(position)).setReceive(true);
+                        sessionAdapter.notifyItemChanged(position);
+                    }
+                }
+            }
+        });
+
     }
 
     @OnClick(R.id.iv_voice)
@@ -166,10 +223,18 @@ public class ChatSessionActivity extends BaseActivity {
         isPan = !isPan;
         if (isPan) {
             Glide.with(this).load(R.mipmap.chat_pan_icon).into(mVoiceIv);
-            mTouchTv.setText("");
+            mTouchEt.setText("按住 说话");
+            mTouchEt.setFocusable(false);
+            mTouchEt.setFocusableInTouchMode(false);
+            mTouchEt.setGravity(Gravity.CENTER);
+            mTouchEt.setPadding(0, 0, 0, 0);
         } else {
             Glide.with(this).load(R.mipmap.chat_voice_icon).into(mVoiceIv);
-            mTouchTv.setText("按住 说话");
+            mTouchEt.setText("");
+            mTouchEt.setFocusable(true);
+            mTouchEt.setFocusableInTouchMode(true);
+            mTouchEt.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mTouchEt.setPadding(SizeUtils.dp2px(8), 0, 0, 0);
         }
     }
 
