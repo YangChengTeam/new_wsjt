@@ -33,4 +33,7 @@ public interface TransferMessageDao {
 
     @Query("UPDATE wx_transfer_info SET isReceive = :isReceive WHERE id = :id")
     void updateTransReceive(boolean isReceive, int id);
+
+    @Query("UPDATE wx_transfer_info SET isReceive = :isReceive ,transferType = :type WHERE id = :id")
+    void updateTransReceiveAndType(boolean isReceive, int type, int id);
 }

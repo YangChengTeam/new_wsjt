@@ -197,7 +197,8 @@ public class Constants {
             R.string.type_join_group,
             R.string.type_join_group,
             R.string.type_system_info,
-            R.string.qun_receive_red};
+            R.string.qun_receive_red,
+            R.string.qun_send_red};
 
     public static final int[] merchantImages = {
             R.mipmap.aqy,
@@ -228,6 +229,8 @@ public class Constants {
     public static final int REMOVE_QUICK_INFO = 1001;
 
     public static final int REMOVE_BAR_QUICK = 1002;
+
+    public static final int CONFIG_RECEIVE_MONEY = 1003;
 
     public static final String USER_INFO = "login_user_info";
 

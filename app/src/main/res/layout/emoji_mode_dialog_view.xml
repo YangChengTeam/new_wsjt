@@ -50,7 +50,7 @@
                 android:drawableTop="@mipmap/role_edit"
                 android:drawablePadding="6dp"
                 android:gravity="center"
-                android:text="无表情"
+                android:text="默认图片"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
         </LinearLayout>

@@ -10,6 +10,8 @@ public class ShareMessage extends MessageContent {
 
     private String shareThumb;
 
+    private int shareThumbLocal;
+
     private String shareTitle;
 
     private String shareContent;
@@ -36,5 +38,13 @@ public class ShareMessage extends MessageContent {
 
     public void setShareThumb(String shareThumb) {
         this.shareThumb = shareThumb;
+    }
+
+    public int getShareThumbLocal() {
+        return shareThumbLocal;
+    }
+
+    public void setShareThumbLocal(int shareThumbLocal) {
+        this.shareThumbLocal = shareThumbLocal;
     }
 }

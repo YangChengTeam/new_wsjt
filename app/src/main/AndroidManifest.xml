@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--如需使用人脸识别，还要添加：摄相头权限，拍照需要用到 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
@@ -68,7 +68,9 @@
         <activity android:name=".ui.activity.WeixindanliaoActivity"></activity>
         <activity android:name=".ui.activity.WeixinqunliaoActivity"></activity>
         <activity android:name=".ui.activity.ChatTimeActivity"></activity>
-        <activity android:name=".ui.activity.ChatTextActivity" android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".ui.activity.ChatTextActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".ui.activity.ChatImageActivity"></activity>
         <activity android:name=".ui.activity.ChatAudioActivity"></activity>
         <activity android:name=".ui.activity.ChatEmojiActivity"></activity>
@@ -153,6 +155,7 @@
         <activity android:name=".ui.activity.NewHelpActivity"></activity>
         <activity android:name=".ui.activity.KeFuHelpActivity"></activity>
         <activity android:name=".ui.activity.AdActivity"></activity>
+        <activity android:name=".ui.activity.EditRoleActivity"></activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

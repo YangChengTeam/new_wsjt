@@ -8,7 +8,8 @@ public class MessageEvent {
     private QuickInfo addQuickInfo;
 
     private boolean loginSuccess;
-
+    private int mid;
+    private int chatPos;
     private ModuleInfoWrapper moduleInfoWrapper;
 
     public int getMessageType() {
@@ -57,5 +58,21 @@ public class MessageEvent {
 
     public void setLoginSuccess(boolean loginSuccess) {
         this.loginSuccess = loginSuccess;
+    }
+
+    public int getMid() {
+        return mid;
+    }
+
+    public void setMid(int mid) {
+        this.mid = mid;
+    }
+
+    public int getChatPos() {
+        return chatPos;
+    }
+
+    public void setChatPos(int chatPos) {
+        this.chatPos = chatPos;
     }
 }

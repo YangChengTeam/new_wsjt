@@ -114,6 +114,8 @@ public class ChatTransferActivity extends BaseActivity implements CustomDateDial
     protected void initViews() {
         customDateDialog = new CustomDateDialog(this, R.style.date_dialog);
         customDateDialog.setDateSelectListener(this);
+        mSendTransferTimeTv.setText(TimeUtils.getNowString());
+        mReceiveTransferTimeTv.setText(TimeUtils.getNowString());
     }
 
     @Override

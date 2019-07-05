@@ -1,11 +1,14 @@
 package com.yc.wsjt.ui.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
@@ -13,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lqr.adapter.LQRAdapterForRecyclerView;
 import com.lqr.adapter.LQRViewHolderForRecyclerView;
+import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.AudioMessage;
 import com.yc.wsjt.bean.EmojiMessage;
@@ -23,6 +27,7 @@ import com.yc.wsjt.bean.PersonMessage;
 import com.yc.wsjt.bean.RedPackageMessage;
 import com.yc.wsjt.bean.ShareMessage;
 import com.yc.wsjt.bean.TransferMessage;
+import com.yc.wsjt.bean.VideoMessage;
 import com.yc.wsjt.ui.custom.GlideRoundTransform;
 import com.yc.wsjt.util.EmotionUtils;
 import com.yc.wsjt.util.SpanStringUtils;
@@ -100,11 +105,16 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
 
     @Override
     public void convert(LQRViewHolderForRecyclerView helper, MessageContent messageContent, int position) {
-        if (position == mData.size() - 1) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, SizeUtils.dp2px(36));
-            helper.getConvertView().setLayoutParams(params);
+        if (App.getApp().chatDataInfo == null) {
+            return;
         }
+
+//        if (position == mData.size() - 1) {
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            params.setMargins(0, 0, 0, SizeUtils.dp2px(36));
+//            helper.getConvertView().setLayoutParams(params);
+//        }
+
         if (messageContent.getMessageType() == MessageContent.CHAT_DATE) {
             helper.setText(R.id.tv_chat_time, messageContent.getMessageContent());
         }
@@ -113,22 +123,26 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
             TextView sessionTv = helper.getView(R.id.tv_chat_text);
             sessionTv.setText(SpanStringUtils.getEmotionContent(EmotionUtils.EMOTION_CLASSIC_TYPE,
                     mContext, sessionTv, messageContent.getMessageContent()));
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_TEXT ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_IMAGE || messageContent.getMessageType() == MessageContent.RECEIVE_IMAGE) {
             Glide.with(mContext).load(((ImageMessage) messageContent).getImageUrl()).into((ImageView) helper.getView(R.id.iv_big_image));
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_IMAGE ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_IMAGE_FOR_VIDEO || messageContent.getMessageType() == MessageContent.RECEIVE_IMAGE_FOR_VIDEO) {
             Glide.with(mContext).load(((ImageMessage) messageContent).getImageUrl()).into((ImageView) helper.getView(R.id.iv_video_bg));
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_IMAGE_FOR_VIDEO ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_VOICE || messageContent.getMessageType() == MessageContent.RECEIVE_VOICE) {
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_VOICE ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
             helper.setText(R.id.tv_audio_size, ((AudioMessage) messageContent).getAudioTime() + "''");
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
 
             int scale = SizeUtils.dp2px(242) / 60;
             LinearLayout audioLayout = helper.getView(R.id.layout_audio);
@@ -148,14 +162,17 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_EMOJI || messageContent.getMessageType() == MessageContent.RECEIVE_EMOJI) {
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_EMOJI ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
             Glide.with(mContext).load(((EmojiMessage) messageContent).getEmojiUrl()).into((ImageView) helper.getView(R.id.iv_emoji));
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_RED_PACKET || messageContent.getMessageType() == MessageContent.RECEIVE_RED_PACKET) {
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_RED_PACKET ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
             helper.setText(R.id.tv_red_remark, ((RedPackageMessage) messageContent).getRedDesc());
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
+
         if (messageContent.getMessageType() == MessageContent.ROB_RED_PACKET) {
             helper.setText(R.id.tv_rob_info, ((RedPackageMessage) messageContent).getRobInfo());
         }
@@ -176,8 +193,7 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
             }
 
             helper.setText(R.id.tv_trans_remark, tempRemark);
-
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            Glide.with(mContext).load(App.getApp().chatDataInfo.getPersonHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.RECEIVE_TRANSFER) {
@@ -197,26 +213,54 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
 
             helper.setText(R.id.tv_trans_remark, tempRemark);
 
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            Glide.with(mContext).load(App.getApp().chatDataInfo.getOtherPersonHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
-        if (messageContent.getMessageType() == MessageContent.SEND_VIDEO || messageContent.getMessageType() == MessageContent.RECEIVE_VIDEO) {
-            helper.setText(R.id.tv_video_message, messageContent.getMessageContent());
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+        if (messageContent.getMessageType() == MessageContent.SEND_VIDEO) {
+            TextView contentTv = helper.getView(R.id.tv_video_message);
+            contentTv.setText(messageContent.getMessageContent());
+
+            Drawable drawable = ContextCompat.getDrawable(mContext, ((VideoMessage) messageContent).getChatVideoType() == 1 ? R.mipmap.chat_item_video : R.mipmap.chat_item_voice);
+            // 这一步必须要做,否则不会显示.
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            contentTv.setCompoundDrawables(null, null, drawable, null);
+
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_VIDEO ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+        }
+
+        if (messageContent.getMessageType() == MessageContent.RECEIVE_VIDEO) {
+            TextView contentTv = helper.getView(R.id.tv_video_message);
+            contentTv.setText(messageContent.getMessageContent());
+
+            Drawable drawable = ContextCompat.getDrawable(mContext, ((VideoMessage) messageContent).getChatVideoType() == 1 ? R.mipmap.chat_item_video : R.mipmap.chat_item_voice);
+            // 这一步必须要做,否则不会显示.
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            contentTv.setCompoundDrawables(drawable, null, null, null);
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_VIDEO ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+
+            ImageView mRedPoint = helper.getView(R.id.iv_red_point);
+            mRedPoint.setVisibility(((VideoMessage) messageContent).getChatState() == 2 ? View.VISIBLE : View.GONE);
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_SHARE || messageContent.getMessageType() == MessageContent.RECEIVE_SHARE) {
             helper.setText(R.id.tv_share_title, ((ShareMessage) messageContent).getShareTitle());
             helper.setText(R.id.tv_share_content, ((ShareMessage) messageContent).getShareContent());
-            Glide.with(mContext).load(((ShareMessage) messageContent).getShareThumb()).into((ImageView) helper.getView(R.id.iv_share_thumb));
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            RequestOptions thumbOptions = new RequestOptions();
+            thumbOptions.error(R.mipmap.weixin_share_cover);
+            Glide.with(mContext).load(((ShareMessage) messageContent).getShareThumb()).apply(thumbOptions).into((ImageView) helper.getView(R.id.iv_share_thumb));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_SHARE ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
 
         if (messageContent.getMessageType() == MessageContent.SEND_PERSON_CARD || messageContent.getMessageType() == MessageContent.RECEIVE_PERSON_CARD) {
             Glide.with(mContext).load(((PersonMessage) messageContent).getPersonHeadImg()).into((ImageView) helper.getView(R.id.iv_card_head));
             helper.setText(R.id.tv_card_name, ((PersonMessage) messageContent).getPersonName());
             helper.setText(R.id.tv_weixin_number, ((PersonMessage) messageContent).getWeixinNumber() + "");
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_PERSON_CARD ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
         if (messageContent.getMessageType() == MessageContent.SEND_JOIN_GROUP || messageContent.getMessageType() == MessageContent.RECEIVE_JOIN_GROUP) {
             helper.setText(R.id.tv_group_title, ((GroupMessage) messageContent).getGroupName());
@@ -224,7 +268,8 @@ public class SessionAdapter extends LQRAdapterForRecyclerView<MessageContent> {
             if (!StringUtils.isEmpty(((GroupMessage) messageContent).getGroupHead())) {
                 Glide.with(mContext).load(((GroupMessage) messageContent).getGroupHead()).into((ImageView) helper.getView(R.id.iv_group_thumb));
             }
-            Glide.with(mContext).load(messageContent.getMessageUserHead()).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
+            String headUrl = messageContent.getMessageType() == MessageContent.SEND_JOIN_GROUP ? App.getApp().chatDataInfo.getPersonHead() : App.getApp().chatDataInfo.otherPersonHead;
+            Glide.with(mContext).load(headUrl).apply(options).into((ImageView) helper.getView(R.id.iv_chat_head));
         }
         if (messageContent.getMessageType() == MessageContent.SYSTEM_TIPS) {
             helper.setText(R.id.tv_system_info, messageContent.getMessageContent());

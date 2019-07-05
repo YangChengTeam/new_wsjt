@@ -12,13 +12,17 @@ import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.yc.wsjt.R;
+import com.yc.wsjt.bean.MessageEvent;
+import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.presenter.Presenter;
 import com.yc.wsjt.ui.custom.VipPayTypeDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDialog.PayListener{
+public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDialog.PayListener {
 
     private int chooseType = 1;
 
@@ -60,6 +64,12 @@ public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDial
 
     private boolean isUse;
 
+    private boolean isFromChat;
+
+    private int mid;
+
+    private int chatPos;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_receive_money;
@@ -84,6 +94,9 @@ public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDial
 
         Bundle bundle = getIntent().getExtras();
         isUse = bundle.getBoolean("is_use", false);
+        isFromChat = bundle.getBoolean("is_from_chat", false);
+        mid = bundle.getInt("mid", 0);
+        chatPos = bundle.getInt("chat_position",chatPos);
         if (bundle.getInt("choose_type") > 0) {
             chooseType = bundle.getInt("choose_type");
         }
@@ -130,6 +143,16 @@ public class ReceiveMoneyActivity extends BaseActivity implements VipPayTypeDial
                 return;
             }
         }
+    }
+
+    @OnClick(R.id.btn_config_receive)
+    void configReceive() {
+        MessageEvent event = new MessageEvent();
+        event.setMid(mid);
+        event.setChatPos(chatPos);
+        event.setMessageType(Constants.CONFIG_RECEIVE_MONEY);
+        EventBus.getDefault().post(event);
+        finish();
     }
 
     @Override

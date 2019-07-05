@@ -209,15 +209,11 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
     @Override
     public void noneEmoji() {
-        Glide.with(this).load(R.mipmap.user_head_def).into(mShareIv);
+        Glide.with(this).load(R.mipmap.weixin_share_cover).into(mShareIv);
     }
 
     @OnClick(R.id.btn_config)
     void config() {
-        if (StringUtils.isEmpty(thumbPath)) {
-            ToastUtils.showLong("请选择封面图片");
-            return;
-        }
 
         if (StringUtils.isEmpty(mShareTitleEt.getText())) {
             ToastUtils.showLong("请输入标题");
@@ -237,9 +233,12 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入一条时间设置记录
             ShareMessage shareMessage = new ShareMessage();
-            //shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             shareMessage.setMessageType(CHAT_TYPE);
-            shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
+            if (StringUtils.isEmpty(thumbPath)) {
+                shareMessage.setShareThumbLocal(R.mipmap.weixin_share_cover);
+            } else {
+                shareMessage.setShareThumb(thumbPath);
+            }
             shareMessage.setShareTitle(mShareTitleEt.getText().toString());
             shareMessage.setShareContent(mShareContentEt.getText().toString());
             shareMessage.setMessageUserName(sendUserName);
@@ -262,9 +261,12 @@ public class ChatShareActivity extends BaseActivity implements EmojiModeDialog.M
 
             //插入一条时间设置记录
             ShareMessage shareMessage = new ShareMessage();
-            //shareMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
             shareMessage.setMessageType(CHAT_TYPE);
-            shareMessage.setShareThumb(StringUtils.isEmpty(thumbPath) ? "" : thumbPath);
+            if (StringUtils.isEmpty(thumbPath)) {
+                shareMessage.setShareThumbLocal(R.mipmap.weixin_share_cover);
+            } else {
+                shareMessage.setShareThumb(thumbPath);
+            }
             shareMessage.setShareTitle(mShareTitleEt.getText().toString());
             shareMessage.setShareContent(mShareContentEt.getText().toString());
             shareMessage.setMessageUserName(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());

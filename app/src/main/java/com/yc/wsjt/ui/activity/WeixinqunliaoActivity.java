@@ -186,7 +186,6 @@ public class WeixinqunliaoActivity extends BaseActivity {
                 //未查询到记录，新增一条
                 MessageContent tempMessageContent = new MessageContent();
                 tempMessageContent.setDeviceId(PhoneUtils.getDeviceId());
-                tempMessageContent.setWxMainId(1);
                 mAppDatabase.messageContentDao().insert(tempMessageContent);
                 messageContent = mAppDatabase.messageContentDao().getItemById(PhoneUtils.getDeviceId(), modelType);
             }
@@ -196,7 +195,7 @@ public class WeixinqunliaoActivity extends BaseActivity {
 
             //初始化聊天记录
             disposable = mAppDatabase.weixinQunChatInfoDao()
-                    .loadQunWeChatInfo(messageContent.getWxMainId())
+                    .loadQunWeChatInfo(messageContent.getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<List<WeixinQunChatInfo>>() {

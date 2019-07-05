@@ -118,7 +118,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
         }
         mTitleTv.setText(isQunLiao ? "群聊文本" : "单聊文本");
 
-        if (App.getApp().chatDataInfo != null) {
+        if (!isQunLiao && App.getApp().chatDataInfo != null) {
             boolean isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
 
@@ -134,6 +134,13 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
                 } else {
                     Glide.with(this).load(App.getApp().chatDataInfo.getOtherPersonHead()).into(mSendUserHeadIv);
                 }
+            }
+        } else {
+            if (App.getApp().qunChatInfo != null) {
+                sendUserName = App.getApp().mUserInfo.getNickName();
+                sendUserHead = App.getApp().mUserInfo.getAvatar();
+                mSendUserNameTv.setText(sendUserName);
+                Glide.with(this).load(sendUserHead).into(mSendUserHeadIv);
             }
         }
     }
@@ -260,14 +267,15 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
 
     @OnClick(R.id.btn_config)
     void config() {
-        if (StringUtils.isEmpty(mChatEditText.getText())) {
-            ToastUtils.showLong("请输入消息内容");
-            return;
-        }
 
         if (isQunLiao) {
             if (StringUtils.isEmpty(sendUserName)) {
                 ToastUtils.showLong("请选择发送人");
+                return;
+            }
+
+            if (StringUtils.isEmpty(mChatEditText.getText())) {
+                ToastUtils.showLong("请输入消息内容");
                 return;
             }
 
@@ -287,6 +295,11 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
             weixinQunChatInfo.setType(CHAT_TYPE);
             mAppDatabase.weixinQunChatInfoDao().insert(weixinQunChatInfo);
         } else {
+            if (StringUtils.isEmpty(mChatEditText.getText())) {
+                ToastUtils.showLong("请输入消息内容");
+                return;
+            }
+
             CHAT_TYPE = MessageContent.SEND_TEXT;
             if (!SPUtils.getInstance().getBoolean(Constants.IS_SELF, true)) {
                 CHAT_TYPE = MessageContent.RECEIVE_TEXT;

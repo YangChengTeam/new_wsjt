@@ -125,6 +125,7 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
     protected void initData(Bundle savedInstanceState) {
         if (App.getApp().chatDataInfo != null) {
             isMySelf = SPUtils.getInstance().getBoolean(Constants.IS_SELF, true);
+
             mSendUserNameTv.setText(isMySelf ? App.getApp().chatDataInfo.getPersonName() : App.getApp().chatDataInfo.getOtherPersonName());
 
             if (isMySelf) {
@@ -247,11 +248,26 @@ public class ChatVideoActivity extends BaseActivity implements VideoTimeDialog.D
             type = MessageContent.RECEIVE_VIDEO;
         }
 
+        String stateStr = "";
+        switch (chatState) {
+            case 1:
+                stateStr = "聊天时长 " + mVideoTimeTv.getText().toString();
+                break;
+            case 2:
+                stateStr = type == MessageContent.SEND_VIDEO ? "已取消" : "对方已取消";
+                break;
+            case 3:
+                stateStr = type == MessageContent.SEND_VIDEO ? "对方已拒绝" : "已拒绝";
+                break;
+            default:
+                break;
+        }
+
+
         //插入一条时间设置记录
         VideoMessage videoMessage = new VideoMessage();
-        //videoMessage.setWxMainId(App.getApp().getMessageContent().getWxMainId());
         videoMessage.setMessageType(type);
-        videoMessage.setMessageContent(mConnectionStateTv.getText() + " " + mVideoTimeTv.getText().toString());
+        videoMessage.setMessageContent(stateStr);
         videoMessage.setChatVideoType(chooseType);
         videoMessage.setChatTime(mVideoTimeTv.getText().toString());
         videoMessage.setChatState(chatState);

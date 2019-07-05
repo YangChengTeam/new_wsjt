@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.ui.activity.ChooseRoleActivity;
+import com.yc.wsjt.ui.activity.EditRoleActivity;
 
 
 public class SettingRoleDialog extends Dialog {
@@ -62,7 +64,7 @@ public class SettingRoleDialog extends Dialog {
                 dismiss();
                 Intent intent = new Intent(mContext, ChooseRoleActivity.class);
                 intent.putExtra("person_type", type);
-                intent.putExtra("model_type",modelType);
+                intent.putExtra("model_type", modelType);
                 mContext.startActivity(intent);
             }
         });
@@ -70,6 +72,13 @@ public class SettingRoleDialog extends Dialog {
         mEditRoleTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (App.getApp().chatDataInfo == null) {
+                    return;
+                }
+
+                Intent intent = new Intent(mContext, EditRoleActivity.class);
+                intent.putExtra("role_type",type);
+                mContext.startActivity(intent);
                 dismiss();
             }
         });

@@ -26,6 +26,12 @@ public interface ChatDataInfoDao {
     @Query("UPDATE chat_data_info SET personName = :personName, personHead = :personHead, otherPersonName = :otherPersonName,otherPersonHead = :otherPersonHead WHERE id = :id")
     void update(String personName, String personHead, String otherPersonName, String otherPersonHead, int id);
 
+    @Query("UPDATE chat_data_info SET personName = :personName, personHead = :personHead WHERE id = :id")
+    void updateSelf(String personName, String personHead ,int id);
+
+    @Query("UPDATE chat_data_info SET otherPersonName = :otherPersonName,otherPersonHead = :otherPersonHead WHERE id = :id")
+    void updateOther(String otherPersonName, String otherPersonHead, int id);
+
     @Query("SELECT * from chat_data_info")
     Flowable<List<ChatDataInfo>> loadChatDataInfo();
 
