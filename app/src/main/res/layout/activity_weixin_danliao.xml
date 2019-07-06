@@ -42,6 +42,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/iv_chat_right_head"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/user_head_def" />
 
             <ImageView
@@ -51,6 +52,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_right"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/user_head_def" />
 
             <ImageView

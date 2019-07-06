@@ -218,6 +218,22 @@ public class Constants {
             R.string.mer_wx,
             R.string.mer_xc};
 
+
+    public static final int[] alipayTypeImages = {
+            R.mipmap.type_time, R.mipmap.type_text, R.mipmap.type_image, R.mipmap.type_voice,
+            R.mipmap.type_emoji, R.mipmap.type_hongbao, R.mipmap.type_zhuanzhang, R.mipmap.type_video, R.mipmap.type_system_info};
+
+    public static final int[] alipayTypeNames = {
+            R.string.type_time,
+            R.string.type_text,
+            R.string.type_image,
+            R.string.type_voice,
+            R.string.type_emoji,
+            R.string.type_hongbao,
+            R.string.type_zhuanzhang,
+            R.string.type_shoukuan,
+            R.string.type_system_info};
+
     public static final String IS_SELF = "current_choose_role";
 
     public static final String IS_AGREE = "agree_explain";

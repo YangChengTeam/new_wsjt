@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -38,6 +39,7 @@ public class EmojiListAdapter extends BaseQuickAdapter<EmojiInfo, BaseViewHolder
 
         RequestOptions options = new RequestOptions();
         options.override(tempWidth - SizeUtils.dp2px(8), tempWidth - SizeUtils.dp2px(8));
-        Glide.with(mContext).load(Constants.BASE_IMAGE_URL + emojiInfo.getIcon()).apply(options).into((ImageView) holder.getView(R.id.iv_emoji));
+        String tempUrl = !StringUtils.isEmpty(emojiInfo.getLocalEmoji()) ? emojiInfo.getLocalEmoji() : Constants.BASE_IMAGE_URL + emojiInfo.getIcon();
+        Glide.with(mContext).load(tempUrl).apply(options).into((ImageView) holder.getView(R.id.iv_emoji));
     }
 }

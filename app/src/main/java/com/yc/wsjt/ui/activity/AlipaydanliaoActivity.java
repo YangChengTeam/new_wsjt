@@ -29,8 +29,8 @@ import com.yc.wsjt.bean.ChatDataInfo;
 import com.yc.wsjt.bean.MessageContent;
 import com.yc.wsjt.bean.WeixinChatInfo;
 import com.yc.wsjt.presenter.Presenter;
-import com.yc.wsjt.ui.adapter.WeixindanliaoChatAdapter;
-import com.yc.wsjt.ui.custom.ChatTypeDialog;
+import com.yc.wsjt.ui.adapter.AlipaydanliaoChatAdapter;
+import com.yc.wsjt.ui.custom.AlipayChatTypeDialog;
 
 import java.util.Collections;
 import java.util.List;
@@ -75,9 +75,9 @@ public class AlipaydanliaoActivity extends BaseActivity {
     @BindView(R.id.btn_pre_show)
     Button mQueryDataBtn;
 
-    WeixindanliaoChatAdapter weixindanliaoChatAdapter;
+    AlipaydanliaoChatAdapter alipaydanliaoChatAdapter;
 
-    ChatTypeDialog chatTypeDialog;
+    AlipayChatTypeDialog alipayChatTypeDialog;
 
     WindowManager.LayoutParams windowParams;
 
@@ -112,22 +112,22 @@ public class AlipaydanliaoActivity extends BaseActivity {
     @Override
     protected void initViews() {
 
-        chatTypeDialog = new ChatTypeDialog(this, R.style.custom_dialog);
+        alipayChatTypeDialog = new AlipayChatTypeDialog(this, R.style.custom_dialog);
 
-        weixindanliaoChatAdapter = new WeixindanliaoChatAdapter(this, null, 0);
+        alipaydanliaoChatAdapter = new AlipaydanliaoChatAdapter(this, null, 0);
         mChatListView.setLayoutManager(new LinearLayoutManager(this));
         mChatListView.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.line_color), 1, 1));
-        mChatListView.setAdapter(weixindanliaoChatAdapter);
+        mChatListView.setAdapter(alipaydanliaoChatAdapter);
         mChatListView.setLongPressDragEnabled(true);
 
         mChatListView.setOnItemMoveListener(mItemMoveListener);// 监听拖拽，更新UI
 
-        weixindanliaoChatAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        alipaydanliaoChatAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.btn_delete) {
-                    mAppDatabase.weixinChatInfoDao().deleteWeChatInfo(weixindanliaoChatAdapter.getData().get(position));
-                    weixindanliaoChatAdapter.getData().remove(position);
+                    mAppDatabase.weixinChatInfoDao().deleteWeChatInfo(alipaydanliaoChatAdapter.getData().get(position));
+                    alipaydanliaoChatAdapter.getData().remove(position);
                 }
             }
         });
@@ -142,8 +142,8 @@ public class AlipaydanliaoActivity extends BaseActivity {
             // 交换数据，并更新adapter。
             int fromPosition = srcHolder.getAdapterPosition();
             int toPosition = targetHolder.getAdapterPosition();
-            Collections.swap(weixindanliaoChatAdapter.getData(), fromPosition, toPosition);
-            weixindanliaoChatAdapter.notifyItemMoved(fromPosition, toPosition);
+            Collections.swap(alipaydanliaoChatAdapter.getData(), fromPosition, toPosition);
+            alipaydanliaoChatAdapter.notifyItemMoved(fromPosition, toPosition);
             Logger.i("move--->" + fromPosition + "---" + toPosition);
             // 返回true，表示数据交换成功，ItemView可以交换位置。
             return true;
@@ -155,8 +155,8 @@ public class AlipaydanliaoActivity extends BaseActivity {
 
             // 从数据源移除该Item对应的数据，并刷新Adapter。
             int position = srcHolder.getAdapterPosition();
-            weixindanliaoChatAdapter.getData().remove(position);
-            weixindanliaoChatAdapter.notifyItemRemoved(position);
+            alipaydanliaoChatAdapter.getData().remove(position);
+            alipaydanliaoChatAdapter.notifyItemRemoved(position);
         }
     };
 
@@ -235,7 +235,7 @@ public class AlipaydanliaoActivity extends BaseActivity {
                                 for (WeixinChatInfo weixinChatInfo : entities) {
                                     Logger.i("insert wechat--->" + weixinChatInfo.getChatText());
                                 }
-                                weixindanliaoChatAdapter.setNewData(entities);
+                                alipaydanliaoChatAdapter.setNewData(entities);
                             }
                         }
                     });
@@ -246,21 +246,21 @@ public class AlipaydanliaoActivity extends BaseActivity {
 
     @OnClick(R.id.btn_add_data)
     public void addData() {
-        if (chatTypeDialog != null && !chatTypeDialog.isShowing()) {
+        if (alipayChatTypeDialog != null && !alipayChatTypeDialog.isShowing()) {
 
-            chatTypeDialog.show();
-            chatTypeDialog.setCanceledOnTouchOutside(true);
+            alipayChatTypeDialog.show();
+            alipayChatTypeDialog.setCanceledOnTouchOutside(true);
 
-            windowParams = chatTypeDialog.getWindow().getAttributes();
+            windowParams = alipayChatTypeDialog.getWindow().getAttributes();
             windowParams.width = (int) (ScreenUtils.getScreenWidth() * 0.92);
             windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            chatTypeDialog.getWindow().setAttributes(windowParams);
+            alipayChatTypeDialog.getWindow().setAttributes(windowParams);
         }
     }
 
     @OnClick(R.id.btn_pre_show)
     public void queryData() {
-        App.getApp().setChatList(weixindanliaoChatAdapter.getData());
+        App.getApp().setChatList(alipaydanliaoChatAdapter.getData());
         Intent intent = new Intent(this, ChatSessionActivity.class);
         startActivity(intent);
     }

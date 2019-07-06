@@ -49,6 +49,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_my_right_icon"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/user_head_def" />
 
             <ImageView
@@ -100,6 +101,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:layout_toLeftOf="@+id/iv_other_right_icon"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/logo_angle" />
 
             <ImageView

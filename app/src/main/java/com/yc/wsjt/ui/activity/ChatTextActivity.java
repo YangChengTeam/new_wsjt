@@ -138,7 +138,7 @@ public class ChatTextActivity extends BaseActivity implements RoleSelectDialog.C
         } else {
             if (App.getApp().qunChatInfo != null) {
                 sendUserName = App.getApp().mUserInfo.getNickName();
-                sendUserHead = App.getApp().mUserInfo.getAvatar();
+                sendUserHead = App.getApp().mUserInfo.getFace();
                 mSendUserNameTv.setText(sendUserName);
                 Glide.with(this).load(sendUserHead).into(mSendUserHeadIv);
             }

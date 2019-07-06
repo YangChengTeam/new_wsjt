@@ -20,6 +20,7 @@
     <string name="type_emoji">表情</string>
     <string name="type_hongbao">红包</string>
     <string name="type_zhuanzhang">转账</string>
+    <string name="type_shoukuan">收款</string>
     <string name="type_video">视频</string>
     <string name="type_image_for_video">视频聊天</string>
     <string name="type_share">转发</string>
