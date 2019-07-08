@@ -40,9 +40,23 @@ import com.yc.wsjt.presenter.HomeInfoPresenterImp;
 import com.yc.wsjt.ui.activity.AdActivity;
 import com.yc.wsjt.ui.activity.AlipaydanliaoActivity;
 import com.yc.wsjt.ui.activity.BaseActivity;
+import com.yc.wsjt.ui.activity.ChatVideoSetActivity;
+import com.yc.wsjt.ui.activity.ChatVoiceSetActivity;
+import com.yc.wsjt.ui.activity.ExtractSetActivity;
+import com.yc.wsjt.ui.activity.MoneyDetailListActivity;
+import com.yc.wsjt.ui.activity.MyWalletActivity;
+import com.yc.wsjt.ui.activity.NewFriendListActivity;
+import com.yc.wsjt.ui.activity.PaySuccessSetActivity;
 import com.yc.wsjt.ui.activity.QQdanliaoActivity;
 import com.yc.wsjt.ui.activity.QuickBarEditActivity;
+import com.yc.wsjt.ui.activity.RedPackageActivity;
+import com.yc.wsjt.ui.activity.TransferActivity;
+import com.yc.wsjt.ui.activity.WeiXinBillActivity;
+import com.yc.wsjt.ui.activity.WeiXinCircleSetActivity;
+import com.yc.wsjt.ui.activity.WeiXinHomeActivity;
 import com.yc.wsjt.ui.activity.WeiXinModuleActivity;
+import com.yc.wsjt.ui.activity.WeiXinMoneyActivity;
+import com.yc.wsjt.ui.activity.WeiXinPayListActivity;
 import com.yc.wsjt.ui.activity.WeixindanliaoActivity;
 import com.yc.wsjt.ui.activity.WeixinqunliaoActivity;
 import com.yc.wsjt.ui.adapter.QuickAdapter;
@@ -145,6 +159,11 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
         mEditTv = headView.findViewById(R.id.tv_edit);
         quickAdapter.setHeaderView(headView);
 
+        //登录过，并且是VIP用户
+        if (App.getApp().isLogin && App.getApp().mUserInfo != null && App.getApp().mUserInfo.getStatus() > 1) {
+            App.getApp().setOpenVip(true);
+        }
+
         quickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -159,17 +178,123 @@ public class HomeFragment extends BaseFragment implements HomeInfoView, View.OnC
                             }
                             return;
                         }
+
+                        boolean isUse = true;
+                        //判断是否是VIP用户，以及功能模块是否是免费使用
+                        if (quickAdapter.getData().get(position).getVip() == 1 && !App.getApp().isOpenVip()) {
+                            isUse = false;
+                        }
+
                         int mid = quickAdapter.getData().get(position).getId();
+
                         if (mid == 1) {
                             Intent intent = new Intent(getActivity(), WeixindanliaoActivity.class);
                             startActivity(intent);
                         }
-
+                        if (mid == 2) {
+                            Intent intent = new Intent(getActivity(), WeiXinMoneyActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
                         if (mid == 4) {
                             Intent intent = new Intent(getActivity(), WeixinqunliaoActivity.class);
                             startActivity(intent);
                         }
 
+                        if (mid == 5) {
+                            Intent intent = new Intent(getActivity(), RedPackageActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 6) {
+                            Intent intent = new Intent(getActivity(), TransferActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 7) {
+                            Intent intent = new Intent(getActivity(), ExtractSetActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 8) {
+                            Intent intent = new Intent(getActivity(), MyWalletActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 9) {
+                            Intent intent = new Intent(getActivity(), MoneyDetailListActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 10) {
+                            Intent intent = new Intent(getActivity(), NewFriendListActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 11) {
+                            Intent intent = new Intent(getActivity(), WeiXinCircleSetActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 12) {
+                            Intent intent = new Intent(getActivity(), ChatVideoSetActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 13) {
+                            Intent intent = new Intent(getActivity(), ChatVoiceSetActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 14) {
+                            Intent intent = new Intent(getActivity(), PaySuccessSetActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 15) {
+                            Intent intent = new Intent(getActivity(), WeiXinPayListActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 16) {
+                            Intent intent = new Intent(getActivity(), WeiXinBillActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        if (mid == 17) {
+                            Intent intent = new Intent(getActivity(), WeiXinHomeActivity.class);
+                            if (quickAdapter.getData().get(position).getVip() == 1) {
+                                intent.putExtra("is_use", isUse);
+                            }
+                            startActivity(intent);
+                        }
+                        
                     } else {
                         ToastUtils.showLong("广告类型--->");
                         int type = quickAdapter.getData().get(position).getType();

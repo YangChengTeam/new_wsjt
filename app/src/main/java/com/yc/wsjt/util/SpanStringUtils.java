@@ -47,7 +47,7 @@ public class SpanStringUtils {
                     Bitmap scaleBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
                     //ImageSpan span = new ImageSpan(context, bitmap);
                     CenterAlignImageSpan centerAlignImageSpan = new CenterAlignImageSpan(scaleBitmap);
-                    spannableString.setSpan(centerAlignImageSpan, start, start + key.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(centerAlignImageSpan, start, start + key.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
             }
         }

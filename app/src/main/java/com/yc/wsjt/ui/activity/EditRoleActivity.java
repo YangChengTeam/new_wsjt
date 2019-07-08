@@ -149,4 +149,9 @@ public class EditRoleActivity extends BaseActivity implements InputDialog.InputT
 
         finish();
     }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
+    }
 }

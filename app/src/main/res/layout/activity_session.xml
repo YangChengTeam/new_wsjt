@@ -131,10 +131,35 @@
             android:layout_margin="6dp"
             android:src="@mipmap/chat_face_icon" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:src="@mipmap/chat_info_add" />
+        <FrameLayout
+            android:layout_width="44dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:id="@+id/iv_add_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/chat_info_add" />
+
+            <LinearLayout
+                android:id="@+id/layout_send"
+                android:layout_width="40dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/send_txt_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="发送"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -1,12 +1,17 @@
 package com.yc.wsjt.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -19,6 +24,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.lqr.adapter.LQRViewHolder;
 import com.lqr.adapter.OnItemClickListener;
 import com.lqr.recyclerview.LQRRecyclerView;
+import com.orhanobut.logger.Logger;
 import com.yc.wsjt.App;
 import com.yc.wsjt.R;
 import com.yc.wsjt.bean.AudioMessage;
@@ -70,6 +76,12 @@ public class ChatSessionActivity extends BaseActivity {
 
     @BindView(R.id.tv_chat_touch)
     EditText mTouchEt;
+
+    @BindView(R.id.iv_add_plus)
+    ImageView mAddPlusIv;
+
+    @BindView(R.id.layout_send)
+    LinearLayout mSendLayout;
 
     @BindView(R.id.iv_handset_new)
     ImageView mHandSetNewIv;
@@ -134,7 +146,7 @@ public class ChatSessionActivity extends BaseActivity {
             if (mChatDataInfo != null) {
                 mHandSetNewIv.setVisibility(mChatDataInfo.messageDisturb ? View.VISIBLE : View.GONE);
                 mMuteIv.setVisibility(mChatDataInfo.receiverOpen ? View.VISIBLE : View.GONE);
-                mTitleTv.setText(mChatDataInfo.getPersonName());
+                mTitleTv.setText(mChatDataInfo.getOtherPersonName());
                 Glide.with(this).load(mChatDataInfo.getChatBgImage()).into(mChatBgIv);
             } else {
                 Glide.with(this).load("").into(mChatBgIv);
@@ -233,7 +245,7 @@ public class ChatSessionActivity extends BaseActivity {
                             jumpTurn(currentTm, 2);
                             mAppDatabase.transferMessageDao().updateTransReceive(!currentTm.isReceive(), currentTm.getId());
                             ((TransferMessage) sessionAdapter.getData().get(position)).setReceive(true);
-                            addTransData(currentTm,1);
+                            addTransData(currentTm, 1);
                             sessionAdapter.notifyItemChanged(position);
                         } else {
                             jumpReceive(currentTm, 2, position);
@@ -242,6 +254,47 @@ public class ChatSessionActivity extends BaseActivity {
                 }
             }
         });
+
+        mTouchEt.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                mTouchEt.getWindowVisibleDisplayFrame(r);
+                int screenHeight = mTouchEt.getRootView().getHeight();
+                int heightDifference = screenHeight - (r.bottom);
+                if (heightDifference > 200) {
+                    //软键盘显示
+                    Logger.i("键盘显示--->");
+                } else {
+                    //软键盘隐藏
+                    Logger.i("键盘隐藏--->");
+                }
+            }
+        });
+
+        mTouchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    mAddPlusIv.setVisibility(View.GONE);
+                    mSendLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mAddPlusIv.setVisibility(View.VISIBLE);
+                    mSendLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     //跳到转账页面
@@ -278,15 +331,15 @@ public class ChatSessionActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         if (event.getMessageType() == Constants.CONFIG_RECEIVE_MONEY) {
-            mAppDatabase.transferMessageDao().updateTransReceiveAndType(true, 2,event.getMid());
+            mAppDatabase.transferMessageDao().updateTransReceiveAndType(true, 2, event.getMid());
             ((TransferMessage) sessionAdapter.getData().get(event.getChatPos())).setReceive(true);
-            addTransData((TransferMessage) sessionAdapter.getData().get(event.getChatPos()),2);
+            addTransData((TransferMessage) sessionAdapter.getData().get(event.getChatPos()), 2);
             ((TransferMessage) sessionAdapter.getData().get(event.getChatPos())).setTransferType(2);
             sessionAdapter.notifyItemChanged(event.getChatPos());
         }
     }
 
-    public void addTransData(TransferMessage temp,int transType) {
+    public void addTransData(TransferMessage temp, int transType) {
         int type = 0;
         if (temp.getMessageType() == MessageContent.RECEIVE_TRANSFER) {
             type = MessageContent.SEND_TRANSFER;

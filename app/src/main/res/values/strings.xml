@@ -26,7 +26,7 @@
     <string name="type_share">转发</string>
     <string name="type_persion_card">个人名片</string>
     <string name="type_join_group">邀请加群</string>
-    <string name="type_system_info">系统提醒</string>
+    <string name="type_system_info">系统提示</string>
 
     <string name="agree_txt">我同意</string>
     <string name="config_txt">确定</string>

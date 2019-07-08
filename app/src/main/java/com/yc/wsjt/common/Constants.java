@@ -221,7 +221,7 @@ public class Constants {
 
     public static final int[] alipayTypeImages = {
             R.mipmap.type_time, R.mipmap.type_text, R.mipmap.type_image, R.mipmap.type_voice,
-            R.mipmap.type_emoji, R.mipmap.type_hongbao, R.mipmap.type_zhuanzhang, R.mipmap.type_video, R.mipmap.type_system_info};
+            R.mipmap.type_emoji, R.mipmap.type_hongbao, R.mipmap.type_zhuanzhang, R.mipmap.shoukuan_icon, R.mipmap.type_system_info};
 
     public static final int[] alipayTypeNames = {
             R.string.type_time,

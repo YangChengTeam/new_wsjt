@@ -16,16 +16,12 @@ import com.yc.wsjt.bean.ChatTypeInfo;
 import com.yc.wsjt.common.Constants;
 import com.yc.wsjt.ui.activity.ChatAudioActivity;
 import com.yc.wsjt.ui.activity.ChatEmojiActivity;
-import com.yc.wsjt.ui.activity.ChatGroupActivity;
 import com.yc.wsjt.ui.activity.ChatImageActivity;
-import com.yc.wsjt.ui.activity.ChatPersonCardActivity;
 import com.yc.wsjt.ui.activity.ChatRedPackageActivity;
-import com.yc.wsjt.ui.activity.ChatShareActivity;
 import com.yc.wsjt.ui.activity.ChatSystemInfoActivity;
 import com.yc.wsjt.ui.activity.ChatTextActivity;
 import com.yc.wsjt.ui.activity.ChatTimeActivity;
 import com.yc.wsjt.ui.activity.ChatTransferActivity;
-import com.yc.wsjt.ui.activity.ChatVideoActivity;
 import com.yc.wsjt.ui.adapter.ChatTypeAdapter;
 
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ public class AlipayChatTypeDialog extends Dialog {
     RecyclerView chatTypeListView;
 
     ChatTypeAdapter chatTypeAdapter;
-    
+
     public AlipayChatTypeDialog(Context context) {
         super(context);
         this.mContext = context;
@@ -62,10 +58,10 @@ public class AlipayChatTypeDialog extends Dialog {
 
         //聊天的类型
         List<ChatTypeInfo> typeList = new ArrayList<>();
-        for (int i = 0; i < Constants.typeImages.length; i++) {
+        for (int i = 0; i < Constants.alipayTypeImages.length; i++) {
             ChatTypeInfo chatTypeInfo = new ChatTypeInfo();
-            chatTypeInfo.setTypeImg(Constants.typeImages[i]);
-            chatTypeInfo.setTypeName(mContext.getResources().getString(Constants.typeNames[i]));
+            chatTypeInfo.setTypeImg(Constants.alipayTypeImages[i]);
+            chatTypeInfo.setTypeName(mContext.getResources().getString(Constants.alipayTypeNames[i]));
             typeList.add(chatTypeInfo);
         }
 
@@ -109,24 +105,13 @@ public class AlipayChatTypeDialog extends Dialog {
                         mContext.startActivity(intent6);
                         break;
                     case 7:
-                        Intent intent7 = new Intent(mContext, ChatVideoActivity.class);
-                        mContext.startActivity(intent7);
+                        //收款
+                        //Intent intent7 = new Intent(mContext, ChatVideoActivity.class);
+                        //mContext.startActivity(intent7);
                         break;
                     case 8:
-                        Intent intent8 = new Intent(mContext, ChatShareActivity.class);
+                        Intent intent8 = new Intent(mContext, ChatSystemInfoActivity.class);
                         mContext.startActivity(intent8);
-                        break;
-                    case 9:
-                        Intent intent9 = new Intent(mContext, ChatPersonCardActivity.class);
-                        mContext.startActivity(intent9);
-                        break;
-                    case 10:
-                        Intent intent10 = new Intent(mContext, ChatGroupActivity.class);
-                        mContext.startActivity(intent10);
-                        break;
-                    case 11:
-                        Intent intent11 = new Intent(mContext, ChatSystemInfoActivity.class);
-                        mContext.startActivity(intent11);
                         break;
                 }
                 dismiss();
